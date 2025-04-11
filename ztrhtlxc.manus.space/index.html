@@ -411,22 +411,38 @@
             }
         }
         
-        /* Fix for Creative Universes layout */
         .grid-cols-1.md\:grid-cols-3.gap-12 {
             grid-template-columns: 1fr 1fr;
             max-width: 1400px;
             margin: 0 auto;
             gap: 2rem;
         }
-        
+
         .universe-card {
             width: 100%;
             max-width: none;
         }
         
-        /* Fix for YouTube player */
-        iframe[src*="youtube"] {
-            max-width: 100%;
+        .song-craft-section {
+            margin-top: 2rem;
+            padding: 2rem;
+            background: linear-gradient(to bottom, rgba(10, 0, 26, 0.7), rgba(16, 0, 38, 0.7));
+            border-radius: 1rem;
+            border: 1px solid rgba(138, 43, 226, 0.3);
+        }
+        
+        .youtube-player {
+            width: 100%;
+            height: 300px;
+            border-radius: 0.75rem;
+            overflow: hidden;
+        }
+        
+        .custom-separator {
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--violet-light), transparent);
+            margin: 2rem auto;
+            width: 80%;
         }
     </style>
 </head>
@@ -507,7 +523,7 @@
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
                 <!-- Happy Galaxy Children -->
-                <div class="universe-card rounded-xl p-8 relative" data-aos="fade-up" data-aos-delay="200">
+                <div class="universe-card rounded-xl p-8 relative" data-aos="fade-up" data-aos-delay="100">
                     <div class="absolute top-0 right-0 w-32 h-32 bg-violet-dark opacity-20 rounded-bl-full"></div>
                     <h3 class="text-3xl font-bold mb-4">Happy Galaxy Children</h3>
                     <p class="text-lg mb-6 text-gray-300">Pixar meets the cosmos.</p>
@@ -540,7 +556,7 @@
                 </div>
                 
                 <!-- Violet Records -->
-                <div class="universe-card rounded-xl p-8 relative" data-aos="fade-up" data-aos-delay="300">
+                <div class="universe-card rounded-xl p-8 relative" data-aos="fade-up" data-aos-delay="200">
                     <div class="absolute top-0 right-0 w-32 h-32 bg-violet-dark opacity-20 rounded-bl-full"></div>
                     <h3 class="text-3xl font-bold mb-4">Violet Records</h3>
                     <p class="text-lg mb-6 text-gray-300">We craft musical worlds.</p>
@@ -548,10 +564,12 @@
                         From Progressive House to Soulful Deep House, from school anthems to AI-generated pop gems, Violet Records exists to make music that moves masses and transcends language. Every song is a cinematic journey, refined for excellence.
                     </p>
                     
-                    <!-- Music Player -->
+                    <!-- Music Player Section -->
                     <div class="mb-6 bg-gray-900 rounded-lg p-4">
                         <h4 class="text-xl font-semibold mb-3">Listen to Our Music</h4>
-                        <iframe width="100%" height="260" src="https://www.youtube.com/embed/9W1qhin0fyg" title="Soulful Vibe - Violet Media" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <div class="youtube-player">
+                            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/9W1qhin0fyg" title="Soulful Vibe - Violet Media" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
                     </div>
                     
                     <div class="flex items-center justify-center space-x-4 mb-6 flex-wrap">
@@ -573,36 +591,43 @@
                         Our music is available on all major platforms including Spotify, Apple Music, Amazon Music, Tidal, and more.
                     </p>
                     
-                    <!-- Commission Your Own Song Section -->
-                    <section class="custom-music-service mb-6" style="padding: 2rem 1.5rem; background: linear-gradient(to bottom, #0a001a, #100026); color: white; text-align: center; border-radius: 0.75rem;">
-                      <h2 style="font-size: 1.8rem; font-weight: bold; margin-bottom: 1rem;">✦ Commission Your Own Song</h2>
-                      <p style="font-size: 1rem; margin: 0 auto 1.5rem;">
-                        Whether it's a heartfelt anniversary gift, a birthday surprise, a custom love song, or a theme for a special event — Violet Media crafts <strong>one-of-a-kind tracks</strong> using advanced AI tools. Every song is uniquely written with custom lyrics and delivered in <strong>high-quality studio WAV format</strong>.
-                      </p>
-
-                      <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-bottom: 1.5rem;">
-                        <div style="flex: 1 1 150px; background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 0.75rem;">
-                          <h3 style="font-size: 1.1rem; font-weight: bold;">Occasions</h3>
-                          <p style="margin-top: 0.5rem; font-size: 0.9rem;">Birthdays, anniversaries, weddings, proposals, holidays, memorials, or just because.</p>
-                        </div>
-                        <div style="flex: 1 1 150px; background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 0.75rem;">
-                          <h3 style="font-size: 1.1rem; font-weight: bold;">What You Get</h3>
-                          <p style="margin-top: 0.5rem; font-size: 0.9rem;">Custom lyrics, studio-quality mastering, full WAV + MP3 formats, and optional lyric videos.</p>
-                        </div>
-                        <div style="flex: 1 1 150px; background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 0.75rem;">
-                          <h3 style="font-size: 1.1rem; font-weight: bold;">Powered by AI</h3>
-                          <p style="margin-top: 0.5rem; font-size: 0.9rem;">Crafted with Suno AI, mixed with precision, and optionally voiced using ElevenLabs AI.</p>
-                        </div>
-                      </div>
-
-                      <a href="#contact" style="display: inline-block; padding: 0.5rem 1.5rem; background: #9b5de5; color: white; border-radius: 0.5rem; font-weight: bold; text-decoration: none; transition: background 0.3s; font-size: 0.9rem;">
-                        ✉️ Contact Us to Start Your Song
-                      </a>
-                    </section>
-                    
                     <div class="flex justify-end">
                         <div class="h-1 w-16 bg-violet-gradient rounded"></div>
                     </div>
+                </div>
+            </div>
+            
+            <!-- Custom separator -->
+            <div class="custom-separator"></div>
+            
+            <!-- Craft Your Signature Song Section - COMPLETELY SEPARATE -->
+            <div class="song-craft-section mt-16 mx-auto max-w-5xl" data-aos="fade-up">
+                <h2 class="text-4xl font-bold text-center mb-6">✦ Craft Your Signature Song</h2>
+                <p class="text-xl text-center max-w-3xl mx-auto mb-10">
+                    Whether it's a heartfelt anniversary gift, a birthday surprise, a custom love song, or a theme for a special event — Violet Media crafts <strong>one-of-a-kind tracks</strong> using advanced AI tools. Every song is uniquely written with custom lyrics and delivered in <strong>high-quality studio WAV format</strong>.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
+                    <div class="bg-opacity-10 bg-white p-6 rounded-xl">
+                        <h3 class="text-2xl font-bold mb-3 text-violet-300">Occasions</h3>
+                        <p>Birthdays, anniversaries, weddings, proposals, holidays, memorials, or just because.</p>
+                    </div>
+                    
+                    <div class="bg-opacity-10 bg-white p-6 rounded-xl">
+                        <h3 class="text-2xl font-bold mb-3 text-violet-300">What You Get</h3>
+                        <p>Custom lyrics, studio-quality mastering, full WAV + MP3 formats, and optional lyric videos.</p>
+                    </div>
+                    
+                    <div class="bg-opacity-10 bg-white p-6 rounded-xl">
+                        <h3 class="text-2xl font-bold mb-3 text-violet-300">Powered by AI</h3>
+                        <p>Crafted with Suno AI, mixed with precision, and optionally voiced using ElevenLabs AI.</p>
+                    </div>
+                </div>
+                
+                <div class="text-center">
+                    <a href="#contact" class="inline-block px-8 py-3 bg-violet-gradient text-white font-bold rounded-full hover:shadow-lg transition-all duration-300">
+                        <i class="far fa-envelope mr-2"></i> Contact Us to Start Your Song
+                    </a>
                 </div>
             </div>
             
@@ -661,6 +686,23 @@
                 <div class="portfolio-item rounded-xl overflow-hidden" data-aos="fade-up" data-aos-delay="300">
                     <div class="bg-gray-900 h-52 relative">
                         <div class="absolute inset-0 flex items-center justify-center">
+                            <i class="fas fa-music text-6xl text-violet-300"></i>
+                        </div>
+                    </div>
+                    <div class="p-6 bg-gray-800">
+                        <h3 class="text-xl font-bold mb-2">School Anthem</h3>
+                        <p class="text-gray-400 mb-4">Custom theme for Tuart Hill Primary.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-violet-300">Violet Records</span>
+                            <span class="text-sm text-gray-500">2023</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Portfolio Item 4 -->
+                <div class="portfolio-item rounded-xl overflow-hidden" data-aos="fade-up" data-aos-delay="400">
+                    <div class="bg-gray-900 h-52 relative">
+                        <div class="absolute inset-0 flex items-center justify-center">
                             <i class="fas fa-meteor text-6xl text-violet-300"></i>
                         </div>
                     </div>
@@ -674,8 +716,8 @@
                     </div>
                 </div>
                 
-                <!-- Portfolio Item 4 -->
-                <div class="portfolio-item rounded-xl overflow-hidden" data-aos="fade-up" data-aos-delay="400">
+                <!-- Portfolio Item 5 -->
+                <div class="portfolio-item rounded-xl overflow-hidden" data-aos="fade-up" data-aos-delay="500">
                     <div class="bg-gray-900 h-52 relative">
                         <div class="absolute inset-0 flex items-center justify-center">
                             <i class="fas fa-school text-6xl text-violet-300"></i>
@@ -691,35 +733,18 @@
                     </div>
                 </div>
                 
-                <!-- Portfolio Item 5 -->
-                <div class="portfolio-item rounded-xl overflow-hidden" data-aos="fade-up" data-aos-delay="500">
-                    <div class="bg-gray-900 h-52 relative">
-                        <div class="absolute inset-0 flex items-center justify-center">
-                            <i class="fas fa-heartbeat text-6xl text-violet-300"></i>
-                        </div>
-                    </div>
-                    <div class="p-6 bg-gray-800">
-                        <h3 class="text-xl font-bold mb-2">Cosmic Breathwork</h3>
-                        <p class="text-gray-400 mb-4">Guided meditation with cinematic visuals.</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm text-violet-300">Meditation Series</span>
-                            <span class="text-sm text-gray-500">2023</span>
-                        </div>
-                    </div>
-                </div>
-                
                 <!-- Portfolio Item 6 -->
                 <div class="portfolio-item rounded-xl overflow-hidden" data-aos="fade-up" data-aos-delay="600">
                     <div class="bg-gray-900 h-52 relative">
                         <div class="absolute inset-0 flex items-center justify-center">
-                            <i class="fas fa-microphone-alt text-6xl text-violet-300"></i>
+                            <i class="fas fa-heart text-6xl text-violet-300"></i>
                         </div>
                     </div>
                     <div class="p-6 bg-gray-800">
-                        <h3 class="text-xl font-bold mb-2">Custom Wedding Song</h3>
-                        <p class="text-gray-400 mb-4">Personalized music composition for special moments.</p>
+                        <h3 class="text-xl font-bold mb-2">Anniversary Ballad</h3>
+                        <p class="text-gray-400 mb-4">Custom love song for a special occasion.</p>
                         <div class="flex justify-between items-center">
-                            <span class="text-sm text-violet-300">Commissions</span>
+                            <span class="text-sm text-violet-300">Custom Song</span>
                             <span class="text-sm text-gray-500">2023</span>
                         </div>
                     </div>
@@ -766,7 +791,7 @@
                         </div>
                         <div class="flex flex-col items-center text-center p-6 bg-gray-800/50 rounded-lg">
                             <i class="fas fa-brain text-4xl text-violet-300 mb-4"></i>
-                            <h3 class="text-xl font-semibold mb-2">Claude AI</h3>
+                            <h3 class="text-xl font-semibold mb-2">ChatGPT</h3>
                             <p class="text-sm text-gray-400">Advanced reasoning and content creation</p>
                         </div>
                     </div>
@@ -845,7 +870,7 @@
                 <div class="flex flex-col md:flex-row items-center">
                     <div class="md:w-2/5 mb-10 md:mb-0 flex justify-center" data-aos="fade-right">
                         <div class="w-64 h-64 rounded-full overflow-hidden border-4 border-violet-600">
-                            <img src="images/peter-sarosi.jpg" alt="Peter Z Sarosi" class="w-full h-full object-cover">
+                            <img src="https://cdn.jsdelivr.net/gh/petersarosi/website-assets@main/peter-profile.jpg" alt="Peter Z Sarosi" class="w-full h-full object-cover">
                         </div>
                     </div>
                     <div class="md:w-3/5 md:pl-12" data-aos="fade-left">
@@ -901,10 +926,10 @@
                 <!-- Vision Item 4 -->
                 <div class="p-8 bg-gray-900/30 rounded-xl border border-violet-900/30" data-aos="fade-up" data-aos-delay="400">
                     <div class="h-16 w-16 rounded-full bg-violet-gradient flex items-center justify-center mb-6">
-                        <i class="fas fa-microphone-alt text-2xl text-white"></i>
+                        <i class="fas fa-spa text-2xl text-white"></i>
                     </div>
-                    <h3 class="text-2xl font-bold mb-4">Music Commission Platform</h3>
-                    <p class="text-gray-300">Expanding our custom song creation service into a full-featured platform for personalized music commissions.</p>
+                    <h3 class="text-2xl font-bold mb-4">Wellness Content Expansion</h3>
+                    <p class="text-gray-300">Growing tranquil content into a comprehensive wellness media platform with guided practices and immersive experiences.</p>
                 </div>
                 
                 <!-- Vision Item 5 -->
@@ -968,7 +993,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
                     <div>
                         <h3 class="text-lg font-bold mb-4 text-violet-300">Contact</h3>
-                        <p class="text-gray-400 mb-2"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b3c5dadcdfd6c7ded6d7dad2c0c7c6d7dadcf3d4ded2dadf9dd0dcde">[email&#160;protected]</a></p>
+                        <p class="text-gray-400 mb-2"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="6f190600030a1b020a0b060e1c1b1a0b06002f08020e0603410c0002">[email&#160;protected]</a></p>
                         <p class="text-gray-400">+61 0405 231 326</p>
                     </div>
                     
@@ -1013,70 +1038,46 @@
         
         // Mobile menu toggle
         function toggleMobileNav() {
-            const hamburger = document.getElementById('hamburger');
-            const mobileNav = document.getElementById('mobileNav');
-            hamburger.classList.toggle('open');
-            mobileNav.classList.toggle('open');
+            document.getElementById('hamburger').classList.toggle('open');
+            document.getElementById('mobileNav').classList.toggle('open');
         }
         
         // Mobile menu links - close menu when clicked
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('#mobileNav a').forEach(link => {
-                link.addEventListener('click', () => {
-                    document.getElementById('hamburger').classList.remove('open');
-                    document.getElementById('mobileNav').classList.remove('open');
-                });
-            });
-            
-            // Enhanced particles for the cosmos effect
-            createParticles();
-            
-            // Smooth scrolling for anchor links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href');
-                    if (targetId === '#') return;
-                    
-                    const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
-                        window.scrollTo({
-                            top: targetElement.offsetTop,
-                            behavior: 'smooth'
-                        });
-                    }
-                });
+        document.querySelectorAll('#mobileNav a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('hamburger').classList.remove('open');
+                document.getElementById('mobileNav').classList.remove('open');
             });
         });
         
-        // Create particles for the cosmos effect
+        // Enhanced particles for the cosmos effect
         function createParticles() {
             const particlesContainer = document.getElementById('particles');
             if (!particlesContainer) return;
             
-            const numberOfParticles = 150;
+            const numberOfParticles = 150; // Increased from 50
             
             for (let i = 0; i < numberOfParticles; i++) {
                 const particle = document.createElement('div');
                 particle.classList.add('particle');
                 
                 // Random position and size with more variation
-                const size = Math.random() * 4 + 1;
+                const size = Math.random() * 4 + 1; // Increased max size
                 particle.style.width = `${size}px`;
                 particle.style.height = `${size}px`;
                 particle.style.left = `${Math.random() * 100}%`;
                 particle.style.top = `${Math.random() * 100}%`;
                 
                 // Random animation delay and duration with more variation
-                const animationDuration = Math.random() * 30 + 10;
-                const animationDelay = Math.random() * 15;
+                const animationDuration = Math.random() * 30 + 10; // Increased duration range
+                const animationDelay = Math.random() * 15; // Increased delay range
                 particle.style.animationDuration = `${animationDuration}s`;
                 particle.style.animationDelay = `${animationDelay}s`;
-                particle.style.opacity = Math.random() * 0.7 + 0.3;
+                particle.style.opacity = Math.random() * 0.7 + 0.3; // Increased brightness
                 
                 // Random colors for some particles
                 if (Math.random() > 0.7) {
-                    const hue = Math.floor(Math.random() * 60) + 240;
+                    const hue = Math.floor(Math.random() * 60) + 240; // Purple to blue hues
                     particle.style.background = `hsl(${hue}, 100%, 80%)`;
                     particle.style.boxShadow = `0 0 ${Math.random() * 5 + 2}px hsl(${hue}, 100%, 70%)`;
                 } else {
@@ -1086,6 +1087,28 @@
                 particlesContainer.appendChild(particle);
             }
         }
+        
+        // Initialize particles on load
+        document.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
     </script>
 </body>
 </html>
