@@ -411,32 +411,42 @@
             }
         }
  
-            .grid-cols-1.md\:grid-cols-2.gap-12 {
-                display: grid;
-                grid-template-columns: 1fr 1fr; /* Makes both columns exactly equal width */
-                max-width: 1400px;
-                margin: 0 auto;
-                gap: 2rem;
-           }
-
-            .universe-card {
-               width: 100%;
-               height: 100%; /* Ensures equal height */
-               display: flex;
-               flex-direction: column;
-          }
-
-           /* Make embedded content maintain aspect ratio */
-            .universe-card iframe {
-            aspect-ratio: 16/9;
-            width: 100%;
-            max-height: 250px; /* Control the height of video players */
+          /* Add these styles to fix the alignment issues */
+.grid-cols-1.md\:grid-cols-2.gap-12,
+.grid-cols-1.md\:grid-cols-3.gap-12 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
 }
 
-            /* Ensure content areas have equal padding */
-            .universe-card > div {
-            padding: 1.5rem;
+.universe-card {
+  height: auto;
+  min-height: 650px; /* Set a specific minimum height for both cards */
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding-bottom: 60px; /* Space for the action buttons at bottom */
 }
+
+/* Make the buttons align at the bottom */
+.universe-card .watch-youtube-btn,
+.universe-card .music-buttons {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+}
+
+/* Make media containers the same size */
+.universe-card iframe,
+.universe-card .tiktok-container {
+  width: 100%;
+  aspect-ratio: 16/9;
+  max-height: 250px;
+}
+
 
         .song-craft-section {
             margin-top: 2rem;
