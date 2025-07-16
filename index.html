@@ -1,348 +1,750 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Violet Media - Cosmic Empire</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <style>
-    /* ===== ORIGINAL STYLES (unchanged) ===== */
-    body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#1a0b3d 0%,#2d1b69 25%,#4c3494 50%,#6a4c93 75%,#8b5a9f 100%);overflow-x:hidden;}
-    .cosmic-bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2;background:radial-gradient(circle at 20% 80%,rgba(120,119,198,.3) 0%,transparent 50%),radial-gradient(circle at 80% 20%,rgba(255,119,198,.3) 0%,transparent 50%),radial-gradient(circle at 40% 40%,rgba(120,119,198,.2) 0%,transparent 50%),linear-gradient(135deg,#0f0f23 0%,#1a0b3d 25%,#2d1b69 50%,#4c3494 75%,#6a4c93 100%);}
-    .star{position:absolute;background:white;border-radius:50%;animation:twinkle 5s infinite ease-in-out;box-shadow:0 0 10px 2px rgba(255,255,255,.5);}
-    @keyframes twinkle{0%,100%{opacity:.2;transform:scale(.8);}50%{opacity:1;transform:scale(1.2);}}
-    .floating-star{position:absolute;width:2px;height:2px;background:#fff;border-radius:50%;animation:float 15s ease-in-out infinite;box-shadow:0 0 5px 1px rgba(255,255,255,.7);}
-    @keyframes float{0%,100%{transform:translate(0,0);opacity:.3;}25%{transform:translate(50px,-30px);opacity:.7;}50%{transform:translate(100px,-10px);opacity:.5;}75%{transform:translate(50px,20px);opacity:.8;}}
-    .cosmic-gradient{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);}
-    .cosmic-text{font-family:'Orbitron',monospace;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-shadow:0 0 10px rgba(102,126,234,.3);}
-    .cosmic-button{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);transition:all .3s ease;box-shadow:0 4px 15px rgba(102,126,234,.4);position:relative;overflow:hidden;}
-    .cosmic-button:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(102,126,234,.6);}
-    .cosmic-button::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(to bottom right,rgba(255,255,255,0) 0%,rgba(255,255,255,.1) 50%,rgba(255,255,255,0) 100%);transform:rotate(30deg);animation:shine 3s infinite;}
-    @keyframes shine{0%{transform:translateX(-100%) rotate(30deg);}100%{transform:translateX(100%) rotate(30deg);}}
-    .cosmic-card{background:rgba(255,255,255,.1);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.2);transition:all .3s ease;position:relative;overflow:hidden;}
-    .cosmic-card:hover{transform:translateY(-5px);box-shadow:0 20px 40px rgba(102,126,234,.3);}
-    .cosmic-card::after{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(circle at 50% 50%,rgba(102,126,234,.1) 0%,transparent 70%);pointer-events:none;}
-    .metric-card{background:linear-gradient(135deg,rgba(102,126,234,.2) 0%,rgba(118,75,162,.2) 100%);border:1px solid rgba(102,126,234,.3);backdrop-filter:blur(10px);}
-    .tiktok-embed{max-width:325px;width:100%;height:580px;border-radius:15px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.3);}
-    .platform-icon{font-size:2rem;transition:all .3s ease;}
-    .platform-icon:hover{transform:scale(1.2);}
-    #three-container{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;}
-    .section-spacing{padding:80px 0;}
-    .celestial-object{position:absolute;border-radius:50%;filter:blur(1px);z-index:-1;}
-    .pulsing-planet{animation:pulse 8s infinite ease-in-out;}
-    @keyframes pulse{0%,100%{transform:scale(1);opacity:.7;}50%{transform:scale(1.05);opacity:.9;}}
-    .rotating-galaxy{animation:rotate 120s infinite linear;}
-    @keyframes rotate{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
-    .comet{position:absolute;width:100px;height:2px;background:linear-gradient(90deg,rgba(255,255,255,0) 0%,rgba(255,255,255,.8) 50%,rgba(255,255,255,0) 100%);transform-origin:left center;animation:comet 15s infinite linear;z-index:-1;}
-    @keyframes comet{0%{transform:translateX(-100vw) rotate(45deg);opacity:0;}10%{opacity:1;}90%{opacity:1;}100%{transform:translateX(100vw) rotate(45deg);opacity:0;}}
-    .nebula{position:absolute;border-radius:50%;filter:blur(30px);opacity:.3;z-index:-1;}
-    @media(max-width:768px){.tiktok-embed{height:500px;}.section-spacing{padding:60px 0;}}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Violet Media - Cosmic Empire</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1a0b3d 0%, #2d1b69 25%, #4c3494 50%, #6a4c93 75%, #8b5a9f 100%);
+            overflow-x: hidden;
+        }
+        
+        .cosmic-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 119, 198, 0.2) 0%, transparent 50%),
+                linear-gradient(135deg, #0f0f23 0%, #1a0b3d 25%, #2d1b69 50%, #4c3494 75%, #6a4c93 100%);
+        }
+        
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 5s infinite ease-in-out;
+            box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.5);
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+        
+        .floating-star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #fff;
+            border-radius: 50%;
+            animation: float 15s ease-in-out infinite;
+            box-shadow: 0 0 5px 1px rgba(255, 255, 255, 0.7);
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); opacity: 0.3; }
+            25% { transform: translate(50px, -30px); opacity: 0.7; }
+            50% { transform: translate(100px, -10px); opacity: 0.5; }
+            75% { transform: translate(50px, 20px); opacity: 0.8; }
+        }
+        
+        .cosmic-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .cosmic-text {
+            font-family: 'Orbitron', monospace;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
+        }
+        
+        .cosmic-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cosmic-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+        }
+        
+        .cosmic-button::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.1) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: rotate(30deg);
+            animation: shine 3s infinite;
+        }
+        
+        @keyframes shine {
+            0% { transform: translateX(-100%) rotate(30deg); }
+            100% { transform: translateX(100%) rotate(30deg); }
+        }
+        
+        .cosmic-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cosmic-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+        }
+        
+        .cosmic-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        
+        .metric-card {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .tiktok-embed {
+            max-width: 325px;
+            width: 100%;
+            height: 580px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .platform-icon {
+            font-size: 2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .platform-icon:hover {
+            transform: scale(1.2);
+        }
+        
+        #three-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        .section-spacing {
+            padding: 80px 0;
+        }
+        
+        .celestial-object {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(1px);
+            z-index: -1;
+        }
+        
+        .pulsing-planet {
+            animation: pulse 8s infinite ease-in-out;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.05); opacity: 0.9; }
+        }
+        
+        .rotating-galaxy {
+            animation: rotate 120s infinite linear;
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .comet {
+            position: absolute;
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 100%);
+            transform-origin: left center;
+            animation: comet 15s infinite linear;
+            z-index: -1;
+        }
+        
+        @keyframes comet {
+            0% { transform: translateX(-100vw) rotate(45deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateX(100vw) rotate(45deg); opacity: 0; }
+        }
+        
+        .nebula {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(30px);
+            opacity: 0.3;
+            z-index: -1;
+        }
+        
+        @media (max-width: 768px) {
+            .tiktok-embed {
+                height: 500px;
+            }
+            .section-spacing {
+                padding: 60px 0;
+            }
+        }
+    </style>
 </head>
 <body class="text-white">
-  <div class="cosmic-bg"></div>
-  <div id="three-container"></div>
+    <div class="cosmic-bg"></div>
+    <div id="three-container"></div>
+    
+    <!-- Celestial Objects -->
+    <div id="celestial-objects">
+        <!-- Large distant galaxy -->
+        <div class="celestial-object rotating-galaxy" style="width: 300px; height: 300px; top: 10%; left: 5%; background: radial-gradient(circle, rgba(102, 51, 153, 0.2) 0%, transparent 70%);"></div>
+        
+        <!-- Pulsing planet -->
+        <div class="celestial-object pulsing-planet" style="width: 150px; height: 150px; bottom: 15%; right: 10%; background: radial-gradient(circle, rgba(118, 75, 162, 0.4) 0%, transparent 70%);"></div>
+        
+        <!-- Nebula clouds -->
+        <div class="nebula" style="width: 400px; height: 400px; top: 30%; right: -100px; background: radial-gradient(circle, rgba(102, 126, 234, 0.2) 0%, transparent 70%);"></div>
+        <div class="nebula" style="width: 500px; height: 500px; bottom: -100px; left: -100px; background: radial-gradient(circle, rgba(255, 119, 198, 0.2) 0%, transparent 70%);"></div>
+        
+        <!-- Comets -->
+        <div class="comet" style="top: 20%; animation-delay: 0s;"></div>
+        <div class="comet" style="top: 60%; animation-delay: 5s;"></div>
+        <div class="comet" style="top: 80%; animation-delay: 10s;"></div>
+    </div>
 
-  <!-- ===== ORIGINAL CELESTIAL OBJECTS (unchanged) ===== -->
-  <div id="celestial-objects">
-    <div class="celestial-object rotating-galaxy" style="width:300px;height:300px;top:10%;left:5%;background:radial-gradient(circle,rgba(102,51,153,.2) 0%,transparent 70%);"></div>
-    <div class="celestial-object pulsing-planet" style="width:150px;height:150px;bottom:15%;right:10%;background:radial-gradient(circle,rgba(118,75,162,.4) 0%,transparent 70%);"></div>
-    <div class="nebula" style="width:400px;height:400px;top:30%;right:-100px;background:radial-gradient(circle,rgba(102,126,234,.2) 0%,transparent 70%);"></div>
-    <div class="nebula" style="width:500px;height:500px;bottom:-100px;left:-100px;background:radial-gradient(circle,rgba(255,119,198,.2) 0%,transparent 70%);"></div>
-    <div class="comet" style="top:20%;animation-delay:0s;"></div>
-    <div class="comet" style="top:60%;animation-delay:5s;"></div>
-    <div class="comet" style="top:80%;animation-delay:10s;"></div>
-  </div>
-
-  <!-- ===== ORIGINAL NAV (unchanged) ===== -->
-  <nav class="fixed top-0 w-full z-50 bg-black bg-opacity-30 backdrop-filter backdrop-blur-lg border-b border-purple-900">
-    <div class="container mx-auto px-6 py-4">
-      <div class="flex items-center justify-between">
-        <div class="text-2xl font-bold cosmic-text">Violet Media</div>
-        <div class="hidden md:flex space-x-8">
-          <a href="#cosmic-tease" class="hover:text-purple-300 transition-colors">Cosmic Tease</a>
-          <a href="#galaxy-children" class="hover:text-purple-300 transition-colors">Galaxy Children</a>
-          <a href="#music" class="hover:text-purple-300 transition-colors">Music</a>
-          <a href="#contact" class="hover:text-purple-300 transition-colors">Contact</a>
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 bg-black bg-opacity-30 backdrop-filter backdrop-blur-lg border-b border-purple-900">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="text-2xl font-bold cosmic-text">Violet Media</div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#cosmic-tease" class="hover:text-purple-300 transition-colors">Cosmic Tease</a>
+                    <a href="#galaxy-children" class="hover:text-purple-300 transition-colors">Galaxy Children</a>
+                    <a href="#music" class="hover:text-purple-300 transition-colors">Music</a>
+                    <a href="#contact" class="hover:text-purple-300 transition-colors">Contact</a>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </nav>
+    </nav>
 
-  <!-- ===== ORIGINAL SECTIONS (unchanged) ===== -->
-  <section class="min-h-screen flex items-center justify-center text-center section-spacing relative overflow-hidden">
-    <div class="container mx-auto px-6 relative z-10">
-      <h1 class="text-6xl md:text-8xl font-black cosmic-text mb-8 animate-pulse">The Cosmic Empire</h1>
-      <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">A cinematic, musical, and AI-powered creative house engineered for the new era.</p>
-      <p class="text-lg md:text-xl mb-12 max-w-2xl mx-auto opacity-90">Where vision meets vibration. Where art, AI, and human spirit coalesce.</p>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-12">
-        <div class="metric-card rounded-lg p-6 transform hover:scale-105 transition-transform"><div class="text-3xl font-bold cosmic-text">7.2M+</div><div class="text-sm opacity-80">Total Views</div></div>
-        <div class="metric-card rounded-lg p-6 transform hover:scale-105 transition-transform"><div class="text-3xl font-bold cosmic-text">370K+</div><div class="text-sm opacity-80">Likes</div></div>
-        <div class="metric-card rounded-lg p-6 transform hover:scale-105 transition-transform"><div class="text-3xl font-bold cosmic-text">24K+</div><div class="text-sm opacity-80">Profile Views</div></div>
-      </div>
-      <a href="#cosmic-tease" class="cosmic-button px-8 py-4 rounded-full font-semibold text-lg inline-block relative overflow-hidden">Explore Our Cosmic Universe</a>
-    </div>
-  </section>
+    <!-- Hero Section -->
+    <section class="min-h-screen flex items-center justify-center text-center section-spacing relative overflow-hidden">
+        <div class="container mx-auto px-6 relative z-10">
+            <h1 class="text-6xl md:text-8xl font-black cosmic-text mb-8 animate-pulse">The Cosmic Empire</h1>
+            <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
+                A cinematic, musical, and AI-powered creative house engineered for the new era.
+            </p>
+            <p class="text-lg md:text-xl mb-12 max-w-2xl mx-auto opacity-90">
+                Where vision meets vibration. Where art, AI, and human spirit coalesce.
+            </p>
+            
+            <!-- Empire Metrics -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-12">
+                <div class="metric-card rounded-lg p-6 transform hover:scale-105 transition-transform">
+                    <div class="text-3xl font-bold cosmic-text">7.2M+</div>
+                    <div class="text-sm opacity-80">Total Views</div>
+                </div>
+                <div class="metric-card rounded-lg p-6 transform hover:scale-105 transition-transform">
+                    <div class="text-3xl font-bold cosmic-text">370K+</div>
+                    <div class="text-sm opacity-80">Likes</div>
+                </div>
+                <div class="metric-card rounded-lg p-6 transform hover:scale-105 transition-transform">
+                    <div class="text-3xl font-bold cosmic-text">24K+</div>
+                    <div class="text-sm opacity-80">Profile Views</div>
+                </div>
+            </div>
+            
+            <a href="#cosmic-tease" class="cosmic-button px-8 py-4 rounded-full font-semibold text-lg inline-block relative overflow-hidden">
+                Explore Our Cosmic Universe
+            </a>
+        </div>
+    </section>
 
-  <section id="cosmic-tease" class="section-spacing relative overflow-hidden"><div class="container mx-auto px-6 relative z-10"><div class="text-center mb-16"><h2 class="text-5xl md:text-6xl font-bold cosmic-text mb-6">COSMIC TEASE</h2><p class="text-xl md:text-2xl mb-8">The Entertainment Empire • 7.2M+ Views</p><div class="flex justify-center space-x-6 mb-8"><a href="https://www.tiktok.com/@cosmictease" target="_blank" class="platform-icon hover:text-purple-400 transform hover:rotate-12"><i class="fab fa-tiktok"></i></a><a href="https://youtube.com/@cosmictease-y6g" target="_blank" class="platform-icon hover:text-red-400 transform hover:rotate-12"><i class="fab fa-youtube"></i></a></div></div><div class="mb-16"><h3 class="text-3xl font-bold text-center mb-12 cosmic-text">Viral Content Showcase</h3><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"><!-- 6 cards identical to original --></div></div></div></section>
-  <section id="galaxy-children" class="section-spacing relative overflow-hidden"><div class="container mx-auto px-6 relative z-10"><div class="text-center mb-16"><h2 class="text-5xl md:text-6xl font-bold cosmic-text mb-6">GALAXY CHILDREN</h2><p class="text-xl md:text-2xl mb-8">Family Universe • Cosmic Adventures</p><div class="flex justify-center space-x-6 mb-8"><a href="https://www.tiktok.com/@galaxy_children" target="_blank" class="platform-icon hover:text-purple-400 transform hover:rotate-12"><i class="fab fa-tiktok"></i></a><a href="https://youtube.com/@Galaxy_Children" target="_blank" class="platform-icon hover:text-red-400 transform hover:rotate-12"><i class="fab fa-youtube"></i></a></div></div></div></section>
-  <section id="music" class="section-spacing relative overflow-hidden"><div class="container mx-auto px-6 relative z-10"><div class="text-center mb-16"><h2 class="text-5xl md:text-6xl font-bold cosmic-text mb-6">VIOLET RECORDS</h2><p class="text-xl md:text-2xl mb-8">We craft musical worlds</p></div><div class="max-w-4xl mx-auto"><div class="grid grid-cols-2 md:grid-cols-6 gap-6 mb-12"><!-- 6 platform cards identical to original --></div></div></div></section>
-  <section class="section-spacing relative overflow-hidden"><div class="container mx-auto px-6 relative z-10"><div class="text-center mb-16"><h2 class="text-5xl md:text-6xl font-bold cosmic-text mb-6">AI-DRIVEN, HUMAN-TOUCHED</h2><p class="text-xl md:text-2xl mb-8">We don't just use AI—we co-create with it</p></div></div></section>
-  <section class="section-spacing relative overflow-hidden"><div class="container mx-auto px-6 relative z-10"><div class="max-w-4xl mx-auto text-center"><div class="cosmic-card rounded-lg p-8 transform hover:-translate-y-2"><h3 class="text-2xl font-bold mb-4 cosmic-text">Powered by Innovation</h3><p class="text-lg opacity-90 mb-6">Big thanks to WaveSpeed AI for supporting this cosmic journey! 🚀</p><a href="https://wavespeed.ai/?utm_source=creator_cosmictease" target="_blank" class="cosmic-button px-8 py-3 rounded-full font-semibold">Explore WaveSpeed AI</a></div></div></div></section>
-  <section id="contact" class="section-spacing relative overflow-hidden"><div class="container mx-auto px-6 relative z-10"><div class="text-center mb-16"><h2 class="text-5xl md:text-6xl font-bold cosmic-text mb-6">JOIN THE COSMIC REVOLUTION</h2><p class="text-xl md:text-2xl mb-8">Whether you're a creator, brand, or visionary—you're invited</p></div></div></section>
-  <footer class="py-12 text-center relative overflow-hidden"><div class="container mx-auto px-6 relative z-10"><p class="text-lg cosmic-text font-bold mb-4">This is your future. This is Violet Media.</p><p class="text-sm opacity-60">© 2024 Violet Media. All rights reserved.</p></div></footer>
+    <!-- Cosmic Tease Section -->
+    <section id="cosmic-tease" class="section-spacing relative overflow-hidden">
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl md:text-6xl font-bold cosmic-text mb-6">COSMIC TEASE</h2>
+                <p class="text-xl md:text-2xl mb-8">The Entertainment Empire • 7.2M+ Views</p>
+                <div class="flex justify-center space-x-6 mb-8">
+                    <a href="https://www.tiktok.com/@cosmictease" target="_blank" class="platform-icon hover:text-purple-400 transform hover:rotate-12 transition-transform">
+                        <i class="fab fa-tiktok"></i>
+                    </a>
+                    <a href="https://youtube.com/@cosmictease-y6g" target="_blank" class="platform-icon hover:text-red-400 transform hover:rotate-12 transition-transform">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Viral Videos Showcase -->
+            <div class="mb-16">
+                <h3 class="text-3xl font-bold text-center mb-12 cosmic-text">Viral Content Showcase</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Veiled Echoes -->
+                    <div class="cosmic-card rounded-lg p-6 text-center transform hover:-translate-y-2 transition-transform">
+                        <h4 class="text-xl font-bold mb-4 cosmic-text">Veiled Echoes</h4>
+                        <div class="text-3xl font-bold text-purple-400 mb-4">550K</div>
+                        <p class="text-sm opacity-80 mb-4">Views</p>
+                        <a href="https://vt.tiktok.com/ZSBGH6Dk3/" target="_blank" class="cosmic-button px-6 py-2 rounded-full text-sm inline-block">Watch Now</a>
+                    </div>
+                                    
+                    <!-- Violet Echo -->
+                    <div class="cosmic-card rounded-lg p-6 text-center transform hover:-translate-y-2 transition-transform">
+                        <h4 class="text-xl font-bold mb-4 cosmic-text">Violet Echo</h4>
+                        <div class="text-3xl font-bold text-purple-400 mb-4">400K</div>
+                        <p class="text-sm opacity-80 mb-4">Views</p>
+                        <a href="https://vt.tiktok.com/ZSBGHDANH/" target="_blank" class="cosmic-button px-6 py-2 rounded-full text-sm inline-block">Watch Now</a>
+                    </div>
+                                    
+                    <!-- Cosmic Tease Yacht -->
+                    <div class="cosmic-card rounded-lg p-6 text-center transform hover:-translate-y-2 transition-transform">
+                        <h4 class="text-xl font-bold mb-4 cosmic-text">Cosmic Tease Yacht</h4>
+                        <div class="text-3xl font-bold text-purple-400 mb-4">322K</div>
+                        <p class="text-sm opacity-80 mb-4">Views</p>
+                        <a href="https://vt.tiktok.com/ZSBGxDGUE/" target="_blank" class="cosmic-button px-6 py-2 rounded-full text-sm inline-block">Watch Now</a>
+                    </div>
+                                    
+                    <!-- Cosmic Real Estate -->
+                    <div class="cosmic-card rounded-lg p-6 text-center transform hover:-translate-y-2 transition-transform">
+                        <h4 class="text-xl font-bold mb-4 cosmic-text">Cosmic Real Estate</h4>
+                        <div class="text-3xl font-bold text-purple-400 mb-4">242K</div>
+                        <p class="text-sm opacity-80 mb-4">Views</p>
+                        <a href="https://vt.tiktok.com/ZSBG9pBVq/" target="_blank" class="cosmic-button px-6 py-2 rounded-full text-sm inline-block">Watch Now</a>
+                    </div>
+                                    
+                    <!-- Stars Ain't Far -->
+                    <div class="cosmic-card rounded-lg p-6 text-center transform hover:-translate-y-2 transition-transform">
+                        <h4 class="text-xl font-bold mb-4 cosmic-text">Stars Ain't Far</h4>
+                        <div class="text-3xl font-bold text-purple-400 mb-4">133K</div>
+                        <p class="text-sm opacity-80 mb-4">Views</p>
+                        <a href="https://vt.tiktok.com/ZSBGxjh44/" target="_blank" class="cosmic-button px-6 py-2 rounded-full text-sm inline-block">Watch Now</a>
+                    </div>
+                                    
+                    <!-- Celestial Echoes -->
+                    <div class="cosmic-card rounded-lg p-6 text-center transform hover:-translate-y-2 transition-transform">
+                        <h4 class="text-xl font-bold mb-4 cosmic-text">Celestial Echoes</h4>
+                        <div class="text-3xl font-bold text-purple-400 mb-4">59K</div>
+                        <p class="text-sm opacity-80 mb-4">Views • Creator's Favorite</p>
+                        <a href="https://vt.tiktok.com/ZSBGxk7ag/" target="_blank" class="cosmic-button px-6 py-2 rounded-full text-sm inline-block">Watch Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  <!-- ===== NEW: floating mini-player ===== -->
-  <div id="v-player" class="fixed bottom-4 right-4 z-50 cosmic-card rounded-xl p-3 w-80 max-w-[calc(100vw-2rem)]">
-    <!-- Channel tabs -->
-    <div class="flex text-xs mb-2">
-      <button data-ch="cosmic" class="channel-tab flex-1 py-1 rounded-tl-md bg-purple-500/30">Cosmic Tease</button>
-      <button data-ch="violet" class="channel-tab flex-1 py-1 rounded-tr-md bg-purple-500/10">Violet Media</button>
-    </div>
+    <!-- Galaxy Children Section -->
+    <section id="galaxy-children" class="section-spacing relative overflow-hidden">
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl md:text-6xl font-bold cosmic-text mb-6">GALAXY CHILDREN</h2>
+                <p class="text-xl md:text-2xl mb-8">Family Universe • Cosmic Adventures</p>
+                <div class="flex justify-center space-x-6 mb-8">
+                    <a href="https://www.tiktok.com/@galaxy_children" target="_blank" class="platform-icon hover:text-purple-400 transform hover:rotate-12 transition-transform">
+                        <i class="fab fa-tiktok"></i>
+                    </a>
+                    <a href="https://youtube.com/@Galaxy_Children" target="_blank" class="platform-icon hover:text-red-400 transform hover:rotate-12 transition-transform">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="max-w-4xl mx-auto text-center">
+                <div class="cosmic-card rounded-lg p-8 mb-8 transform hover:-translate-y-2 transition-transform">
+                    <h3 class="text-2xl font-bold mb-4 cosmic-text">Cosmic meets Family</h3>
+                    <p class="text-lg opacity-90 mb-6">
+                        Our family-friendly universe blends whimsy and wisdom, inspiring values of kindness, 
+                        curiosity, courage, and wonder through cosmic storytelling.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="metric-card rounded-lg p-4 transform hover:scale-105 transition-transform">
+                            <div class="text-2xl font-bold cosmic-text">32</div>
+                            <div class="text-sm opacity-80">Videos</div>
+                        </div>
+                        <div class="metric-card rounded-lg p-4 transform hover:scale-105 transition-transform">
+                            <div class="text-2xl font-bold cosmic-text">28</div>
+                            <div class="text-sm opacity-80">Subscribers</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <div class="flex items-center gap-3">
-      <img id="vp-thumb" class="w-14 h-14 rounded-md object-cover" src="https://via.placeholder.com/56x56/1a0b3d/ffffff?text=♪">
-      <div class="flex-1 min-w-0">
-        <div id="vp-title" class="text-sm font-bold truncate">Loading…</div>
-        <div id="vp-artist" class="text-xs opacity-70 truncate">Cosmic Tease</div>
-      </div>
-      <button id="vp-play" class="text-2xl w-8 h-8"><i class="fas fa-play"></i></button>
-    </div>
+    <!-- Music Section -->
+    <section id="music" class="section-spacing relative overflow-hidden">
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl md:text-6xl font-bold cosmic-text mb-6">VIOLET RECORDS</h2>
+                <p class="text-xl md:text-2xl mb-8">We craft musical worlds</p>
+            </div>
+            
+            <!-- Streaming Platforms -->
+            <div class="max-w-4xl mx-auto">
+                <div class="grid grid-cols-2 md:grid-cols-6 gap-6 mb-12">
+                    <a href="https://open.spotify.com/artist/6d1NDbxwj89zRTJ8lUp63g" target="_blank" class="cosmic-card rounded-lg p-6 text-center hover:bg-green-500 hover:bg-opacity-20 transform hover:scale-110 transition-transform">
+                        <i class="fab fa-spotify text-3xl mb-2"></i>
+                        <div class="text-sm">Spotify</div>
+                    </a>
+                    <a href="https://music.youtube.com/channel/UCKZerj7cXfr3sODhKtjPg6A" target="_blank" class="cosmic-card rounded-lg p-6 text-center hover:bg-red-500 hover:bg-opacity-20 transform hover:scale-110 transition-transform">
+                        <i class="fab fa-youtube text-3xl mb-2"></i>
+                        <div class="text-sm">YouTube Music</div>
+                    </a>
+                    <a href="#" class="cosmic-card rounded-lg p-6 text-center hover:bg-blue-500 hover:bg-opacity-20 transform hover:scale-110 transition-transform">
+                        <i class="fab fa-apple text-3xl mb-2"></i>
+                        <div class="text-sm">Apple Music</div>
+                    </a>
+                    <a href="#" class="cosmic-card rounded-lg p-6 text-center hover:bg-purple-500 hover:bg-opacity-20 transform hover:scale-110 transition-transform">
+                        <i class="fab fa-itunes text-3xl mb-2"></i>
+                        <div class="text-sm">iTunes</div>
+                    </a>
+                    <a href="https://www.tiktok.com/@cosmictease" target="_blank" class="cosmic-card rounded-lg p-6 text-center hover:bg-pink-500 hover:bg-opacity-20 transform hover:scale-110 transition-transform">
+                        <i class="fab fa-tiktok text-3xl mb-2"></i>
+                        <div class="text-sm">TikTok</div>
+                    </a>
+                    <a href="https://youtube.com/@cosmictease-y6g" target="_blank" class="cosmic-card rounded-lg p-6 text-center hover:bg-red-500 hover:bg-opacity-20 transform hover:scale-110 transition-transform">
+                        <i class="fab fa-youtube text-3xl mb-2"></i>
+                        <div class="text-sm">YouTube</div>
+                    </a>
+                </div>
+                
+                <div class="cosmic-card rounded-lg p-8 text-center transform hover:-translate-y-2 transition-transform">
+                    <h3 class="text-2xl font-bold mb-4 cosmic-text">From Progressive House to AI-Generated Pop</h3>
+                    <p class="text-lg opacity-90 mb-6">
+                        Every song is a cinematic journey, refined for excellence. Our music exists to move masses and transcend language.
+                    </p>
+                    <div class="flex justify-center">
+                        <a href="https://open.spotify.com/artist/6d1NDbxwj89zRTJ8lUp63g" target="_blank" class="cosmic-button px-8 py-3 rounded-full font-semibold">
+                            Listen Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <div class="mt-2">
-      <input id="vp-seek" type="range" class="w-full h-1 accent-purple-500 bg-white/10 rounded" value="0">
-    </div>
+    <!-- AI Technology Section -->
+    <section class="section-spacing relative overflow-hidden">
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl md:text-6xl font-bold cosmic-text mb-6">AI-DRIVEN, HUMAN-TOUCHED</h2>
+                <p class="text-xl md:text-2xl mb-8">We don't just use AI—we co-create with it</p>
+            </div>
+            
+            <div class="max-w-6xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="cosmic-card rounded-lg p-6 text-center transform hover:-translate-y-2 transition-transform">
+                        <i class="fas fa-music text-4xl mb-4 text-purple-400"></i>
+                        <h3 class="text-xl font-bold mb-2 cosmic-text">Suno AI</h3>
+                        <p class="text-sm opacity-80">Song generation with emotional intelligence</p>
+                    </div>
+                    <div class="cosmic-card rounded-lg p-6 text-center transform hover:-translate-y-2 transition-transform">
+                        <i class="fas fa-microphone text-4xl mb-4 text-purple-400"></i>
+                        <h3 class="text-xl font-bold mb-2 cosmic-text">ElevenLabs</h3>
+                        <p class="text-sm opacity-80">Lifelike voice synthesis for characters</p>
+                    </div>
+                    <div class="cosmic-card rounded-lg p-6 text-center transform hover:-translate-y-2 transition-transform">
+                        <i class="fas fa-robot text-4xl mb-4 text-purple-400"></i>
+                        <h3 class="text-xl font-bold mb-2 cosmic-text">Genspark</h3>
+                        <p class="text-sm opacity-80">AI agent for creative assistance</p>
+                    </div>
+                    <div class="cosmic-card rounded-lg p-6 text-center transform hover:-translate-y-2 transition-transform">
+                        <i class="fas fa-video text-4xl mb-4 text-purple-400"></i>
+                        <h3 class="text-xl font-bold mb-2 cosmic-text">HeyGen</h3>
+                        <p class="text-sm opacity-80">Avatar technology for consistent characters</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <button id="vp-expand" class="absolute top-2 right-2 text-xs opacity-50">VISUAL</button>
-  </div>
+    <!-- Partnership Section -->
+    <section class="section-spacing relative overflow-hidden">
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="max-w-4xl mx-auto text-center">
+                <div class="cosmic-card rounded-lg p-8 transform hover:-translate-y-2 transition-transform">
+                    <h3 class="text-2xl font-bold mb-4 cosmic-text">Powered by Innovation</h3>
+                    <p class="text-lg opacity-90 mb-6">
+                        Big thanks to WaveSpeed AI for supporting this cosmic journey!  🚀
+                    </p>
+                    <a href="https://wavespeed.ai/?utm_source=creator_cosmictease" target="_blank" class="cosmic-button px-8 py-3 rounded-full font-semibold">
+                        Explore WaveSpeed AI
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  <!-- invisible YouTube frame -->
-  <div id="vp-hidden-frame" style="display:none;"></div>
+    <!-- Contact Section -->
+    <section id="contact" class="section-spacing relative overflow-hidden">
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl md:text-6xl font-bold cosmic-text mb-6">JOIN THE COSMIC REVOLUTION</h2>
+                <p class="text-xl md:text-2xl mb-8">Whether you're a creator, brand, or visionary—you're invited</p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto">
+                <div class="cosmic-card rounded-lg p-8 text-center transform hover:-translate-y-2 transition-transform">
+                    <h3 class="text-2xl font-bold mb-4 cosmic-text">Get in Touch</h3>
+                    <p class="text-lg opacity-90 mb-6">
+                        Ready to create something legendary? Let's build the future together.
+                    </p>
+                    <div class="flex justify-center space-x-6 mb-8">
+                        <a href="mailto:violetmediastudio@gmail.com" class="cosmic-button px-8 py-3 rounded-full font-semibold">
+                            <i class="fas fa-envelope mr-2"></i>
+                            violetmediastudio@gmail.com
+                        </a>
+                    </div>
+                    
+                    <div class="flex justify-center space-x-6">
+                        <a href="https://www.tiktok.com/@cosmictease" target="_blank" class="platform-icon hover:text-purple-400 transform hover:rotate-12 transition-transform">
+                            <i class="fab fa-tiktok"></i>
+                        </a>
+                        <a href="https://youtube.com/@cosmictease-y6g" target="_blank" class="platform-icon hover:text-red-400 transform hover:rotate-12 transition-transform">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                        <a href="https://open.spotify.com/artist/6d1NDbxwj89zRTJ8lUp63g" target="_blank" class="platform-icon hover:text-green-400 transform hover:rotate-12 transition-transform">
+                            <i class="fab fa-spotify"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  <!-- full-screen visualizer overlay -->
-  <div id="vp-viz" class="fixed inset-0 z-[9999] bg-black/90 backdrop-blur-sm hidden items-center justify-center">
-    <canvas id="viz-canvas" class="w-full h-full"></canvas>
-    <button id="vp-close-viz" class="absolute top-6 right-6 text-3xl text-white"><i class="fas fa-times"></i></button>
-  </div>
+    <!-- Footer -->
+    <footer class="py-12 text-center relative overflow-hidden">
+        <div class="container mx-auto px-6 relative z-10">
+            <p class="text-lg cosmic-text font-bold mb-4">This is your future. This is Violet Media.</p>
+            <p class="text-sm opacity-60">© 2024 Violet Media. All rights reserved.</p>
+        </div>
+    </footer>
 
-  <!-- ===== ORIGINAL Three.js starfield (unchanged) ===== -->
-  <script>
-    /* === ORIGINAL STARFIELD === */
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ alpha: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.getElementById('three-container').appendChild(renderer.domElement);
-
-    const starGeometry = new THREE.BufferGeometry();
-    const starCount = 2000;
-    const starPositions = new Float32Array(starCount * 3);
-    const starSizes = new Float32Array(starCount);
-    const starColors = new Float32Array(starCount * 3);
-    for (let i = 0; i < starCount * 3; i++) {
-      starPositions[i] = (Math.random() - 0.5) * 2000;
-      if (i % 3 === 0) {
-        const r = Math.random();
-        if (r < 0.7) { starColors[i] = 1.0; starColors[i+1] = 1.0; starColors[i+2] = 1.0; }
-        else if (r < 0.85) { starColors[i] = 0.4; starColors[i+1] = 0.6; starColors[i+2] = 1.0; }
-        else { starColors[i] = 0.8; starColors[i+1] = 0.4; starColors[i+2] = 1.0; }
-        starSizes[i/3] = Math.random() * 3 + 1;
-      }
-    }
-    starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
-    starGeometry.setAttribute('color', new THREE.BufferAttribute(starColors, 3));
-    starGeometry.setAttribute('size', new THREE.BufferAttribute(starSizes, 1));
-    const starMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 2, transparent: true, opacity: 0.8, vertexColors: true, sizeAttenuation: true });
-    const stars = new THREE.Points(starGeometry, starMaterial);
-    scene.add(stars);
-
-    const fallingStars = [];
-    for (let i = 0; i < 30; i++) {
-      const geometry = new THREE.SphereGeometry(0.5, 8, 8);
-      const material = new THREE.MeshBasicMaterial({ color: Math.random() > 0.3 ? 0x667eea : 0x764ba2 });
-      const star = new THREE.Mesh(geometry, material);
-      star.position.set((Math.random() - 0.5) * 600, Math.random() * 600 + 200, (Math.random() - 0.5) * 600);
-      star.velocity = Math.random() * 0.8 + 0.2;
-      fallingStars.push(star);
-      scene.add(star);
-    }
-    camera.position.z = 5;
-    function animate() {
-      requestAnimationFrame(animate);
-      stars.rotation.x += 0.0005;
-      stars.rotation.y += 0.001;
-      fallingStars.forEach(star => {
-        star.position.y -= star.velocity;
-        star.position.x += (Math.random() - 0.5) * 0.5;
-        if (star.position.y < -200) { star.position.y = 400; star.position.x = (Math.random() - 0.5) * 600; star.position.z = (Math.random() - 0.5) * 600; }
-      });
-      renderer.render(scene, camera);
-    }
-    animate();
-    window.addEventListener('resize', () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    });
-  </script>
-
-  <!-- ===== NEW: mini-player & visualizer logic ===== -->
-  <script>
-    /* ---------- Channel configs ---------- */
-    const CHANNELS = {
-      cosmic: {
-        uploads: 'PLdo4fOcmv0oXuJx1h3h4q8z5Z7mYt5Yk5', // Cosmic Tease uploads playlist id
-        name: 'Cosmic Tease'
-      },
-      violet: {
-        uploads: 'UCKZerj7cXfr3sODhKtjPg6A', // Violet Records uploads playlist id
-        name: 'Violet Media'
-      }
-    };
-    let activeChannel = 'cosmic';
-    let ytPlayer, playlist = [], current = 0;
-
-    /* ---------- YouTube IFrame API ---------- */
-    function loadYouTubeAPI() {
-      const tag = document.createElement('script');
-      tag.src = "https://www.youtube.com/iframe_api";
-      document.head.appendChild(tag);
-    }
-    window.onYouTubeIframeAPIReady = () => {
-      ytPlayer = new YT.Player('vp-hidden-frame', { height: 0, width: 0 });
-      fetchPlaylist(activeChannel);
-    };
-
-    /* ---------- Fetch uploads playlist ---------- */
-    async function fetchPlaylist(ch) {
-      const id = CHANNELS[ch].uploads;
-      const apiKey = AIzaSyBdlvNG1OQjtGi6FsdVus1A5rgwI6beQ3k; // <= get from Google Cloud (free tier 10k/day)
-      const url = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${id}&key=${apiKey}`;
-      const res = await fetch(url);
-      const data = await res.json();
-      playlist = data.items.map(i => ({
-        id: i.snippet.resourceId.videoId,
-        title: i.snippet.title,
-        thumb: i.snippet.thumbnails.medium.url
-      }));
-      if (playlist.length) playIndex(0);
-    }
-
-    function playIndex(idx) {
-      current = idx;
-      ytPlayer.loadVideoById(playlist[idx].id);
-      document.getElementById('vp-title').textContent = playlist[idx].title;
-      document.getElementById('vp-artist').textContent = CHANNELS[activeChannel].name;
-      document.getElementById('vp-thumb').src = playlist[idx].thumb;
-    }
-
-    /* ---------- UI wiring ---------- */
-    document.getElementById('vp-play').onclick = () => {
-      const state = ytPlayer.getPlayerState?.() ?? -1;
-      state === YT.PlayerState.PLAYING ? ytPlayer.pauseVideo() : ytPlayer.playVideo();
-    };
-    document.getElementById('vp-seek').addEventListener('input', e => {
-      const dur = ytPlayer.getDuration?.() || 1;
-      ytPlayer.seekTo((e.target.value / 100) * dur, true);
-    });
-    setInterval(() => {
-      if (!ytPlayer?.getDuration) return;
-      const pct = (ytPlayer.getCurrentTime() / ytPlayer.getDuration()) * 100 || 0;
-      document.getElementById('vp-seek').value = pct;
-    }, 500);
-
-    /* ---------- Channel tabs ---------- */
-    document.querySelectorAll('.channel-tab').forEach(tab => {
-      tab.onclick = () => {
-        activeChannel = tab.dataset.ch;
-        document.querySelectorAll('.channel-tab').forEach(t => t.classList.replace('bg-purple-500/30', 'bg-purple-500/10'));
-        tab.classList.replace('bg-purple-500/10', 'bg-purple-500/30');
-        fetchPlaylist(activeChannel);
-      };
-    });
-
-    /* ---------- Visualizer ---------- */
-    let vizScene, vizCam, vizRenderer, vizMat;
-    function startVisualizer() {
-      const canvas = document.getElementById('viz-canvas');
-      vizRenderer = new THREE.WebGLRenderer({ canvas, alpha: true });
-      vizRenderer.setSize(window.innerWidth, window.innerHeight);
-      vizScene = new THREE.Scene();
-      vizCam = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-      const geo = new THREE.PlaneGeometry(2, 2);
-      vizMat = new THREE.ShaderMaterial({
-        uniforms: { time: { value: 0 }, audio: { value: 0 } },
-        vertexShader: `varying vec2 vUv; void main(){vUv=uv;gl_Position=vec4(position,1.);}`,
-        fragmentShader: `
-          uniform float time; uniform float audio;
-          varying vec2 vUv;
-          void main(){
-            vec2 uv = vUv;
-            float t = time*0.2;
-            float r = sin(uv.x*6.0+t+audio*5.0)*0.5+0.5;
-            float g = sin(uv.y*6.0+t+audio*3.0)*0.5+0.5;
-            float b = sin((uv.x+uv.y)*5.0+t+audio*4.0)*0.5+0.5;
-            gl_FragColor = vec4(r,g,b,1.0);
-          }`
-      });
-      const mesh = new THREE.Mesh(geo, vizMat);
-      vizScene.add(mesh);
-      vizCam.position.z = 1;
-      animateViz();
-    }
-    function animateViz() {
-      if (!document.getElementById('vp-viz').classList.contains('hidden')) {
-        requestAnimationFrame(animateViz);
-        vizMat.uniforms.time.value += 0.01;
-        vizMat.uniforms.audio.value = Math.sin(Date.now() * 0.001) * 0.4 + 0.5; // dummy fft
-        vizRenderer.render(vizScene, vizCam);
-      }
-    }
-    function stopVisualizer() { /* nothing to destroy */ }
-    document.getElementById('vp-expand').onclick = () => {
-      document.getElementById('vp-viz').classList.remove('hidden');
-      startVisualizer();
-    };
-    document.getElementById('vp-close-viz').onclick = () => {
-      document.getElementById('vp-viz').classList.add('hidden');
-    };
-
-    /* ---------- bootstrap ---------- */
-    loadYouTubeAPI();
-  </script>
-
-  <!-- ===== ORIGINAL STAR CREATION (unchanged) ===== -->
-  <script>
-    function createStars() {
-      const numStars = 200;
-      const container = document.querySelector('.cosmic-bg');
-      for (let i = 0; i < numStars; i++) {
-        const star = document.createElement('div');
-        star.className = 'star';
-        star.style.left = Math.random() * 100 + '%';
-        star.style.top = Math.random() * 100 + '%';
-        const size = Math.random() * 4 + 1;
-        star.style.width = size + 'px';
-        star.style.height = size + 'px';
-        star.style.animationDuration = (Math.random() * 5 + 3) + 's';
-        star.style.animationDelay = Math.random() * 5 + 's';
-        if (Math.random() > 0.7) {
-          star.classList.add('floating-star');
-          star.style.animationDuration = (Math.random() * 10 + 10) + 's';
+    <script>
+        // Three.js Falling Stars Animation
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById('three-container').appendChild(renderer.domElement);
+        
+        // Create stars with more variation
+        const starGeometry = new THREE.BufferGeometry();
+        const starCount = 2000; // Increased from 1000 to 2000
+        const starPositions = new Float32Array(starCount * 3);
+        const starSizes = new Float32Array(starCount);
+        const starColors = new Float32Array(starCount * 3);
+        
+        for (let i = 0; i < starCount * 3; i++) {
+            starPositions[i] = (Math.random() - 0.5) * 2000;
+            
+            // Add some color variation
+            if (i % 3 === 0) { // For each star's R component
+                const r = Math.random();
+                if (r < 0.7) {
+                    // White stars (most common)
+                    starColors[i] = 1.0;
+                    starColors[i+1] = 1.0;
+                    starColors[i+2] = 1.0;
+                } else if (r < 0.85) {
+                    // Blue stars
+                    starColors[i] = 0.4;
+                    starColors[i+1] = 0.6;
+                    starColors[i+2] = 1.0;
+                } else {
+                    // Purple stars
+                    starColors[i] = 0.8;
+                    starColors[i+1] = 0.4;
+                    starColors[i+2] = 1.0;
+                }
+            }
+            
+            // Random sizes
+            if (i % 3 === 0) {
+                starSizes[i/3] = Math.random() * 3 + 1;
+            }
         }
-        container.appendChild(star);
-      }
-    }
-    createStars();
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', e => {
-        e.preventDefault();
-        document.querySelector(anchor.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
-    });
-  </script>
+        
+        starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
+        starGeometry.setAttribute('color', new THREE.BufferAttribute(starColors, 3));
+        starGeometry.setAttribute('size', new THREE.BufferAttribute(starSizes, 1));
+        
+        const starMaterial = new THREE.PointsMaterial({
+            color: 0xffffff,
+            size: 2,
+            transparent: true,
+            opacity: 0.8,
+            vertexColors: true,
+            sizeAttenuation: true
+        });
+        
+        const stars = new THREE.Points(starGeometry, starMaterial);
+        scene.add(stars);
+        
+        // Create more falling stars with different colors
+        const fallingStars = [];
+        for (let i = 0; i < 30; i++) { // Increased from 20 to 30
+            const geometry = new THREE.SphereGeometry(0.5, 8, 8);
+            
+            // Random color for falling stars
+            let color;
+            const r = Math.random();
+            if (r < 0.6) {
+                color = new THREE.Color(0x667eea); // Blue
+            } else if (r < 0.9) {
+                color = new THREE.Color(0x764ba2); // Purple
+            } else {
+                color = new THREE.Color(0xffffff); // White
+            }
+            
+            const material = new THREE.MeshBasicMaterial({ color: color });
+            const star = new THREE.Mesh(geometry, material);
+            star.position.set(
+                Math.random() * 600 - 300,
+                Math.random() * 600 + 200,
+                Math.random() * 600 - 300
+            );
+            star.velocity = Math.random() * 0.8 + 0.2; // More variation in speed
+            fallingStars.push(star);
+            scene.add(star);
+        }
+        
+        camera.position.z = 5;
+        
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            // Rotate stars
+            stars.rotation.x += 0.0005;
+            stars.rotation.y += 0.001;
+            
+            // Animate falling stars with more natural movement
+            fallingStars.forEach(star => {
+                star.position.y -= star.velocity;
+                // Add slight horizontal movement
+                star.position.x += (Math.random() - 0.5) * 0.5;
+                if (star.position.y < -200) {
+                    star.position.y = 400;
+                    star.position.x = Math.random() * 600 - 300;
+                    star.position.z = Math.random() * 600 - 300;
+                }
+            });
+            
+            renderer.render(scene, camera);
+        }
+        
+        animate();
+        
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+        
+        // Create additional static stars with more variation
+        function createStars() {
+            const numStars = 200; // Increased from 100 to 200
+            const container = document.querySelector('.cosmic-bg');
+            
+            for (let i = 0; i < numStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                
+                // More size variation
+                const size = Math.random() * 4 + 1;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                
+                // Different animation durations
+                star.style.animationDuration = (Math.random() * 5 + 3) + 's';
+                star.style.animationDelay = Math.random() * 5 + 's';
+                
+                // Some stars will be floating
+                if (Math.random() > 0.7) {
+                    star.classList.add('floating-star');
+                    star.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                }
+                
+                container.appendChild(star);
+            }
+        }
+        
+        createStars();
+        
+        // Create celestial objects
+        function createCelestialObjects() {
+            const container = document.getElementById('celestial-objects');
+            
+            // Create additional small stars
+            for (let i = 0; i < 50; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.width = (Math.random() * 2 + 1) + 'px';
+                star.style.height = star.style.width;
+                star.style.animationDuration = (Math.random() * 4 + 2) + 's';
+                star.style.animationDelay = Math.random() * 5 + 's';
+                container.appendChild(star);
+            }
+        }
+        
+        createCelestialObjects();
+        
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>
