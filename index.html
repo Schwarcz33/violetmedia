@@ -6,15 +6,28 @@
     <title>Violet Media - Cosmic Empire</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
+        :root {
+            --primary-purple: #8b5cf6;
+            --secondary-purple: #a78bfa;
+            --accent-pink: #ec4899;
+            --dark-bg: #0f0f23;
+            --card-bg: rgba(255, 255, 255, 0.08);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.85);
+            --text-muted: rgba(255, 255, 255, 0.65);
+        }
+
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #1a0b3d 0%, #2d1b69 25%, #4c3494 50%, #6a4c93 75%, #8b5a9f 100%);
+            background: linear-gradient(135deg, #0f0f23 0%, #1e1b4b 25%, #312e81 50%, #4c1d95 75%, #6b21a8 100%);
+            color: var(--text-primary);
             overflow-x: hidden;
+            line-height: 1.7;
         }
-        
+      
         .cosmic-bg {
             position: fixed;
             top: 0;
@@ -23,68 +36,66 @@
             height: 100%;
             z-index: -2;
             background: 
-                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(120, 119, 198, 0.2) 0%, transparent 50%),
-                linear-gradient(135deg, #0f0f23 0%, #1a0b3d 25%, #2d1b69 50%, #4c3494 75%, #6a4c93 100%);
+                radial-gradient(circle at 20% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(236, 72, 153, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(167, 139, 250, 0.1) 0%, transparent 50%),
+                linear-gradient(135deg, var(--dark-bg) 0%, #1e1b4b 25%, #312e81 50%, #4c1d95 75%, #6b21a8 100%);
         }
-        
+      
         .star {
             position: absolute;
-            background: white;
+            background: #ffffff;
             border-radius: 50%;
-            animation: twinkle 5s infinite ease-in-out;
-            box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.5);
+            animation: twinkle 4s infinite ease-in-out;
+            box-shadow: 0 0 8px 1px rgba(255, 255, 255, 0.4);
         }
-        
+      
         @keyframes twinkle {
-            0%, 100% { opacity: 0.2; transform: scale(0.8); }
-            50% { opacity: 1; transform: scale(1.2); }
+            0%, 100% { opacity: 0.3; transform: scale(0.9); }
+            50% { opacity: 0.9; transform: scale(1.1); }
         }
-        
+      
         .floating-star {
             position: absolute;
             width: 2px;
             height: 2px;
             background: #fff;
             border-radius: 50%;
-            animation: float 15s ease-in-out infinite;
-            box-shadow: 0 0 5px 1px rgba(255, 255, 255, 0.7);
+            animation: float 12s ease-in-out infinite;
+            box-shadow: 0 0 4px 1px rgba(255, 255, 255, 0.6);
         }
-        
+      
         @keyframes float {
-            0%, 100% { transform: translate(0, 0); opacity: 0.3; }
-            25% { transform: translate(50px, -30px); opacity: 0.7; }
-            50% { transform: translate(100px, -10px); opacity: 0.5; }
-            75% { transform: translate(50px, 20px); opacity: 0.8; }
+            0%, 100% { transform: translate(0, 0); opacity: 0.4; }
+            25% { transform: translate(30px, -20px); opacity: 0.8; }
+            50% { transform: translate(60px, -5px); opacity: 0.6; }
+            75% { transform: translate(30px, 15px); opacity: 0.9; }
         }
-        
-        .cosmic-gradient {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-        
+      
         .cosmic-text {
-            font-family: 'Orbitron', monospace;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Space Grotesk', sans-serif;
+            background: linear-gradient(135deg, var(--primary-purple) 0%, var(--secondary-purple) 50%, var(--accent-pink) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            text-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
+            font-weight: 700;
         }
-        
+      
         .cosmic-button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--primary-purple) 0%, var(--accent-pink) 100%);
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
             position: relative;
             overflow: hidden;
+            border: none;
+            font-weight: 600;
         }
-        
+      
         .cosmic-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(139, 92, 246, 0.5);
         }
-        
+      
         .cosmic-button::before {
             content: '';
             position: absolute;
@@ -93,34 +104,35 @@
             width: 200%;
             height: 200%;
             background: linear-gradient(
-                to bottom right,
+                45deg,
                 rgba(255, 255, 255, 0) 0%,
                 rgba(255, 255, 255, 0.1) 50%,
                 rgba(255, 255, 255, 0) 100%
             );
-            transform: rotate(30deg);
             animation: shine 3s infinite;
         }
-        
+      
         @keyframes shine {
-            0% { transform: translateX(-100%) rotate(30deg); }
-            100% { transform: translateX(100%) rotate(30deg); }
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
         }
-        
+      
         .cosmic-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            border-radius: 16px;
         }
-        
+      
         .cosmic-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(139, 92, 246, 0.25);
+            border-color: rgba(139, 92, 246, 0.3);
         }
-        
+      
         .cosmic-card::after {
             content: '';
             position: absolute;
@@ -128,34 +140,27 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: radial-gradient(circle at 50% 50%, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
+            background: radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.08) 0%, transparent 70%);
             pointer-events: none;
         }
-        
+      
         .metric-card {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
-            border: 1px solid rgba(102, 126, 234, 0.3);
-            backdrop-filter: blur(10px);
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(167, 139, 250, 0.15) 100%);
+            border: 1px solid rgba(139, 92, 246, 0.25);
+            backdrop-filter: blur(12px);
+            border-radius: 12px;
         }
-        
-        .tiktok-embed {
-            max-width: 325px;
-            width: 100%;
-            height: 580px;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-        
+      
         .platform-icon {
-            font-size: 2rem;
+            font-size: 2.5rem;
             transition: all 0.3s ease;
+            color: var(--text-secondary);
         }
-        
+      
         .platform-icon:hover {
-            transform: scale(1.2);
+            transform: scale(1.2) rotate(10deg);
         }
-        
+      
         #three-container {
             position: fixed;
             top: 0;
@@ -163,199 +168,176 @@
             width: 100%;
             height: 100%;
             z-index: -1;
+            pointer-events: none;
         }
-        
+      
         .section-spacing {
-            padding: 80px 0;
+            padding: 100px 0;
         }
-        
-        .celestial-object {
+      
+        .hero-title {
+            font-size: clamp(3rem, 8vw, 7rem);
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+      
+        .hero-subtitle {
+            font-size: clamp(1.125rem, 2.5vw, 1.5rem);
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+      
+        .section-title {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+      
+        .improved-readability {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+      
+        .improved-readability-muted {
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+      
+        .nav-link {
+            color: var(--text-secondary);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+      
+        .nav-link:hover {
+            color: var(--primary-purple);
+            transform: translateY(-2px);
+        }
+      
+        .ai-icon {
+            font-size: 3rem;
+            color: var(--primary-purple);
+            margin-bottom: 1rem;
+        }
+      
+        .video-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+      
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(139, 92, 246, 0.2);
+            border-color: rgba(139, 92, 246, 0.3);
+        }
+      
+        .view-count {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-purple);
+            margin: 0.5rem 0;
+        }
+      
+        .streaming-platform {
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+      
+        .streaming-platform:hover {
+            transform: scale(1.05) translateY(-5px);
+        }
+      
+        .platform-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border-radius: 16px;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+      
+        .platform-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(139, 92, 246, 0.2);
+            border-color: rgba(139, 92, 246, 0.3);
+        }
+      
+        .ai-tool-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border-radius: 16px;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+      
+        .ai-tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(139, 92, 246, 0.25);
+            border-color: rgba(139, 92, 246, 0.3);
+        }
+      
+        .ai-tool-card::after {
+            content: '';
             position: absolute;
-            border-radius: 50%;
-            filter: blur(1px);
-            z-index: -1;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.08) 0%, transparent 70%);
+            pointer-events: none;
         }
-        
-        .pulsing-planet {
-            animation: pulse 8s infinite ease-in-out;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 0.7; }
-            50% { transform: scale(1.05); opacity: 0.9; }
-        }
-        
-        .rotating-galaxy {
-            animation: rotate 120s infinite linear;
-        }
-        
-        @keyframes rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .comet {
-            position: absolute;
-            width: 100px;
-            height: 2px;
-            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 100%);
-            transform-origin: left center;
-            animation: comet 15s infinite linear;
-            z-index: -1;
-        }
-        
-        @keyframes comet {
-            0% { transform: translateX(-100vw) rotate(45deg); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateX(100vw) rotate(45deg); opacity: 0; }
-        }
-        
-        .nebula {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(30px);
-            opacity: 0.3;
-            z-index: -1;
-        }
-        
-        /* Enhanced galaxy styles */
-        .galaxy {
-            position: absolute;
-            border-radius: 50%;
-            z-index: -1;
-            filter: blur(1px);
-            background: radial-gradient(circle, transparent 40%, rgba(102, 51, 153, 0.1) 70%);
-            box-shadow: 
-                0 0 100px 50px rgba(102, 51, 153, 0.2),
-                0 0 200px 100px rgba(118, 75, 162, 0.1),
-                0 0 300px 150px rgba(102, 126, 234, 0.05);
-        }
-        
-        .galaxy-arm {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(ellipse at center, rgba(102, 126, 234, 0.3) 0%, transparent 70%);
-            transform-origin: center;
-        }
-        
-        .galaxy-core {
-            position: absolute;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(102, 51, 153, 0.8) 50%, transparent 70%);
-            box-shadow: 0 0 50px 20px rgba(102, 51, 153, 0.5);
-            z-index: 1;
-        }
-        
-        .spiral-dot {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.6);
-            box-shadow: 0 0 5px 2px rgba(102, 126, 234, 0.5);
-            animation: spiral-twinkle 3s infinite ease-in-out;
-        }
-        
-        @keyframes spiral-twinkle {
-            0%, 100% { opacity: 0.5; transform: scale(0.9); }
-            50% { opacity: 1; transform: scale(1.1); }
-        }
-        
+      
         @media (max-width: 768px) {
-            .tiktok-embed {
-                height: 500px;
-            }
             .section-spacing {
-                padding: 60px 0;
+                padding: 80px 0;
+            }
+          
+            .platform-icon {
+                font-size: 2rem;
             }
         }
     </style>
 </head>
-<body class="text-white">
+<body>
     <div class="cosmic-bg"></div>
     <div id="three-container"></div>
-    
-    <!-- Enhanced Galaxy Background -->
-    <div id="galaxy-container" class="fixed top-0 left-0 w-full h-full z-[-1] overflow-hidden">
-        <!-- Main Violet Galaxy -->
-        <div class="galaxy rotating-galaxy" style="width: 800px; height: 800px; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-            <div class="galaxy-core" style="width: 100px; height: 100px; top: 50%; left: 50%; transform: translate(-50%, -50%);"></div>
-            
-            <!-- Spiral Arms -->
-            <div class="galaxy-arm" style="transform: rotate(0deg);">
-                <div class="spiral-dot" style="width: 8px; height: 8px; top: 20%; left: 20%;"></div>
-                <div class="spiral-dot" style="width: 6px; height: 6px; top: 30%; left: 15%;"></div>
-                <div class="spiral-dot" style="width: 5px; height: 5px; top: 40%; left: 10%;"></div>
-                <div class="spiral-dot" style="width: 4px; height: 4px; top: 50%; left: 5%;"></div>
-            </div>
-            
-            <div class="galaxy-arm" style="transform: rotate(72deg);">
-                <div class="spiral-dot" style="width: 7px; height: 7px; top: 20%; left: 20%;"></div>
-                <div class="spiral-dot" style="width: 6px; height: 6px; top: 30%; left: 15%;"></div>
-                <div class="spiral-dot" style="width: 5px; height: 5px; top: 40%; left: 10%;"></div>
-                <div class="spiral-dot" style="width: 4px; height: 4px; top: 50%; left: 5%;"></div>
-            </div>
-            
-            <div class="galaxy-arm" style="transform: rotate(144deg);">
-                <div class="spiral-dot" style="width: 7px; height: 7px; top: 20%; left: 20%;"></div>
-                <div class="spiral-dot" style="width: 6px; height: 6px; top: 30%; left: 15%;"></div>
-                <div class="spiral-dot" style="width: 5px; height: 5px; top: 40%; left: 10%;"></div>
-                <div class="spiral-dot" style="width: 4px; height: 4px; top: 50%; left: 5%;"></div>
-            </div>
-            
-            <div class="galaxy-arm" style="transform: rotate(216deg);">
-                <div class="spiral-dot" style="width: 7px; height: 7px; top: 20%; left: 20%;"></div>
-                <div class="spiral-dot" style="width: 6px; height: 6px; top: 30%; left: 15%;"></div>
-                <div class="spiral-dot" style="width: 5px; height: 5px; top: 40%; left: 10%;"></div>
-                <div class="spiral-dot" style="width: 4px; height: 4px; top: 50%; left: 5%;"></div>
-            </div>
-            
-            <div class="galaxy-arm" style="transform: rotate(288deg);">
-                <div class="spiral-dot" style="width: 7px; height: 7px; top: 20%; left: 20%;"></div>
-                <div class="spiral-dot" style="width: 6px; height: 6px; top: 30%; left: 15%;"></div>
-                <div class="spiral-dot" style="width: 5px; height: 5px; top: 40%; left: 10%;"></div>
-                <div class="spiral-dot" style="width: 4px; height: 4px; top: 50%; left: 5%;"></div>
-            </div>
-        </div>
-        
-        <!-- Smaller galaxies -->
-        <div class="galaxy rotating-galaxy" style="width: 300px; height: 300px; top: 20%; left: 20%; animation-duration: 180s;">
-            <div class="galaxy-core" style="width: 40px; height: 40px; top: 50%; left: 50%; transform: translate(-50%, -50%);"></div>
-        </div>
-        
-        <div class="galaxy rotating-galaxy" style="width: 200px; height: 200px; top: 70%; left: 80%; animation-duration: 240s;">
-            <div class="galaxy-core" style="width: 30px; height: 30px; top: 50%; left: 50%; transform: translate(-50%, -50%);"></div>
-        </div>
-    </div>
-
-    <!-- Celestial Objects -->
-    <div id="celestial-objects">
-        <!-- Large distant galaxy -->
-        <div class="celestial-object rotating-galaxy" style="width: 300px; height: 300px; top: 10%; left: 5%; background: radial-gradient(circle, rgba(102, 51, 153, 0.2) 0%, transparent 70%);"></div>
-        
-        <!-- Pulsing planet -->
-        <div class="celestial-object pulsing-planet" style="width: 150px; height: 150px; bottom: 15%; right: 10%; background: radial-gradient(circle, rgba(118, 75, 162, 0.4) 0%, transparent 70%);"></div>
-        
-        <!-- Nebula clouds -->
-        <div class="nebula" style="width: 400px; height: 400px; top: 30%; right: -100px; background: radial-gradient(circle, rgba(102, 126, 234, 0.2) 0%, transparent 70%);"></div>
-        <div class="nebula" style="width: 500px; height: 500px; bottom: -100px; left: -100px; background: radial-gradient(circle, rgba(255, 119, 198, 0.2) 0%, transparent 70%);"></div>
-        
-        <!-- Comets -->
-        <div class="comet" style="top: 20%; animation-delay: 0s;"></div>
-        <div class="comet" style="top: 60%; animation-delay: 5s;"></div>
-        <div class="comet" style="top: 80%; animation-delay: 10s;"></div>
-    </div>
 
     <!-- Navigation -->
-    <nav class="fixed top-0 w-full z-50 bg-black bg-opacity-30 backdrop-filter backdrop-blur-lg border-b border-purple-900">
-        <div class="container mx-auto px-6 py-4">
+    <nav class="fixed top-0 w-full z-50 bg-black bg-opacity-40 backdrop-filter backdrop-blur-xl border-b border-white border-opacity-10">
+        <div class="container mx-auto px-6 py-5">
             <div class="flex items-center justify-between">
                 <div class="text-2xl font-bold cosmic-text">Violet Media</div>
                 <div class="hidden md:flex space-x-8">
-                    <a href="#cosmic-tease" class="hover:text-purple-300 transition-colors">Cosmic Tease</a>
-                    <a href="#galaxy-children" class="hover:text-purple-300 transition-colors">Galaxy Children</a>
-                    <a href="#music" class="hover:text-purple-300 transition-colors">Music</a>
-                    <a href="#contact" class="hover:text-purple-300 transition-colors">Contact</a>
+                    <a href="#cosmic-tease" class="nav-link">Cosmic Tease</a>
+                    <a href="#music" class="nav-link">Music</a>
+                    <a href="#ai-tech" class="nav-link">AI Technology</a>
+                    <a href="#contact" class="nav-link">Contact</a>
+                </div>
+                <div class="md:hidden">
+                    <button class="text-white">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -364,31 +346,31 @@
     <!-- Hero Section -->
     <section class="min-h-screen flex items-center justify-center text-center section-spacing relative overflow-hidden">
         <div class="container mx-auto px-6 relative z-10">
-            <h1 class="text-6xl md:text-8xl font-black cosmic-text mb-8 animate-pulse">The Cosmic Empire</h1>
-            <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
-                A cinematic, musical, and AI-powered creative house engineered for the new era.
+            <h1 class="hero-title cosmic-text mb-8">The Cosmic Empire</h1>
+            <p class="hero-subtitle mb-8 max-w-3xl mx-auto improved-readability">
+                A cinematic, musical, and AI-powered creative house engineered for the new era
             </p>
-            <p class="text-lg md:text-xl mb-12 max-w-2xl mx-auto opacity-90">
-                Where vision meets vibration. Where art, AI, and human spirit coalesce.
+            <p class="text-lg mb-12 max-w-2xl mx-auto improved-readability-muted">
+                Where vision meets vibration. Where art, AI, and human spirit coalesce to create legendary content.
             </p>
-            
+          
             <!-- Empire Metrics -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-12">
-                <div class="metric-card rounded-lg p-6 transform hover:scale-105 transition-transform">
-                    <div class="text-3xl font-bold cosmic-text">12M+</div>
-                    <div class="text-sm opacity-80">Total Views</div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto mb-12">
+                <div class="metric-card p-8 transform hover:scale-105 transition-transform">
+                    <div class="text-4xl font-bold cosmic-text mb-2">12M+</div>
+                    <div class="improved-readability-muted font-medium">Total Views</div>
                 </div>
-                <div class="metric-card rounded-lg p-6 transform hover:scale-105 transition-transform">
-                    <div class="text-3xl font-bold cosmic-text">547K+</div>
-                    <div class="text-sm opacity-80">Likes</div>
+                <div class="metric-card p-8 transform hover:scale-105 transition-transform">
+                    <div class="text-4xl font-bold cosmic-text mb-2">547K+</div>
+                    <div class="improved-readability-muted font-medium">Likes</div>
                 </div>
-                <div class="metric-card rounded-lg p-6 transform hover:scale-105 transition-transform">
-                    <div class="text-3xl font-bold cosmic-text">40K+</div>
-                    <div class="text-sm opacity-80">Profile Views</div>
+                <div class="metric-card p-8 transform hover:scale-105 transition-transform">
+                    <div class="text-4xl font-bold cosmic-text mb-2">40K+</div>
+                    <div class="improved-readability-muted font-medium">Profile Views</div>
                 </div>
             </div>
-            
-            <a href="#cosmic-tease" class="cosmic-button px-8 py-4 rounded-full font-semibold text-lg inline-block relative overflow-hidden">
+          
+            <a href="#cosmic-tease" class="cosmic-button px-10 py-4 rounded-full text-lg inline-block relative overflow-hidden">
                 Explore Our Cosmic Universe
             </a>
         </div>
@@ -397,107 +379,69 @@
     <!-- Cosmic Tease Section -->
     <section id="cosmic-tease" class="section-spacing relative overflow-hidden">
         <div class="container mx-auto px-6 relative z-10">
-            <div class="text-center mb-16">
-                <h2 class="text-5xl md:text-6xl font-bold cosmic-text mb-6">COSMIC TEASE</h2>
-                <p class="text-xl md:text-2xl mb-8">The Entertainment Empire • 12M+ Views</p>
-                <div class="flex justify-center space-x-6 mb-8">
-                    <a href="https://www.tiktok.com/@cosmictease" target="_blank" class="platform-icon hover:text-purple-400 transform hover:rotate-12 transition-transform">
+            <div class="text-center mb-20">
+                <h2 class="section-title cosmic-text mb-6">COSMIC TEASE</h2>
+                <p class="hero-subtitle mb-8">The Entertainment Empire • 12M+ Views</p>
+                <div class="flex justify-center space-x-8 mb-8">
+                    <a href="https://www.tiktok.com/@cosmictease" target="_blank" class="platform-icon hover:text-pink-400">
                         <i class="fab fa-tiktok"></i>
                     </a>
-                    <a href="https://youtube.com/@cosmictease-y6g" target="_blank" class="platform-icon hover:text-red-400 transform hover:rotate-12 transition-transform">
+                    <a href="https://youtube.com/@cosmictease-y6g" target="_blank" class="platform-icon hover:text-red-400">
                         <i class="fab fa-youtube"></i>
                     </a>
                 </div>
             </div>
-            
+          
             <!-- Viral Videos Showcase -->
-            <div class="mb-16">
-                <h3 class="text-3xl font-bold text-center mb-12 cosmic-text">Viral Content Showcase</h3>
+            <div class="mb-20">
+                <h3 class="text-3xl font-bold text-center mb-16 cosmic-text">Viral Content Showcase</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     <!-- Veiled Echoes -->
-                    <div class="cosmic-card rounded-lg p-6 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="video-card">
                         <h4 class="text-xl font-bold mb-4 cosmic-text">Veiled Echoes</h4>
-                        <div class="text-3xl font-bold text-purple-400 mb-4">550K</div>
-                        <p class="text-sm opacity-80 mb-4">Views</p>
-                        <a href="https://vt.tiktok.com/ZSBGH6Dk3/" target="_blank" class="cosmic-button px-6 py-2 rounded-full text-sm inline-block">Watch Now</a>
+                        <div class="view-count">550K</div>
+                        <p class="improved-readability-muted mb-6">Views</p>
+                        <a href="https://vt.tiktok.com/ZSBGH6Dk3/" target="_blank" class="cosmic-button px-6 py-3 rounded-full text-sm inline-block">Watch Now</a>
                     </div>
-                                                    
+                                                  
                     <!-- Violet Echo -->
-                    <div class="cosmic-card rounded-lg p-6 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="video-card">
                         <h4 class="text-xl font-bold mb-4 cosmic-text">Violet Echo</h4>
-                        <div class="text-3xl font-bold text-purple-400 mb-4">400K</div>
-                        <p class="text-sm opacity-80 mb-4">Views</p>
-                        <a href="https://vt.tiktok.com/ZSBGHDANH/" target="_blank" class="cosmic-button px-6 py-2 rounded-full text-sm inline-block">Watch Now</a>
+                        <div class="view-count">400K</div>
+                        <p class="improved-readability-muted mb-6">Views</p>
+                        <a href="https://vt.tiktok.com/ZSBGHDANH/" target="_blank" class="cosmic-button px-6 py-3 rounded-full text-sm inline-block">Watch Now</a>
                     </div>
-                                                    
+                                                  
                     <!-- Cosmic Tease Yacht -->
-                    <div class="cosmic-card rounded-lg p-6 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="video-card">
                         <h4 class="text-xl font-bold mb-4 cosmic-text">Cosmic Tease Yacht</h4>
-                        <div class="text-3xl font-bold text-purple-400 mb-4">322K</div>
-                        <p class="text-sm opacity-80 mb-4">Views</p>
-                        <a href="https://vt.tiktok.com/ZSBGxDGUE/" target="_blank" class="cosmic-button px-6 py-2 rounded-full text-sm inline-block">Watch Now</a>
+                        <div class="view-count">322K</div>
+                        <p class="improved-readability-muted mb-6">Views</p>
+                        <a href="https://vt.tiktok.com/ZSBGxDGUE/" target="_blank" class="cosmic-button px-6 py-3 rounded-full text-sm inline-block">Watch Now</a>
                     </div>
-                                                    
+                                                  
                     <!-- Cosmic Real Estate -->
-                    <div class="cosmic-card rounded-lg p-6 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="video-card">
                         <h4 class="text-xl font-bold mb-4 cosmic-text">Cosmic Real Estate</h4>
-                        <div class="text-3xl font-bold text-purple-400 mb-4">242K</div>
-                        <p class="text-sm opacity-80 mb-4">Views</p>
-                        <a href="https://vt.tiktok.com/ZSBG9pBVq/" target="_blank" class="cosmic-button px-6 py-2 rounded-full text-sm inline-block">Watch Now</a>
+                        <div class="view-count">242K</div>
+                        <p class="improved-readability-muted mb-6">Views</p>
+                        <a href="https://vt.tiktok.com/ZSBG9pBVq/" target="_blank" class="cosmic-button px-6 py-3 rounded-full text-sm inline-block">Watch Now</a>
                     </div>
-                                                    
+                                                  
                     <!-- Stars Ain't Far -->
-                    <div class="cosmic-card rounded-lg p-6 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="video-card">
                         <h4 class="text-xl font-bold mb-4 cosmic-text">Stars Ain't Far</h4>
-                        <div class="text-3xl font-bold text-purple-400 mb-4">133K</div>
-                        <p class="text-sm opacity-80 mb-4">Views</p>
-                        <a href="https://vt.tiktok.com/ZSBGxjh44/" target="_blank" class="cosmic-button px-6 py-2 rounded-full text-sm inline-block">Watch Now</a>
+                        <div class="view-count">133K</div>
+                        <p class="improved-readability-muted mb-6">Views</p>
+                        <a href="https://vt.tiktok.com/ZSBGxjh44/" target="_blank" class="cosmic-button px-6 py-3 rounded-full text-sm inline-block">Watch Now</a>
                     </div>
-                                                    
+                                                  
                     <!-- Celestial Echoes -->
-                    <div class="cosmic-card rounded-lg p-6 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="video-card">
                         <h4 class="text-xl font-bold mb-4 cosmic-text">Celestial Echoes</h4>
-                        <div class="text-3xl font-bold text-purple-400 mb-4">59K</div>
-                        <p class="text-sm opacity-80 mb-4">Views • Creator's Favorite</p>
-                        <a href="https://vt.tiktok.com/ZSBGxk7ag/" target="_blank" class="cosmic-button px-6 py-2 rounded-full text-sm inline-block">Watch Now</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Galaxy Children Section -->
-    <section id="galaxy-children" class="section-spacing relative overflow-hidden">
-        <div class="container mx-auto px-6 relative z-10">
-            <div class="text-center mb-16">
-                <h2 class="text-5xl md:text-6xl font-bold cosmic-text mb-6">GALAXY CHILDREN</h2>
-                <p class="text-xl md:text-2xl mb-8">Family Universe • Cosmic Adventures</p>
-                <div class="flex justify-center space-x-6 mb-8">
-                    <a href="https://www.tiktok.com/@galaxy_children" target="_blank" class="platform-icon hover:text-purple-400 transform hover:rotate-12 transition-transform">
-                        <i class="fab fa-tiktok"></i>
-                    </a>
-                    <a href="https://youtube.com/@Galaxy_Children" target="_blank" class="platform-icon hover:text-red-400 transform hover:rotate-12 transition-transform">
-                        <i class="fab fa-youtube"></i>
-                    </a>
-                </div>
-            </div>
-            
-            <div class="max-w-4xl mx-auto text-center">
-                <div class="cosmic-card rounded-lg p-8 mb-8 transform hover:-translate-y-2 transition-transform">
-                    <h3 class="text-2xl font-bold mb-4 cosmic-text">Cosmic meets Family</h3>
-                    <p class="text-lg opacity-90 mb-6">
-                        Our family-friendly universe blends whimsy and wisdom, inspiring values of kindness, 
-                        curiosity, courage, and wonder through cosmic storytelling.
-                    </p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="metric-card rounded-lg p-4 transform hover:scale-105 transition-transform">
-                            <div class="text-2xl font-bold cosmic-text">32</div>
-                            <div class="text-sm opacity-80">Videos</div>
-                        </div>
-                        <div class="metric-card rounded-lg p-4 transform hover:scale-105 transition-transform">
-                            <div class="text-2xl font-bold cosmic-text">28</div>
-                            <div class="text-sm opacity-80">Subscribers</div>
-                        </div>
+                        <div class="view-count">59K</div>
+                        <p class="improved-readability-muted mb-6">Views • Creator's Favorite</p>
+                        <a href="https://vt.tiktok.com/ZSBGxk7ag/" target="_blank" class="cosmic-button px-6 py-3 rounded-full text-sm inline-block">Watch Now</a>
                     </div>
                 </div>
             </div>
@@ -507,47 +451,50 @@
     <!-- Music Section -->
     <section id="music" class="section-spacing relative overflow-hidden">
         <div class="container mx-auto px-6 relative z-10">
-            <div class="text-center mb-16">
-                <h2 class="text-5xl md:text-6xl font-bold cosmic-text mb-6">VIOLET RECORDS</h2>
-                <p class="text-xl md:text-2xl mb-8">We craft musical worlds</p>
+            <div class="text-center mb-20">
+                <h2 class="section-title cosmic-text mb-6">VIOLET RECORDS</h2>
+                <p class="hero-subtitle mb-8">We craft musical worlds</p>
             </div>
-            
+          
             <!-- Streaming Platforms -->
-            <div class="max-w-4xl mx-auto">
-                <div class="grid grid-cols-2 md:grid-cols-6 gap-6 mb-12">
-                    <a href="https://open.spotify.com/artist/6d1NDbxwj89zRTJ8lUp63g" target="_blank" class="cosmic-card rounded-lg p-6 text-center hover:bg-green-500 hover:bg-opacity-20 transform hover:scale-110 transition-transform">
-                        <i class="fab fa-spotify text-3xl mb-2"></i>
-                        <div class="text-sm">Spotify</div>
+            <div class="max-w-6xl mx-auto">
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-16">
+                    <a href="https://open.spotify.com/artist/6d1NDbxwj89zRTJ8lUp63g" target="_blank" class="platform-card streaming-platform text-center hover:bg-green-500 hover:bg-opacity-20">
+                        <i class="fab fa-spotify text-3xl mb-2 text-green-400"></i>
+                        <div class="font-medium improved-readability text-sm">Spotify</div>
                     </a>
-                    <a href="https://music.youtube.com/channel/UCKZerj7cXfr3sODhKtjPg6A" target="_blank" class="cosmic-card rounded-lg p-6 text-center hover:bg-red-500 hover:bg-opacity-20 transform hover:scale-110 transition-transform">
-                        <i class="fab fa-youtube text-3xl mb-2"></i>
-                        <div class="text-sm">YouTube Music</div>
+                    <a href="https://music.youtube.com/channel/UCKZerj7cXfr3sODhKtjPg6A" target="_blank" class="platform-card streaming-platform text-center hover:bg-red-500 hover:bg-opacity-20">
+                        <i class="fab fa-youtube text-3xl mb-2 text-red-400"></i>
+                        <div class="font-medium improved-readability text-sm">YouTube Music</div>
                     </a>
-                    <a href="#" class="cosmic-card rounded-lg p-6 text-center hover:bg-blue-500 hover:bg-opacity-20 transform hover:scale-110 transition-transform">
-                        <i class="fab fa-apple text-3xl mb-2"></i>
-                        <div class="text-sm">Apple Music</div>
+                    <a href="#" class="platform-card streaming-platform text-center hover:bg-blue-500 hover:bg-opacity-20">
+                        <i class="fab fa-apple text-3xl mb-2 text-blue-400"></i>
+                        <div class="font-medium improved-readability text-sm">Apple Music</div>
                     </a>
-                    <a href="#" class="cosmic-card rounded-lg p-6 text-center hover:bg-purple-500 hover:bg-opacity-20 transform hover:scale-110 transition-transform">
-                        <i class="fab fa-itunes text-3xl mb-2"></i>
-                        <div class="text-sm">iTunes</div>
+                    <a href="#" class="platform-card streaming-platform text-center hover:bg-purple-500 hover:bg-opacity-20">
+                        <i class="fab fa-itunes text-3xl mb-2 text-purple-400"></i>
+                        <div class="font-medium improved-readability text-sm">iTunes</div>
                     </a>
-                    <a href="https://www.tiktok.com/@cosmictease" target="_blank" class="cosmic-card rounded-lg p-6 text-center hover:bg-pink-500 hover:bg-opacity-20 transform hover:scale-110 transition-transform">
-                        <i class="fab fa-tiktok text-3xl mb-2"></i>
-                        <div class="text-sm">TikTok</div>
+                    <a href="https://www.tiktok.com/@cosmictease" target="_blank" class="platform-card streaming-platform text-center hover:bg-pink-500 hover:bg-opacity-20">
+                        <i class="fab fa-tiktok text-3xl mb-2 text-pink-400"></i>
+                        <div class="font-medium improved-readability text-sm">TikTok</div>
                     </a>
-                    <a href="https://youtube.com/@cosmictease-y6g" target="_blank" class="cosmic-card rounded-lg p-6 text-center hover:bg-red-500 hover:bg-opacity-20 transform hover:scale-110 transition-transform">
-                        <i class="fab fa-youtube text-3xl mb-2"></i>
-                        <div class="text-sm">YouTube</div>
+                    <a href="https://youtube.com/@cosmictease-y6g" target="_blank" class="platform-card streaming-platform text-center hover:bg-red-500 hover:bg-opacity-20">
+                        <i class="fab fa-youtube text-3xl mb-2 text-red-400"></i>
+                        <div class="font-medium improved-readability text-sm">YouTube</div>
                     </a>
                 </div>
-                                
-                <div class="cosmic-card rounded-lg p-8 text-center transform hover:-translate-y-2 transition-transform">
-                    <h3 class="text-2xl font-bold mb-4 cosmic-text">From Progressive House to AI-Generated Pop</h3>
-                    <p class="text-lg opacity-90 mb-6">
-                        Every song is a cinematic journey, refined for excellence. Our music exists to move masses and transcend language.
+                              
+                <!-- Large spacing to prevent overlay issues -->
+                <div class="pt-24 mb-12"></div>
+              
+                <div class="cosmic-card p-10 text-center">
+                    <h3 class="text-2xl font-bold mb-6 cosmic-text">From Progressive House to AI-Generated Pop</h3>
+                    <p class="text-lg improved-readability-muted mb-8 max-w-3xl mx-auto leading-relaxed">
+                        Every song is a cinematic journey, refined for excellence. Our music exists to move masses and transcend language, creating emotional connections that span cultures and generations.
                     </p>
                     <div class="flex justify-center">
-                        <a href="https://open.spotify.com/artist/6d1NDbxwj89zRTJ8lUp63g" target="_blank" class="cosmic-button px-8 py-3 rounded-full font-semibold">
+                        <a href="https://open.spotify.com/artist/6d1NDbxwj89zRTJ8lUp63g" target="_blank" class="cosmic-button px-10 py-4 rounded-full font-semibold text-lg">
                             Listen Now
                         </a>
                     </div>
@@ -557,35 +504,55 @@
     </section>
 
     <!-- AI Technology Section -->
-    <section class="section-spacing relative overflow-hidden">
+    <section id="ai-tech" class="section-spacing relative overflow-hidden">
         <div class="container mx-auto px-6 relative z-10">
-            <div class="text-center mb-16">
-                <h2 class="text-5xl md:text-6xl font-bold cosmic-text mb-6">AI-DRIVEN, HUMAN-TOUCHED</h2>
-                <p class="text-xl md:text-2xl mb-8">We don't just use AI—we co-create with it</p>
+            <div class="text-center mb-20">
+                <h2 class="section-title cosmic-text mb-6">AI-DRIVEN, HUMAN-TOUCHED</h2>
+                <p class="hero-subtitle mb-8">We don't just use AI—we co-create with it</p>
             </div>
-            
+          
             <div class="max-w-6xl mx-auto">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div class="cosmic-card rounded-lg p-6 text-center transform hover:-translate-y-2 transition-transform">
-                        <i class="fas fa-music text-4xl mb-4 text-purple-400"></i>
-                        <h3 class="text-xl font-bold mb-2 cosmic-text">Suno AI</h3>
-                        <p class="text-sm opacity-80">Song generation with emotional intelligence</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="ai-tool-card p-6 text-center">
+                        <i class="fas fa-music ai-icon"></i>
+                        <h3 class="text-lg font-bold mb-3 cosmic-text">Suno AI</h3>
+                        <p class="improved-readability-muted leading-relaxed text-sm">Advanced song generation with deep emotional intelligence and musical sophistication</p>
                     </div>
-                    <div class="cosmic-card rounded-lg p-6 text-center transform hover:-translate-y-2 transition-transform">
-                        <i class="fas fa-microphone text-4xl mb-4 text-purple-400"></i>
-                        <h3 class="text-xl font-bold mb-2 cosmic-text">ElevenLabs</h3>
-                        <p class="text-sm opacity-80">Lifelike voice synthesis for characters</p>
+                    <div class="ai-tool-card p-6 text-center">
+                        <i class="fas fa-microphone ai-icon"></i>
+                        <h3 class="text-lg font-bold mb-3 cosmic-text">ElevenLabs</h3>
+                        <p class="improved-readability-muted leading-relaxed text-sm">Ultra-realistic voice synthesis creating lifelike character personalities</p>
                     </div>
-                    <div class="cosmic-card rounded-lg p-6 text-center transform hover:-translate-y-2 transition-transform">
-                        <i class="fas fa-robot text-4xl mb-4 text-purple-400"></i>
-                        <h3 class="text-xl font-bold mb-2 cosmic-text">Genspark</h3>
-                        <p class="text-sm opacity-80">AI agent for creative assistance</p>
+                    <div class="ai-tool-card p-6 text-center">
+                        <i class="fas fa-brain ai-icon"></i>
+                        <h3 class="text-lg font-bold mb-3 cosmic-text">Qwen</h3>
+                        <p class="improved-readability-muted leading-relaxed text-sm">Advanced language model for creative writing and content development</p>
                     </div>
-                    <div class="cosmic-card rounded-lg p-6 text-center transform hover:-translate-y-2 transition-transform">
-                        <i class="fas fa-video text-4xl mb-4 text-purple-400"></i>
-                        <h3 class="text-xl font-bold mb-2 cosmic-text">HeyGen</h3>
-                        <p class="text-sm opacity-80">Avatar technology for consistent characters</p>
+                    <div class="ai-tool-card p-6 text-center">
+                        <i class="fas fa-robot ai-icon"></i>
+                        <h3 class="text-lg font-bold mb-3 cosmic-text">Z AI</h3>
+                        <p class="improved-readability-muted leading-relaxed text-sm">Intelligent automation and creative process optimization</p>
                     </div>
+                    <div class="ai-tool-card p-6 text-center">
+                        <i class="fas fa-comments ai-icon"></i>
+                        <h3 class="text-lg font-bold mb-3 cosmic-text">Grok</h3>
+                        <p class="improved-readability-muted leading-relaxed text-sm">Conversational AI for dynamic content creation and storytelling</p>
+                    </div>
+                    <div class="ai-tool-card p-6 text-center">
+                        <i class="fas fa-chart-line ai-icon"></i>
+                        <h3 class="text-lg font-bold mb-3 cosmic-text">Abacus AI</h3>
+                        <p class="improved-readability-muted leading-relaxed text-sm">Advanced analytics and machine learning for content optimization</p>
+                    </div>
+                </div>
+              
+                <!-- Large spacing to prevent overlay with AI tool cards above -->
+                <div class="pt-20 mb-16"></div>
+              
+                <div class="cosmic-card p-10 text-center">
+                    <h3 class="text-2xl font-bold mb-6 cosmic-text">The Future of Creative Intelligence</h3>
+                    <p class="text-lg improved-readability-muted mb-8 max-w-4xl mx-auto leading-relaxed">
+                        Our AI toolkit represents the cutting edge of creative technology. Each platform brings unique capabilities that we harmoniously blend with human intuition and artistic vision to produce content that resonates on both emotional and intellectual levels.
+                    </p>
                 </div>
             </div>
         </div>
@@ -595,12 +562,12 @@
     <section class="section-spacing relative overflow-hidden">
         <div class="container mx-auto px-6 relative z-10">
             <div class="max-w-4xl mx-auto text-center">
-                <div class="cosmic-card rounded-lg p-8 transform hover:-translate-y-2 transition-transform">
-                    <h3 class="text-2xl font-bold mb-4 cosmic-text">Powered by Innovation</h3>
-                    <p class="text-lg opacity-90 mb-6">
-                        Big thanks to WaveSpeed AI for supporting this cosmic journey!  🚀
+                <div class="cosmic-card p-10">
+                    <h3 class="text-2xl font-bold mb-6 cosmic-text">Powered by Innovation</h3>
+                    <p class="text-lg improved-readability-muted mb-8 leading-relaxed">
+                        Big thanks to WaveSpeed AI for supporting this cosmic journey! Together, we're pushing the boundaries of what's possible in creative content generation. 🚀
                     </p>
-                    <a href="https://wavespeed.ai/?utm_source=creator_cosmictease" target="_blank" class="cosmic-button px-8 py-3 rounded-full font-semibold">
+                    <a href="https://wavespeed.ai/?utm_source=creator_cosmictease" target="_blank" class="cosmic-button px-10 py-4 rounded-full font-semibold text-lg">
                         Explore WaveSpeed AI
                     </a>
                 </div>
@@ -611,32 +578,32 @@
     <!-- Contact Section -->
     <section id="contact" class="section-spacing relative overflow-hidden">
         <div class="container mx-auto px-6 relative z-10">
-            <div class="text-center mb-16">
-                <h2 class="text-5xl md:text-6xl font-bold cosmic-text mb-6">JOIN THE COSMIC REVOLUTION</h2>
-                <p class="text-xl md:text-2xl mb-8">Whether you're a creator, brand, or visionary—you're invited</p>
+            <div class="text-center mb-20">
+                <h2 class="section-title cosmic-text mb-6">JOIN THE COSMIC REVOLUTION</h2>
+                <p class="hero-subtitle mb-8">Whether you're a creator, brand, or visionary—you're invited</p>
             </div>
-            
+          
             <div class="max-w-4xl mx-auto">
-                <div class="cosmic-card rounded-lg p-8 text-center transform hover:-translate-y-2 transition-transform">
-                    <h3 class="text-2xl font-bold mb-4 cosmic-text">Get in Touch</h3>
-                    <p class="text-lg opacity-90 mb-6">
-                        Ready to create something legendary? Let's build the future together.
+                <div class="cosmic-card p-10 text-center">
+                    <h3 class="text-2xl font-bold mb-6 cosmic-text">Get in Touch</h3>
+                    <p class="text-lg improved-readability-muted mb-8 leading-relaxed">
+                        Ready to create something legendary? Let's build the future together and craft content that transcends boundaries.
                     </p>
-                    <div class="flex justify-center space-x-6 mb-8">
-                        <a href="mailto:violetmediastudio@gmail.com" class="cosmic-button px-8 py-3 rounded-full font-semibold">
-                            <i class="fas fa-envelope mr-2"></i>
+                    <div class="flex justify-center mb-10">
+                        <a href="mailto:violetmediastudio@gmail.com" class="cosmic-button px-10 py-4 rounded-full font-semibold text-lg">
+                            <i class="fas fa-envelope mr-3"></i>
                             violetmediastudio@gmail.com
                         </a>
                     </div>
-                                    
-                    <div class="flex justify-center space-x-6">
-                        <a href="https://www.tiktok.com/@cosmictease" target="_blank" class="platform-icon hover:text-purple-400 transform hover:rotate-12 transition-transform">
+                                  
+                    <div class="flex justify-center space-x-8">
+                        <a href="https://www.tiktok.com/@cosmictease" target="_blank" class="platform-icon hover:text-pink-400">
                             <i class="fab fa-tiktok"></i>
                         </a>
-                        <a href="https://youtube.com/@cosmictease-y6g" target="_blank" class="platform-icon hover:text-red-400 transform hover:rotate-12 transition-transform">
+                        <a href="https://youtube.com/@cosmictease-y6g" target="_blank" class="platform-icon hover:text-red-400">
                             <i class="fab fa-youtube"></i>
                         </a>
-                        <a href="https://open.spotify.com/artist/6d1NDbxwj89zRTJ8lUp63g" target="_blank" class="platform-icon hover:text-green-400 transform hover:rotate-12 transition-transform">
+                        <a href="https://open.spotify.com/artist/6d1NDbxwj89zRTJ8lUp63g" target="_blank" class="platform-icon hover:text-green-400">
                             <i class="fab fa-spotify"></i>
                         </a>
                     </div>
@@ -646,209 +613,166 @@
     </section>
 
     <!-- Footer -->
-    <footer class="py-12 text-center relative overflow-hidden">
+    <footer class="py-16 text-center relative overflow-hidden">
         <div class="container mx-auto px-6 relative z-10">
-            <p class="text-lg cosmic-text font-bold mb-4">Quality is for the ages. This is Violet Media.</p>
-            <p class="text-sm opacity-60">© 2025 Violet Media. All rights reserved.</p>
+            <p class="text-xl cosmic-text font-bold mb-4">Quality is for the ages. This is Violet Media.</p>
+            <p class="improved-readability-muted">© 2025 Violet Media. All rights reserved.</p>
         </div>
     </footer>
 
     <script>
-        // Three.js Falling Stars Animation
+        // Enhanced Three.js Stellar Animation
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.getElementById('three-container').appendChild(renderer.domElement);
-        
-        // Create stars with more variation
+      
+        // Create enhanced star field
         const starGeometry = new THREE.BufferGeometry();
-        const starCount = 2000; // Increased from 1000 to 2000
+        const starCount = 1500;
         const starPositions = new Float32Array(starCount * 3);
-        const starSizes = new Float32Array(starCount);
         const starColors = new Float32Array(starCount * 3);
-        
-        for (let i = 0; i < starCount * 3; i++) {
-            starPositions[i] = (Math.random() - 0.5) * 2000;
-            
-            // Add some color variation
-            if (i % 3 === 0) { // For each star's R component
-                const r = Math.random();
-                if (r < 0.7) {
-                    // White stars (most common)
-                    starColors[i] = 1.0;
-                    starColors[i+1] = 1.0;
-                    starColors[i+2] = 1.0;
-                } else if (r < 0.85) {
-                    // Blue stars
-                    starColors[i] = 0.4;
-                    starColors[i+1] = 0.6;
-                    starColors[i+2] = 1.0;
-                } else {
-                    // Purple stars
-                    starColors[i] = 0.8;
-                    starColors[i+1] = 0.4;
-                    starColors[i+2] = 1.0;
-                }
+        const starSizes = new Float32Array(starCount);
+      
+        for (let i = 0; i < starCount; i++) {
+            const i3 = i * 3;
+            starPositions[i3] = (Math.random() - 0.5) * 2000;
+            starPositions[i3 + 1] = (Math.random() - 0.5) * 2000;
+            starPositions[i3 + 2] = (Math.random() - 0.5) * 2000;
+          
+            const colorChoice = Math.random();
+            if (colorChoice < 0.7) {
+                // White stars
+                starColors[i3] = 1.0;
+                starColors[i3 + 1] = 1.0;
+                starColors[i3 + 2] = 1.0;
+            } else if (colorChoice < 0.9) {
+                // Purple stars
+                starColors[i3] = 0.55;
+                starColors[i3 + 1] = 0.36;
+                starColors[i3 + 2] = 0.96;
+            } else {
+                // Pink stars
+                starColors[i3] = 0.93;
+                starColors[i3 + 1] = 0.28;
+                starColors[i3 + 2] = 0.6;
             }
-            
-            // Random sizes
-            if (i % 3 === 0) {
-                starSizes[i/3] = Math.random() * 3 + 1;
-            }
+          
+            starSizes[i] = Math.random() * 2 + 1;
         }
-        
+      
         starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
         starGeometry.setAttribute('color', new THREE.BufferAttribute(starColors, 3));
         starGeometry.setAttribute('size', new THREE.BufferAttribute(starSizes, 1));
-        
+      
         const starMaterial = new THREE.PointsMaterial({
-            color: 0xffffff,
             size: 2,
             transparent: true,
             opacity: 0.8,
             vertexColors: true,
             sizeAttenuation: true
         });
-        
+      
         const stars = new THREE.Points(starGeometry, starMaterial);
         scene.add(stars);
-        
-        // Create more falling stars with different colors
-        const fallingStars = [];
-        for (let i = 0; i < 30; i++) { // Increased from 20 to 30
+      
+        // Create floating cosmic particles
+        const particleCount = 25;
+        const particles = [];
+      
+        for (let i = 0; i < particleCount; i++) {
             const geometry = new THREE.SphereGeometry(0.5, 8, 8);
-            
-            // Random color for falling stars
-            let color;
-            const r = Math.random();
-            if (r < 0.6) {
-                color = new THREE.Color(0x667eea); // Blue
-            } else if (r < 0.9) {
-                color = new THREE.Color(0x764ba2); // Purple
-            } else {
-                color = new THREE.Color(0xffffff); // White
-            }
-            
-            const material = new THREE.MeshBasicMaterial({ color: color });
-            const star = new THREE.Mesh(geometry, material);
-            star.position.set(
-                Math.random() * 600 - 300,
-                Math.random() * 600 + 200,
-                Math.random() * 600 - 300
+            const material = new THREE.MeshBasicMaterial({
+                color: Math.random() > 0.5 ? 0x8b5cf6 : 0xec4899,
+                transparent: true,
+                opacity: 0.6
+            });
+          
+            const particle = new THREE.Mesh(geometry, material);
+            particle.position.set(
+                Math.random() * 800 - 400,
+                Math.random() * 800 - 400,
+                Math.random() * 800 - 400
             );
-            star.velocity = Math.random() * 0.8 + 0.2; // More variation in speed
-            fallingStars.push(star);
-            scene.add(star);
+          
+            particle.velocity = {
+                x: (Math.random() - 0.5) * 0.2,
+                y: (Math.random() - 0.5) * 0.2,
+                z: (Math.random() - 0.5) * 0.2
+            };
+          
+            particles.push(particle);
+            scene.add(particle);
         }
-        
+      
         camera.position.z = 5;
-        
+      
         function animate() {
             requestAnimationFrame(animate);
-            
-            // Rotate stars
-            stars.rotation.x += 0.0005;
-            stars.rotation.y += 0.001;
-            
-            // Animate falling stars with more natural movement
-            fallingStars.forEach(star => {
-                star.position.y -= star.velocity;
-                // Add slight horizontal movement
-                star.position.x += (Math.random() - 0.5) * 0.5;
-                if (star.position.y < -200) {
-                    star.position.y = 400;
-                    star.position.x = Math.random() * 600 - 300;
-                    star.position.z = Math.random() * 600 - 300;
-                }
+          
+            // Gentle star rotation
+            stars.rotation.x += 0.0003;
+            stars.rotation.y += 0.0005;
+          
+            // Animate particles
+            particles.forEach(particle => {
+                particle.position.x += particle.velocity.x;
+                particle.position.y += particle.velocity.y;
+                particle.position.z += particle.velocity.z;
+              
+                // Boundary check
+                if (Math.abs(particle.position.x) > 400) particle.velocity.x *= -1;
+                if (Math.abs(particle.position.y) > 400) particle.velocity.y *= -1;
+                if (Math.abs(particle.position.z) > 400) particle.velocity.z *= -1;
+              
+                // Gentle rotation
+                particle.rotation.x += 0.01;
+                particle.rotation.y += 0.01;
             });
-            
+          
             renderer.render(scene, camera);
         }
-        
+      
         animate();
-        
+      
         // Handle window resize
         window.addEventListener('resize', () => {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
-        
-        // Create additional static stars with more variation
-        function createStars() {
-            const numStars = 200; // Increased from 100 to 200
+      
+        // Create ambient stars
+        function createAmbientStars() {
+            const numStars = 150;
             const container = document.querySelector('.cosmic-bg');
-            
+          
             for (let i = 0; i < numStars; i++) {
                 const star = document.createElement('div');
                 star.className = 'star';
                 star.style.left = Math.random() * 100 + '%';
                 star.style.top = Math.random() * 100 + '%';
-                
-                // More size variation
-                const size = Math.random() * 4 + 1;
+              
+                const size = Math.random() * 3 + 1;
                 star.style.width = size + 'px';
                 star.style.height = size + 'px';
-                
-                // Different animation durations
-                star.style.animationDuration = (Math.random() * 5 + 3) + 's';
-                star.style.animationDelay = Math.random() * 5 + 's';
-                
-                // Some stars will be floating
-                if (Math.random() > 0.7) {
-                    star.classList.add('floating-star');
-                    star.style.animationDuration = (Math.random() * 10 + 10) + 's';
-                }
-                
-                container.appendChild(star);
-            }
-        }
-        
-        createStars();
-        
-        // Create celestial objects
-        function createCelestialObjects() {
-            const container = document.getElementById('celestial-objects');
-            
-            // Create additional small stars
-            for (let i = 0; i < 50; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
-                star.style.width = (Math.random() * 2 + 1) + 'px';
-                star.style.height = star.style.width;
+              
                 star.style.animationDuration = (Math.random() * 4 + 2) + 's';
-                star.style.animationDelay = Math.random() * 5 + 's';
+                star.style.animationDelay = Math.random() * 4 + 's';
+              
+                if (Math.random() > 0.8) {
+                    star.classList.add('floating-star');
+                    star.style.animationDuration = (Math.random() * 8 + 8) + 's';
+                }
+              
                 container.appendChild(star);
             }
-            
-            // Create spiral dots for galaxies
-            const galaxies = document.querySelectorAll('.galaxy');
-            galaxies.forEach(galaxy => {
-                const spiralDotCount = 50;
-                for (let i = 0; i < spiralDotCount; i++) {
-                    const dot = document.createElement('div');
-                    dot.className = 'spiral-dot';
-                    const angle = Math.random() * Math.PI * 2;
-                    const distance = Math.random() * 0.8 + 0.2; // Between 0.2 and 1.0 of galaxy radius
-                    const size = Math.random() * 3 + 2;
-                    
-                    dot.style.width = size + 'px';
-                    dot.style.height = size + 'px';
-                    dot.style.left = 50 + Math.cos(angle) * distance * 50 + '%';
-                    dot.style.top = 50 + Math.sin(angle) * distance * 50 + '%';
-                    dot.style.animationDelay = Math.random() * 3 + 's';
-                    
-                    galaxy.appendChild(dot);
-                }
-            });
         }
-        
-        createCelestialObjects();
-        
-        // Smooth scrolling
+      
+        createAmbientStars();
+      
+        // Smooth scrolling for navigation
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -861,9 +785,24 @@
                 }
             });
         });
+      
+        // Mobile menu toggle
+        const mobileMenuButton = document.querySelector('.md\\:hidden button');
+        const mobileMenu = document.querySelector('.hidden.md\\:flex');
+      
+        if (mobileMenuButton) {
+            mobileMenuButton.addEventListener('click', () => {
+                // Mobile menu functionality can be added here
+                console.log('Mobile menu clicked');
+            });
+        }
+      
+        // Disabled scroll effects that were causing overlay issues with interactive tabs
+        // The cosmic-card elements now have proper spacing and don't need transforms
+        window.addEventListener('scroll', () => {
+            // Scroll effects disabled to prevent layout interference
+            // All elements maintain their proper positioning
+        });
     </script>
 </body>
 </html>
-
-
-
