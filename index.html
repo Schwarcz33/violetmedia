@@ -7,23 +7,15 @@
   <meta name="theme-color" content="#050214" />
   <title>Violet Media — Cosmic Empire</title>
 
-  <!-- Open Graph (no external images used; safe defaults) -->
   <meta property="og:title" content="Violet Media — Cosmic Empire" />
   <meta property="og:description" content="Where vision meets vibration. Legendary content powered by art, AI, and human spirit." />
   <meta property="og:type" content="website" />
 
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@300;500;700;800;900&display=swap" rel="stylesheet" />
-
-  <!-- Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" />
-
-  <!-- 3D Engine -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
-  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -57,11 +49,9 @@
       --gold:#D7B15A;
       --silver:#C7CCD6;
       --ink:#050214;
-
       --glass-bg: rgba(17, 8, 38, 0.68);
       --glass-border: rgba(255, 255, 255, 0.10);
       --glass-border-strong: rgba(255, 255, 255, 0.18);
-
       --shadow-soft: 0 18px 60px rgba(0,0,0,0.45);
       --shadow-glow: 0 0 44px rgba(138, 43, 226, 0.22);
     }
@@ -77,217 +67,150 @@
       font-feature-settings: "ss01" 1, "ss02" 1;
     }
 
-    /* Skip link (accessibility) */
     .skip-link{
-      position:absolute;
-      left:-999px;
-      top:auto;
-      width:1px;
-      height:1px;
-      overflow:hidden;
-      z-index:9999;
+      position:absolute; left:-999px; top:auto; width:1px; height:1px; overflow:hidden; z-index:9999;
     }
     .skip-link:focus{
-      left:16px;
-      top:16px;
-      width:auto;
-      height:auto;
-      padding:10px 14px;
-      border-radius:12px;
-      background:rgba(17, 8, 38, 0.9);
-      border:1px solid rgba(255,255,255,0.18);
-      outline:none;
+      left:16px; top:16px; width:auto; height:auto; padding:10px 14px; border-radius:12px;
+      background:rgba(17, 8, 38, 0.9); border:1px solid rgba(255,255,255,0.18); outline:none;
       box-shadow: var(--shadow-soft);
     }
 
-    /* Subtle premium noise */
     .noise-overlay{
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-      z-index:40;
-      opacity:0.045;
+      position:fixed; inset:0; pointer-events:none; z-index:40; opacity:0.045;
       background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
       mix-blend-mode: overlay;
     }
 
-    /* Grid/halo overlay for depth */
     .aether-overlay{
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-      z-index:0;
-      opacity:0.9;
+      position:fixed; inset:0; pointer-events:none; z-index:0; opacity:0.9;
       background:
         radial-gradient(900px 650px at 50% 40%, rgba(138,43,226,0.12), transparent 60%),
         radial-gradient(700px 500px at 20% 70%, rgba(45,107,255,0.08), transparent 60%),
         linear-gradient(to bottom, rgba(255,255,255,0.02), transparent 35%, rgba(255,255,255,0.01));
     }
 
-    /* Three.js host */
-    #three-host{
-      position:fixed;
-      inset:0;
-      z-index:-2;
-      pointer-events:none;
-    }
+    #three-host{ position:fixed; inset:0; z-index:-2; pointer-events:none; }
     canvas{ display:block; }
 
-    /* Typography */
-    .cosmic-text{
-      background: linear-gradient(135deg, #ffffff 0%, rgba(167,139,250,0.95) 35%, rgba(138,43,226,0.95) 80%);
-      -webkit-background-clip:text;
-      background-clip:text;
-      -webkit-text-fill-color:transparent;
+    /* ── HERO VIDEO BACKGROUND ── */
+    #hero-video-bg {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      overflow: hidden;
     }
-    .cosmic-subtext{
-      color: rgba(255,255,255,0.72);
+    #hero-video-bg iframe {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 177.78vh; /* 16:9 ratio */
+      height: 100vh;
+      min-width: 100%;
+      min-height: 56.25vw;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      border: none;
+    }
+    #hero-video-bg::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to bottom, rgba(5,2,20,0.72) 0%, rgba(5,2,20,0.45) 40%, rgba(5,2,20,0.72) 100%),
+        radial-gradient(ellipse at center, rgba(138,43,226,0.22) 0%, transparent 70%);
+      z-index: 1;
     }
 
-    /* Glass system (with gradient border ring) */
+    .cosmic-text{
+      background: linear-gradient(135deg, #ffffff 0%, rgba(167,139,250,0.95) 35%, rgba(138,43,226,0.95) 80%);
+      -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+    }
+    .cosmic-subtext{ color: rgba(255,255,255,0.72); }
+
     .glass-card{
-      position:relative;
-      background: var(--glass-bg);
-      border:1px solid var(--glass-border);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      position:relative; background: var(--glass-bg); border:1px solid var(--glass-border);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
       box-shadow: 0 8px 32px rgba(0,0,0,0.35);
       transition: transform .35s cubic-bezier(.2,.9,.2,1), box-shadow .35s ease, border-color .35s ease;
     }
     .glass-card::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      border-radius:inherit;
-      padding:1px;
+      content:""; position:absolute; inset:0; border-radius:inherit; padding:1px;
       background: linear-gradient(135deg, rgba(138,43,226,0.45), rgba(45,107,255,0.20), rgba(215,177,90,0.18));
       -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      opacity:0.0;
-      pointer-events:none;
-      transition: opacity .35s ease;
+      -webkit-mask-composite: xor; mask-composite: exclude; opacity:0.0;
+      pointer-events:none; transition: opacity .35s ease;
     }
-    .glass-card:hover{
-      transform: translateY(-6px);
-      border-color: rgba(138,43,226,0.38);
-      box-shadow: var(--shadow-soft), var(--shadow-glow);
-    }
+    .glass-card:hover{ transform: translateY(-6px); border-color: rgba(138,43,226,0.38); box-shadow: var(--shadow-soft), var(--shadow-glow); }
     .glass-card:hover::before{ opacity:1; }
 
-    /* Buttons */
     .btn-cosmic{
-      position:relative;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:.6rem;
+      position:relative; display:inline-flex; align-items:center; justify-content:center; gap:.6rem;
       background: linear-gradient(135deg, rgba(138,43,226,1) 0%, rgba(219,39,119,1) 55%, rgba(215,177,90,0.95) 100%);
-      color:#fff;
-      border-radius: 999px;
-      padding: 14px 22px;
-      font-weight: 800;
-      letter-spacing: .2px;
+      color:#fff; border-radius: 999px; padding: 14px 22px; font-weight: 800; letter-spacing: .2px;
       box-shadow: 0 0 22px rgba(138,43,226,0.28);
-      transition: transform .22s ease, box-shadow .22s ease, filter .22s ease;
-      overflow:hidden;
+      transition: transform .22s ease, box-shadow .22s ease, filter .22s ease; overflow:hidden;
     }
     .btn-cosmic::after{
-      content:"";
-      position:absolute;
-      inset:-40%;
+      content:""; position:absolute; inset:-40%;
       background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.20), transparent 45%);
-      transform: translateX(-18%);
-      opacity:.65;
-      pointer-events:none;
+      transform: translateX(-18%); opacity:.65; pointer-events:none;
     }
-    .btn-cosmic:hover{
-      transform: translateY(-2px);
-      box-shadow: 0 0 42px rgba(219,39,119,0.38);
-      filter: saturate(1.08);
-    }
+    .btn-cosmic:hover{ transform: translateY(-2px); box-shadow: 0 0 42px rgba(219,39,119,0.38); filter: saturate(1.08); }
 
     .btn-ghost{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:.6rem;
-      border-radius: 999px;
-      padding: 14px 22px;
-      font-weight: 800;
-      color: rgba(255,255,255,0.92);
-      border: 1px solid rgba(255,255,255,0.16);
-      background: rgba(17, 8, 38, 0.35);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      display:inline-flex; align-items:center; justify-content:center; gap:.6rem;
+      border-radius: 999px; padding: 14px 22px; font-weight: 800; color: rgba(255,255,255,0.92);
+      border: 1px solid rgba(255,255,255,0.16); background: rgba(17, 8, 38, 0.35);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
       transition: transform .22s ease, background .22s ease, border-color .22s ease;
     }
-    .btn-ghost:hover{
-      transform: translateY(-2px);
-      background: rgba(17, 8, 38, 0.55);
-      border-color: rgba(138,43,226,0.35);
-    }
+    .btn-ghost:hover{ transform: translateY(-2px); background: rgba(17, 8, 38, 0.55); border-color: rgba(138,43,226,0.35); }
 
-    /* Reveal */
-    .reveal{
-      opacity:0;
-      transform: translateY(26px);
-      transition: opacity .85s ease, transform .85s ease;
-      will-change: opacity, transform;
-    }
-    .reveal.active{
-      opacity:1;
-      transform: translateY(0);
-    }
+    .reveal{ opacity:0; transform: translateY(26px); transition: opacity .85s ease, transform .85s ease; will-change: opacity, transform; }
+    .reveal.active{ opacity:1; transform: translateY(0); }
 
-    /* Mobile menu */
     .mobile-menu{
       transition: transform .28s ease, opacity .28s ease, visibility .28s ease;
-      transform: translateX(100%);
-      opacity:0;
-      visibility:hidden;
+      transform: translateX(100%); opacity:0; visibility:hidden;
     }
-    .mobile-menu.open{
-      transform: translateX(0);
-      opacity:1;
-      visibility:visible;
-    }
+    .mobile-menu.open{ transform: translateX(0); opacity:1; visibility:visible; }
     .no-scroll{ overflow:hidden; }
 
-    /* Focus styles (pro-grade accessibility) */
-    a:focus-visible, button:focus-visible{
-      outline: 2px solid rgba(138,43,226,0.85);
-      outline-offset: 3px;
-      border-radius: 12px;
-    }
+    a:focus-visible, button:focus-visible{ outline: 2px solid rgba(138,43,226,0.85); outline-offset: 3px; border-radius: 12px; }
 
-    /* Section separators */
-    .section-fade{
-      position:absolute;
-      left:0; right:0;
-      height:120px;
-      pointer-events:none;
-      opacity:1;
-    }
+    .section-fade{ position:absolute; left:0; right:0; height:120px; pointer-events:none; opacity:1; }
 
-    /* Back-to-top */
     #toTop{
-      position:fixed;
-      right:18px;
-      bottom:18px;
-      z-index:60;
-      opacity:0;
-      transform: translateY(10px);
-      pointer-events:none;
+      position:fixed; right:18px; bottom:18px; z-index:60;
+      opacity:0; transform: translateY(10px); pointer-events:none;
       transition: opacity .25s ease, transform .25s ease;
     }
-    #toTop.show{
-      opacity:1;
-      transform: translateY(0);
-      pointer-events:auto;
+    #toTop.show{ opacity:1; transform: translateY(0); pointer-events:auto; }
+
+    /* ── SERVICE CARDS ── */
+    .service-card {
+      position: relative;
+      overflow: hidden;
+    }
+    .service-card::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--violet), #db2777, var(--gold));
+      opacity: 0;
+      transition: opacity .35s ease;
+    }
+    .service-card:hover::after { opacity: 1; }
+
+    /* ── SPOTIFY EMBED ── */
+    .spotify-embed {
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 0 40px rgba(138,43,226,0.20);
     }
 
-    /* Reduced motion */
     @media (prefers-reduced-motion: reduce){
       html{ scroll-behavior:auto; }
       .reveal{ opacity:1 !important; transform:none !important; transition:none !important; }
@@ -319,6 +242,7 @@
       <div class="hidden md:flex items-center gap-8 text-sm font-semibold text-white/70">
         <a data-nav href="#cosmic-tease" class="hover:text-white hover:text-purple-300 transition-colors">Cosmic Tease</a>
         <a data-nav href="#music" class="hover:text-white hover:text-purple-300 transition-colors">Music</a>
+        <a data-nav href="#services" class="hover:text-white hover:text-purple-300 transition-colors">Services</a>
         <a data-nav href="#ai-tech" class="hover:text-white hover:text-purple-300 transition-colors">AI Technology</a>
         <a data-nav href="#contact" class="hover:text-white hover:text-purple-300 transition-colors">Contact</a>
       </div>
@@ -342,20 +266,17 @@
          style="background:
            radial-gradient(800px 540px at 40% 20%, rgba(138,43,226,0.18), transparent 60%),
            radial-gradient(700px 520px at 70% 70%, rgba(45,107,255,0.12), transparent 62%),
-           linear-gradient(180deg, rgba(5,2,20,0.92), rgba(3,1,10,0.92));
-         ">
+           linear-gradient(180deg, rgba(5,2,20,0.92), rgba(3,1,10,0.92));">
     </div>
-
     <button id="close-menu" class="absolute top-6 right-6 text-white text-3xl" aria-label="Close menu">
       <i class="fas fa-times"></i>
     </button>
-
     <div class="relative h-full flex flex-col items-center justify-center gap-8 px-8 text-center">
       <a href="#cosmic-tease" class="text-3xl font-black font-display text-white mobile-link">Cosmic Tease</a>
       <a href="#music" class="text-3xl font-black font-display text-white mobile-link">Music</a>
+      <a href="#services" class="text-3xl font-black font-display text-white mobile-link">Services</a>
       <a href="#ai-tech" class="text-3xl font-black font-display text-white mobile-link">AI Technology</a>
       <a href="#contact" class="text-3xl font-black font-display text-white mobile-link">Contact</a>
-
       <div class="mt-6 w-full max-w-sm glass-card rounded-2xl p-5">
         <div class="text-sm text-white/70 mb-3">Quick jump</div>
         <div class="flex gap-3 justify-center flex-wrap">
@@ -371,13 +292,24 @@
   </div>
 
   <main id="main">
-    <!-- HERO -->
+    <!-- ═══════════════════════════════════════════════════════════
+         HERO — with looping video background
+    ═══════════════════════════════════════════════════════════ -->
     <section id="top" class="min-h-screen flex items-center justify-center text-center relative pt-24 overflow-hidden">
-      <div class="section-fade top-0" aria-hidden="true"
-           style="background: linear-gradient(to bottom, rgba(5,2,20,0.95), transparent);">
+
+      <!-- VIDEO BACKGROUND -->
+      <div id="hero-video-bg" aria-hidden="true">
+        <iframe
+          src="https://www.youtube.com/embed/c7NcEgxAGq0?autoplay=1&mute=1&loop=1&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&playlist=c7NcEgxAGq0"
+          allow="autoplay; encrypted-media"
+          allowfullscreen
+          title="Cosmic Tease showreel">
+        </iframe>
       </div>
 
-      <!-- Hero glow orbs -->
+      <div class="section-fade top-0" aria-hidden="true"
+           style="background: linear-gradient(to bottom, rgba(5,2,20,0.95), transparent);"></div>
+
       <div class="absolute inset-0 -z-10" aria-hidden="true">
         <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[720px] h-[720px] rounded-full blur-[140px]"
              style="background: radial-gradient(circle at 30% 30%, rgba(138,43,226,0.28), transparent 62%);"></div>
@@ -404,14 +336,14 @@
           Where vision meets vibration. Where art, AI, and human spirit coalesce to create content that lasts.
         </p>
 
-        <!-- Metrics -->
+        <!-- ── UPDATED METRICS: 14M+ ── -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-5xl mx-auto mb-10 reveal" style="transition-delay: 280ms;">
           <div class="glass-card p-7 rounded-2xl text-left">
             <div class="flex items-center justify-between mb-4">
               <div class="text-xs tracking-[0.18em] uppercase text-white/50">Reach</div>
               <i class="fa-solid fa-wand-magic-sparkles text-purple-300/80"></i>
             </div>
-            <div class="text-4xl font-black text-white font-display">13M+</div>
+            <div class="text-4xl font-black text-white font-display">14M+</div>
             <div class="text-purple-200/80 font-semibold mt-1">Total Views</div>
           </div>
 
@@ -443,7 +375,6 @@
           </a>
         </div>
 
-        <!-- Pillars -->
         <div class="mt-14 grid grid-cols-1 md:grid-cols-3 gap-4 max-w-5xl mx-auto reveal" style="transition-delay: 460ms;">
           <div class="glass-card rounded-2xl p-6 text-left">
             <div class="text-sm font-bold text-white mb-1"><i class="fa-solid fa-film mr-2 text-purple-300/90"></i>Cinematic Story</div>
@@ -461,17 +392,16 @@
       </div>
 
       <div class="section-fade bottom-0" aria-hidden="true"
-           style="background: linear-gradient(to top, rgba(3,1,10,0.75), transparent);">
-      </div>
+           style="background: linear-gradient(to top, rgba(3,1,10,0.75), transparent);"></div>
     </section>
 
     <!-- COSMIC TEASE -->
     <section id="cosmic-tease" class="py-28 relative">
       <div class="container mx-auto px-6">
         <div class="text-center mb-16 reveal">
+          <!-- ── UPDATED: 14M+ ── -->
           <h2 class="text-4xl md:text-5xl font-display font-black mb-4 cosmic-text">COSMIC TEASE</h2>
-          <p class="text-lg text-white/60">The Entertainment Empire • 13M+ Views</p>
-
+          <p class="text-lg text-white/60">The Entertainment Empire • 14M+ Views</p>
           <div class="flex justify-center items-center gap-6 mt-6">
             <a href="https://www.tiktok.com/@cosmictease" target="_blank" rel="noopener noreferrer"
                class="text-3xl text-white/50 hover:text-pink-400 transition-colors" aria-label="Cosmic Tease on TikTok">
@@ -484,7 +414,6 @@
           </div>
         </div>
 
-        <!-- Video Cards -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
           <div class="glass-card rounded-2xl p-7 reveal">
             <div class="flex justify-between items-start gap-4 mb-5">
@@ -560,11 +489,11 @@
             <div class="flex justify-between items-start gap-4 mb-3">
               <div>
                 <h4 class="text-xl font-black font-display">Celestial Echoes</h4>
-                <div class="text-xs text-white/50 mt-1">Creator’s favorite</div>
+                <div class="text-xs text-white/50 mt-1">Creator's favorite</div>
               </div>
               <span class="bg-purple-500/15 text-purple-200 px-3 py-1 rounded-full text-xs font-black border border-purple-400/20">61K Views</span>
             </div>
-            <div class="text-xs text-white/45 mb-4">Creator’s Favorite</div>
+            <div class="text-xs text-white/45 mb-4">Creator's Favorite</div>
             <a href="https://vt.tiktok.com/ZSBGxk7ag/" target="_blank" rel="noopener noreferrer"
                class="block w-full py-3 text-center rounded-xl border border-purple-500/25 hover:bg-purple-500/15 transition-all text-sm font-black text-purple-200">
               Watch Now <i class="fas fa-play ml-2"></i>
@@ -587,37 +516,31 @@
           <p class="text-lg text-white/60">We craft musical worlds</p>
         </div>
 
-        <!-- Platforms -->
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-14 reveal">
           <a href="https://open.spotify.com/artist/6d1NDbxwj89zRTJ8lUp63g" target="_blank" rel="noopener noreferrer"
              class="glass-card rounded-2xl p-6 flex flex-col items-center justify-center hover:bg-green-500/10 transition-colors group">
             <i class="fab fa-spotify text-3xl mb-3 text-green-500 group-hover:scale-110 transition-transform"></i>
             <span class="text-sm font-bold">Spotify</span>
           </a>
-
           <a href="https://music.youtube.com/channel/UCKZerj7cXfr3sODhKtjPg6A" target="_blank" rel="noopener noreferrer"
              class="glass-card rounded-2xl p-6 flex flex-col items-center justify-center hover:bg-red-500/10 transition-colors group">
             <i class="fab fa-youtube text-3xl mb-3 text-red-500 group-hover:scale-110 transition-transform"></i>
             <span class="text-sm font-bold">YT Music</span>
           </a>
-
           <a href="https://music.apple.com/us/artist/violet-media/1803005671" target="_blank" rel="noopener noreferrer"
              class="glass-card rounded-2xl p-6 flex flex-col items-center justify-center hover:bg-pink-500/10 transition-colors group">
             <i class="fab fa-apple text-3xl mb-3 text-pink-300 group-hover:scale-110 transition-transform"></i>
             <span class="text-sm font-bold">Apple Music</span>
           </a>
-
           <a href="#" class="glass-card rounded-2xl p-6 flex flex-col items-center justify-center hover:bg-purple-500/10 transition-colors group">
             <i class="fab fa-itunes text-3xl mb-3 text-purple-300 group-hover:scale-110 transition-transform"></i>
             <span class="text-sm font-bold">iTunes</span>
           </a>
-
           <a href="https://www.tiktok.com/@cosmictease" target="_blank" rel="noopener noreferrer"
              class="glass-card rounded-2xl p-6 flex flex-col items-center justify-center hover:bg-cyan-500/10 transition-colors group">
             <i class="fab fa-tiktok text-3xl mb-3 text-cyan-300 group-hover:scale-110 transition-transform"></i>
             <span class="text-sm font-bold">TikTok</span>
           </a>
-
           <a href="https://youtube.com/@cosmic_tease" target="_blank" rel="noopener noreferrer"
              class="glass-card rounded-2xl p-6 flex flex-col items-center justify-center hover:bg-red-600/10 transition-colors group">
             <i class="fab fa-youtube text-3xl mb-3 text-red-400 group-hover:scale-110 transition-transform"></i>
@@ -625,18 +548,32 @@
           </a>
         </div>
 
+        <!-- ── SPOTIFY EMBED ── -->
+        <div class="max-w-5xl mx-auto mb-10 reveal">
+          <div class="spotify-embed">
+            <iframe
+              src="https://open.spotify.com/embed/artist/6d1NDbxwj89zRTJ8lUp63g?utm_source=generator&theme=0"
+              width="100%"
+              height="352"
+              frameborder="0"
+              allowfullscreen=""
+              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+              loading="lazy"
+              title="Violet Media on Spotify">
+            </iframe>
+          </div>
+        </div>
+
         <div class="glass-card rounded-3xl p-10 md:p-12 text-center max-w-5xl mx-auto reveal">
           <div class="inline-flex items-center gap-2 text-xs font-black tracking-[0.18em] uppercase text-white/55 mb-5">
             <span class="w-2 h-2 rounded-full" style="background: var(--gold); box-shadow:0 0 16px rgba(215,177,90,0.35);"></span>
             Production-grade music for modern attention
           </div>
-
-          <h3 class="text-2xl md:text-3xl font-display font-black mb-4">From Progressive House to AI-Generated Pop</h3>
+          <h3 class="text-2xl md:text-3xl font-display font-black mb-4">From Deep House to Ethereal Cosmic Pop</h3>
           <p class="text-base md:text-lg text-white/70 mb-8 leading-relaxed">
             Every song is a cinematic journey, refined for excellence. Our music exists to move masses and transcend language,
             creating emotional connections that span cultures and generations.
           </p>
-
           <div class="flex flex-col sm:flex-row gap-3 justify-center">
             <a href="https://open.spotify.com/artist/6d1NDbxwj89zRTJ8lUp63g" target="_blank" rel="noopener noreferrer" class="btn-cosmic">
               Listen Now <i class="fa-solid fa-headphones"></i>
@@ -649,61 +586,167 @@
       </div>
     </section>
 
-    <!-- AI TECH -->
+    <!-- ═══════════════════════════════════════════════════════════
+         SERVICES — NEW SECTION
+    ═══════════════════════════════════════════════════════════ -->
+    <section id="services" class="py-28 relative">
+      <div class="absolute inset-0 -z-10" aria-hidden="true"
+           style="background: radial-gradient(800px 500px at 80% 30%, rgba(138,43,226,0.09), transparent 60%),
+                           radial-gradient(700px 480px at 20% 70%, rgba(45,107,255,0.07), transparent 62%);">
+      </div>
+      <div class="container mx-auto px-6">
+        <div class="text-center mb-16 reveal">
+          <h2 class="text-4xl md:text-5xl font-display font-black mb-4 cosmic-text">WHAT WE BUILD</h2>
+          <p class="text-lg text-white/60">Start a Project means something specific here</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto mb-14">
+
+          <div class="glass-card service-card rounded-2xl p-8 reveal">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5"
+                 style="background: rgba(138,43,226,0.18); border: 1px solid rgba(138,43,226,0.30);">
+              <i class="fa-solid fa-clapperboard text-xl text-purple-300"></i>
+            </div>
+            <h3 class="text-xl font-black font-display mb-3">Branded Content</h3>
+            <p class="text-white/60 text-sm leading-relaxed mb-4">
+              Cinematic AI-powered content campaigns for brands that want to move people — not just sell to them. TikTok, YouTube, Instagram.
+            </p>
+            <div class="text-xs text-purple-300/80 font-bold tracking-wider uppercase">Brand Campaigns · Reels · Shorts</div>
+          </div>
+
+          <div class="glass-card service-card rounded-2xl p-8 reveal" style="transition-delay: 90ms;">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5"
+                 style="background: rgba(219,39,119,0.15); border: 1px solid rgba(219,39,119,0.25);">
+              <i class="fa-solid fa-music text-xl text-pink-300"></i>
+            </div>
+            <h3 class="text-xl font-black font-display mb-3">Music Production</h3>
+            <p class="text-white/60 text-sm leading-relaxed mb-4">
+              Deep House, Ethereal Cosmic House, and AI-generated pop. Original tracks for sync licensing, content scoring, and commercial release.
+            </p>
+            <div class="text-xs text-pink-300/80 font-bold tracking-wider uppercase">Original Tracks · Sync Licensing · Scoring</div>
+          </div>
+
+          <div class="glass-card service-card rounded-2xl p-8 reveal" style="transition-delay: 180ms;">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5"
+                 style="background: rgba(215,177,90,0.12); border: 1px solid rgba(215,177,90,0.22);">
+              <i class="fa-solid fa-film text-xl text-yellow-300"></i>
+            </div>
+            <h3 class="text-xl font-black font-display mb-3">Music Video Production</h3>
+            <p class="text-white/60 text-sm leading-relaxed mb-4">
+              Full cinematic music video production using AI-generated imagery, character universes, and hyper-realistic visual storytelling.
+            </p>
+            <div class="text-xs text-yellow-300/80 font-bold tracking-wider uppercase">Concept · Visuals · Full Video</div>
+          </div>
+
+          <div class="glass-card service-card rounded-2xl p-8 reveal">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5"
+                 style="background: rgba(45,107,255,0.13); border: 1px solid rgba(45,107,255,0.22);">
+              <i class="fa-solid fa-microphone text-xl text-blue-300"></i>
+            </div>
+            <h3 class="text-xl font-black font-display mb-3">Voiceover & Avatar</h3>
+            <p class="text-white/60 text-sm leading-relaxed mb-4">
+              ElevenLabs Pro voice synthesis and HeyGen Pro avatar production for podcasts, explainers, ads, and documentary narration.
+            </p>
+            <div class="text-xs text-blue-300/80 font-bold tracking-wider uppercase">ElevenLabs · HeyGen · Character Voice</div>
+          </div>
+
+          <div class="glass-card service-card rounded-2xl p-8 reveal" style="transition-delay: 90ms;">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5"
+                 style="background: rgba(138,43,226,0.15); border: 1px solid rgba(138,43,226,0.25);">
+              <i class="fa-solid fa-rocket text-xl text-purple-200"></i>
+            </div>
+            <h3 class="text-xl font-black font-display mb-3">Creator Consultation</h3>
+            <p class="text-white/60 text-sm leading-relaxed mb-4">
+              Strategic guidance for creators wanting to build an AI-powered content system. Stack selection, workflow design, brand identity.
+            </p>
+            <div class="text-xs text-purple-200/80 font-bold tracking-wider uppercase">Strategy · AI Stack · Brand Build</div>
+          </div>
+
+          <div class="glass-card service-card rounded-2xl p-8 reveal" style="transition-delay: 180ms;">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5"
+                 style="background: rgba(45,107,255,0.10); border: 1px solid rgba(45,107,255,0.20);">
+              <i class="fa-solid fa-handshake text-xl text-cyan-300"></i>
+            </div>
+            <h3 class="text-xl font-black font-display mb-3">Brand Collaborations</h3>
+            <p class="text-white/60 text-sm leading-relaxed mb-4">
+              Partner with Violet Media and Cosmic Tease for sponsored content, product integrations, and co-created campaigns reaching 14M+ views.
+            </p>
+            <div class="text-xs text-cyan-300/80 font-bold tracking-wider uppercase">Sponsorship · Co-Creation · Reach</div>
+          </div>
+
+        </div>
+
+        <div class="text-center reveal">
+          <a href="#contact" class="btn-cosmic text-lg px-8 py-4">
+            Start a Project <i class="fa-solid fa-arrow-right ml-2"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- AI TECH — UPDATED WITH REAL STACK -->
     <section id="ai-tech" class="py-28 relative">
       <div class="container mx-auto px-6">
         <div class="text-center mb-16 reveal">
           <h2 class="text-4xl md:text-5xl font-display font-black mb-4 cosmic-text">AI-DRIVEN, HUMAN-TOUCHED</h2>
-          <p class="text-lg text-white/60">We don’t just use AI — we co-create with it</p>
+          <p class="text-lg text-white/60">We don't just use AI — we co-create with it</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 max-w-6xl mx-auto">
+
           <div class="glass-card rounded-2xl p-8 text-center reveal">
             <i class="fas fa-music text-4xl text-purple-300 mb-4"></i>
-            <h3 class="text-xl font-black mb-3 font-display">Suno AI</h3>
-            <p class="text-white/60 text-sm leading-relaxed">Advanced song generation with deep emotional intelligence and musical sophistication.</p>
+            <h3 class="text-xl font-black mb-2 font-display">Suno AI 4.5</h3>
+            <div class="text-xs text-purple-300/70 font-bold tracking-widest uppercase mb-3">Music Generation</div>
+            <p class="text-white/60 text-sm leading-relaxed">Production-grade Deep House and Ethereal Cosmic House. Every track engineered for emotional impact and viral retention.</p>
           </div>
 
           <div class="glass-card rounded-2xl p-8 text-center reveal" style="transition-delay: 90ms;">
             <i class="fas fa-microphone text-4xl text-pink-300 mb-4"></i>
-            <h3 class="text-xl font-black mb-3 font-display">ElevenLabs</h3>
-            <p class="text-white/60 text-sm leading-relaxed">Ultra-realistic voice synthesis that creates lifelike character personalities.</p>
+            <h3 class="text-xl font-black mb-2 font-display">ElevenLabs Pro</h3>
+            <div class="text-xs text-pink-300/70 font-bold tracking-widest uppercase mb-3">Voice Synthesis</div>
+            <p class="text-white/60 text-sm leading-relaxed">Ultra-realistic voice characters for narration, avatars, and character universes. Nova Violet. Violet Echo. Stella. Violet Myst.</p>
           </div>
 
           <div class="glass-card rounded-2xl p-8 text-center reveal" style="transition-delay: 180ms;">
-            <i class="fas fa-brain text-4xl text-cyan-200 mb-4"></i>
-            <h3 class="text-xl font-black mb-3 font-display">Qwen</h3>
-            <p class="text-white/60 text-sm leading-relaxed">Advanced language model for creative writing and content development.</p>
+            <i class="fas fa-user-astronaut text-4xl text-cyan-200 mb-4"></i>
+            <h3 class="text-xl font-black mb-2 font-display">HeyGen Pro</h3>
+            <div class="text-xs text-cyan-200/70 font-bold tracking-widest uppercase mb-3">Avatar Production</div>
+            <p class="text-white/60 text-sm leading-relaxed">Hyper-realistic AI avatar generation and lip-sync. The backbone of our talking character universe and presenter content.</p>
           </div>
 
           <div class="glass-card rounded-2xl p-8 text-center reveal">
-            <i class="fas fa-robot text-4xl text-yellow-300 mb-4"></i>
-            <h3 class="text-xl font-black mb-3 font-display">Z AI</h3>
-            <p class="text-white/60 text-sm leading-relaxed">Intelligent automation and creative process optimization.</p>
+            <i class="fas fa-bolt text-4xl text-yellow-300 mb-4"></i>
+            <h3 class="text-xl font-black mb-2 font-display">WaveSpeed AI</h3>
+            <div class="text-xs text-yellow-300/70 font-bold tracking-widest uppercase mb-3">Video Generation · Partner</div>
+            <p class="text-white/60 text-sm leading-relaxed">Official WaveSpeed AI Partner Creator. Image-to-video animation powering cinematic motion across 600+ AI models.</p>
           </div>
 
           <div class="glass-card rounded-2xl p-8 text-center reveal" style="transition-delay: 90ms;">
-            <i class="fas fa-comments text-4xl text-green-300 mb-4"></i>
-            <h3 class="text-xl font-black mb-3 font-display">Grok</h3>
-            <p class="text-white/60 text-sm leading-relaxed">Conversational AI for dynamic content creation and storytelling.</p>
+            <i class="fas fa-image text-4xl text-green-300 mb-4"></i>
+            <h3 class="text-xl font-black mb-2 font-display">Flow / Gemini Pro</h3>
+            <div class="text-xs text-green-300/70 font-bold tracking-widest uppercase mb-3">Image Generation</div>
+            <p class="text-white/60 text-sm leading-relaxed">8K hyper-realistic cinematic image generation via Nano Banana Pro. The visual DNA of every Violet Media production.</p>
           </div>
 
           <div class="glass-card rounded-2xl p-8 text-center reveal" style="transition-delay: 180ms;">
-            <i class="fas fa-chart-line text-4xl text-orange-300 mb-4"></i>
-            <h3 class="text-xl font-black mb-3 font-display">Gemini AI</h3>
-            <p class="text-white/60 text-sm leading-relaxed">Advanced analytics and machine learning for content optimization.</p>
+            <i class="fas fa-brain text-4xl text-orange-300 mb-4"></i>
+            <h3 class="text-xl font-black mb-2 font-display">Claude / Anthropic</h3>
+            <div class="text-xs text-orange-300/70 font-bold tracking-widest uppercase mb-3">Creative Intelligence</div>
+            <p class="text-white/60 text-sm leading-relaxed">The strategic and creative AI brain behind Violet Media's content architecture, prompt engineering, and production workflows.</p>
           </div>
+
         </div>
 
         <div class="glass-card rounded-3xl p-10 mt-12 max-w-5xl mx-auto reveal">
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
             <div class="md:col-span-1">
               <h3 class="text-2xl font-black font-display mb-2">The Future of Creative Intelligence</h3>
-              <div class="text-sm text-white/55">Precision + narrative craft. That’s the edge.</div>
+              <div class="text-sm text-white/55">Precision + narrative craft. That's the edge.</div>
             </div>
             <div class="md:col-span-2 text-white/70 leading-relaxed">
               Our AI toolkit represents the cutting edge of creative technology. Each platform brings unique capabilities that we harmoniously blend
-              with human intuition and artistic vision — producing content that resonates emotionally and intellectually.
+              with human intuition and artistic vision — producing content that resonates emotionally and intellectually. This isn't automation. It's amplification.
             </div>
           </div>
         </div>
@@ -721,7 +764,7 @@
             </div>
             <h3 class="text-2xl md:text-3xl font-black mb-4 font-display">WaveSpeed AI Partner</h3>
             <p class="text-base md:text-lg text-white/70 mb-8 leading-relaxed">
-              Big thanks to WaveSpeed AI for supporting this cosmic journey. Together, we’re pushing the boundaries of what’s possible in creative content generation.
+              Official WaveSpeed AI Partner Creator. Together, we're pushing the boundaries of what's possible in AI-powered cinematic content generation.
             </p>
             <a href="https://wavespeedai.pxf.io/2ab4RG" target="_blank" rel="noopener noreferrer" class="btn-cosmic">
               Explore WaveSpeed AI <i class="fa-solid fa-arrow-up-right-from-square"></i>
@@ -742,25 +785,22 @@
       <div class="container mx-auto px-6 relative z-10">
         <div class="text-center mb-14 reveal">
           <h2 class="text-4xl md:text-5xl font-display font-black mb-4 cosmic-text">JOIN THE COSMIC REVOLUTION</h2>
-          <p class="text-lg text-white/60">Whether you’re a creator, brand, or visionary — you’re invited</p>
+          <p class="text-lg text-white/60">Whether you're a creator, brand, or visionary — you're invited</p>
         </div>
 
         <div class="max-w-4xl mx-auto text-center glass-card p-10 md:p-12 rounded-3xl reveal">
           <h3 class="text-2xl md:text-3xl font-black mb-4 font-display">Get in Touch</h3>
           <p class="text-base md:text-lg text-white/70 mb-8">
-            Ready to create something legendary? Let’s build the future together and craft content that transcends boundaries.
+            Ready to create something legendary? Let's build the future together and craft content that transcends boundaries.
           </p>
-
           <div class="flex flex-col sm:flex-row gap-3 justify-center mb-8">
-            <a href="mailto:violetmediastudio@gmail.com?subject=Violet%20Media%20—%20Project%20Inquiry"
-               class="btn-cosmic">
+            <a href="mailto:violetmediastudio@gmail.com?subject=Violet%20Media%20—%20Project%20Inquiry" class="btn-cosmic">
               <i class="fas fa-envelope"></i> violetmediastudio@gmail.com
             </a>
             <a href="#cosmic-tease" class="btn-ghost">
               See Viral Proof <i class="fa-solid fa-bolt"></i>
             </a>
           </div>
-
           <div class="flex justify-center items-center gap-8">
             <a href="https://www.tiktok.com/@cosmictease" target="_blank" rel="noopener noreferrer"
                class="text-4xl text-white/45 hover:text-pink-400 transition-colors" aria-label="TikTok">
@@ -775,7 +815,6 @@
               <i class="fab fa-spotify"></i>
             </a>
           </div>
-
           <div class="mt-10 text-sm text-white/45">
             Violet Media • Perth, Australia • <span class="cosmic-text font-bold">Quality is for the ages</span>
           </div>
@@ -783,10 +822,10 @@
       </div>
     </section>
 
-    <!-- FOOTER -->
+    <!-- FOOTER — UPDATED © 2026 -->
     <footer class="py-14 text-center border-t border-white/5 bg-cosmic-900/60">
       <div class="container mx-auto px-6">
-        <p class="text-white/45 mb-3">© 2025 Violet Media. All rights reserved.</p>
+        <p class="text-white/45 mb-3">© 2026 Violet Media. All rights reserved.</p>
         <p class="text-xl md:text-2xl font-black cosmic-text font-display">
           Quality is for the ages. This is Violet Media.
         </p>
@@ -794,177 +833,94 @@
     </footer>
   </main>
 
-  <!-- Back to top -->
   <button id="toTop" class="btn-ghost" aria-label="Back to top">
-    <i class="fa-solid fa-arrow-up"></i>
-    Top
+    <i class="fa-solid fa-arrow-up"></i> Top
   </button>
 
   <script>
-    // =========================================================
-    // Pro-grade UX + Performance choices:
-    // - Prefers-reduced-motion disables heavy animation + reveal
-    // - Mobile menu locks scroll + Escape key
-    // - Scrollspy highlights nav items
-    // - Three.js starfield tuned + bug-fixed color selection
-    // =========================================================
-
     const prefersReducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    // ---- Scroll Reveal ----
     if (!prefersReducedMotion) {
       const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) entry.target.classList.add("active");
-        });
+        entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add("active"); });
       }, { threshold: 0.12 });
-
       document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
     } else {
       document.querySelectorAll(".reveal").forEach(el => el.classList.add("active"));
     }
 
-    // ---- Mobile Menu (accessible) ----
     const btn = document.getElementById("mobile-btn");
     const menu = document.getElementById("mobile-menu");
     const close = document.getElementById("close-menu");
     const links = document.querySelectorAll(".mobile-link");
 
-    function openMenu(){
-      menu.classList.add("open");
-      document.body.classList.add("no-scroll");
-      btn.setAttribute("aria-expanded", "true");
-      close.focus();
-    }
-    function closeMenu(){
-      menu.classList.remove("open");
-      document.body.classList.remove("no-scroll");
-      btn.setAttribute("aria-expanded", "false");
-      btn.focus();
-    }
-    function toggleMenu(){
-      if (menu.classList.contains("open")) closeMenu();
-      else openMenu();
-    }
+    function openMenu(){ menu.classList.add("open"); document.body.classList.add("no-scroll"); btn.setAttribute("aria-expanded","true"); close.focus(); }
+    function closeMenu(){ menu.classList.remove("open"); document.body.classList.remove("no-scroll"); btn.setAttribute("aria-expanded","false"); btn.focus(); }
+    function toggleMenu(){ if (menu.classList.contains("open")) closeMenu(); else openMenu(); }
 
     btn.addEventListener("click", toggleMenu);
     close.addEventListener("click", closeMenu);
     links.forEach(link => link.addEventListener("click", closeMenu));
-    window.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && menu.classList.contains("open")) closeMenu();
-    });
+    window.addEventListener("keydown", (e) => { if (e.key === "Escape" && menu.classList.contains("open")) closeMenu(); });
 
-    // ---- Back to top ----
     const toTop = document.getElementById("toTop");
-    function updateToTop(){
-      const show = window.scrollY > 700;
-      toTop.classList.toggle("show", show);
-    }
+    function updateToTop(){ toTop.classList.toggle("show", window.scrollY > 700); }
     updateToTop();
     window.addEventListener("scroll", updateToTop, { passive: true });
     toTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: prefersReducedMotion ? "auto" : "smooth" }));
 
-    // ---- Scrollspy ----
     const navLinks = Array.from(document.querySelectorAll("[data-nav]"));
-    const sections = navLinks
-      .map(a => document.querySelector(a.getAttribute("href")))
-      .filter(Boolean);
-
-    function setActiveNav(id){
-      navLinks.forEach(a => {
-        const active = a.getAttribute("href") === "#" + id;
-        a.classList.toggle("text-white", active);
-        a.classList.toggle("text-purple-300", active);
-      });
-    }
-
+    const sections = navLinks.map(a => document.querySelector(a.getAttribute("href"))).filter(Boolean);
+    function setActiveNav(id){ navLinks.forEach(a => { const active = a.getAttribute("href") === "#" + id; a.classList.toggle("text-white", active); a.classList.toggle("text-purple-300", active); }); }
     if (sections.length) {
-      const spy = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) setActiveNav(entry.target.id);
-        });
-      }, { rootMargin: "-35% 0px -55% 0px", threshold: 0.01 });
-
+      const spy = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) setActiveNav(entry.target.id); }); }, { rootMargin: "-35% 0px -55% 0px", threshold: 0.01 });
       sections.forEach(s => spy.observe(s));
     }
 
-    // ---- Three.js Starfield ----
-    // Skip on reduced motion (keeps the premium gradients + noise)
     if (!prefersReducedMotion && window.THREE) {
       const host = document.getElementById("three-host");
       const scene = new THREE.Scene();
       scene.fog = new THREE.FogExp2(0x050214, 0.045);
-
       const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
       camera.position.z = 7;
-
       const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: "high-performance" });
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       host.appendChild(renderer.domElement);
 
       const particlesGeometry = new THREE.BufferGeometry();
-      const particlesCount = Math.min(2400, Math.floor((window.innerWidth * window.innerHeight) / 450)); // adaptive
+      const particlesCount = Math.min(2400, Math.floor((window.innerWidth * window.innerHeight) / 450));
       const posArray = new Float32Array(particlesCount * 3);
       const colorsArray = new Float32Array(particlesCount * 3);
 
       for (let i = 0; i < particlesCount * 3; i += 3) {
-        // Spread in a deeper volume for parallax depth
         posArray[i]     = (Math.random() - 0.5) * 48;
         posArray[i + 1] = (Math.random() - 0.5) * 38;
         posArray[i + 2] = (Math.random() - 0.5) * 60;
-
-        // Color distribution (fix: check highest threshold first)
         const t = Math.random();
-        if (t > 0.965) { // Gold highlights
-          colorsArray[i] = 0.85; colorsArray[i + 1] = 0.69; colorsArray[i + 2] = 0.35;
-        } else if (t > 0.90) { // Pink
-          colorsArray[i] = 0.92; colorsArray[i + 1] = 0.28; colorsArray[i + 2] = 0.60;
-        } else if (t > 0.78) { // Violet
-          colorsArray[i] = 0.54; colorsArray[i + 1] = 0.17; colorsArray[i + 2] = 0.89;
-        } else if (t > 0.64) { // Blue
-          colorsArray[i] = 0.18; colorsArray[i + 1] = 0.42; colorsArray[i + 2] = 1.00;
-        } else { // White stars
-          colorsArray[i] = 1.0; colorsArray[i + 1] = 1.0; colorsArray[i + 2] = 1.0;
-        }
+        if (t > 0.965) { colorsArray[i] = 0.85; colorsArray[i+1] = 0.69; colorsArray[i+2] = 0.35; }
+        else if (t > 0.90) { colorsArray[i] = 0.92; colorsArray[i+1] = 0.28; colorsArray[i+2] = 0.60; }
+        else if (t > 0.78) { colorsArray[i] = 0.54; colorsArray[i+1] = 0.17; colorsArray[i+2] = 0.89; }
+        else if (t > 0.64) { colorsArray[i] = 0.18; colorsArray[i+1] = 0.42; colorsArray[i+2] = 1.00; }
+        else { colorsArray[i] = 1.0; colorsArray[i+1] = 1.0; colorsArray[i+2] = 1.0; }
       }
 
       particlesGeometry.setAttribute("position", new THREE.BufferAttribute(posArray, 3));
       particlesGeometry.setAttribute("color", new THREE.BufferAttribute(colorsArray, 3));
-
-      const material = new THREE.PointsMaterial({
-        size: 0.05,
-        sizeAttenuation: true,
-        vertexColors: true,
-        transparent: true,
-        opacity: 0.78,
-        blending: THREE.AdditiveBlending,
-        depthWrite: false
-      });
-
+      const material = new THREE.PointsMaterial({ size: 0.05, sizeAttenuation: true, vertexColors: true, transparent: true, opacity: 0.78, blending: THREE.AdditiveBlending, depthWrite: false });
       const stars = new THREE.Points(particlesGeometry, material);
       scene.add(stars);
 
-      // Interaction
       let mouseX = 0, mouseY = 0;
-      document.addEventListener("mousemove", (e) => {
-        mouseX = (e.clientX / window.innerWidth) * 2 - 1;
-        mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
-      }, { passive: true });
+      document.addEventListener("mousemove", (e) => { mouseX = (e.clientX / window.innerWidth) * 2 - 1; mouseY = -(e.clientY / window.innerHeight) * 2 + 1; }, { passive: true });
 
       const clock = new THREE.Clock();
-
       function animate() {
         const t = clock.getElapsedTime();
-
-        // Gentle drift + subtle mouse parallax
         stars.rotation.y = t * 0.035 + mouseX * 0.08;
         stars.rotation.x = t * 0.015 + mouseY * 0.06;
-
-        // Scroll adds cinematic depth shift
         const scroll = Math.min(window.scrollY / 1200, 1);
         camera.position.z = 7 + scroll * 1.3;
-
         renderer.render(scene, camera);
         requestAnimationFrame(animate);
       }
@@ -980,4 +936,3 @@
   </script>
 </body>
 </html>
-
