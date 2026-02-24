@@ -2,14 +2,6 @@
 <html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GLS4TXV26K"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-GLS4TXV26K');
-  </script>
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <meta name="description" content="Violet Media — The Cosmic Empire. Cinematic storytelling, music worlds, and AI-powered creation engineered for the new era." />
   <meta name="theme-color" content="#050214" />
@@ -820,38 +812,119 @@
 
       <div class="container mx-auto px-6 relative z-10">
         <div class="text-center mb-14 reveal">
-          <h2 class="text-4xl md:text-5xl font-display font-black mb-4 cosmic-text">JOIN THE COSMIC REVOLUTION</h2>
-          <p class="text-lg text-white/60">Whether you're a creator, brand, or visionary — you're invited</p>
+          <h2 class="text-4xl md:text-5xl font-display font-black mb-4 cosmic-text">START A PROJECT</h2>
+          <p class="text-lg text-white/60">Tell us about your vision and we'll get back to you within 24 hours.</p>
         </div>
 
-        <div class="max-w-4xl mx-auto text-center glass-card p-10 md:p-12 rounded-3xl reveal">
-          <h3 class="text-2xl md:text-3xl font-black mb-4 font-display">Get in Touch</h3>
-          <p class="text-base md:text-lg text-white/70 mb-8">
-            Ready to create something legendary? Let's build the future together and craft content that transcends boundaries.
-          </p>
-          <div class="flex flex-col sm:flex-row gap-3 justify-center mb-8">
-            <a href="mailto:violetmediastudio@gmail.com?subject=Violet%20Media%20—%20Project%20Inquiry" class="btn-cosmic">
-              <i class="fas fa-envelope"></i> violetmediastudio@gmail.com
-            </a>
-            <a href="#cosmic-tease" class="btn-ghost">
-              See Viral Proof <i class="fa-solid fa-bolt"></i>
-            </a>
+        <div class="max-w-3xl mx-auto glass-card p-10 md:p-12 rounded-3xl reveal">
+          <style>
+            .vm-form-group { margin-bottom: 1.5rem; }
+            .vm-form-group label { display: block; font-size: 0.875rem; font-weight: 600; color: rgba(255,255,255,0.75); margin-bottom: 0.5rem; letter-spacing: 0.03em; }
+            .vm-form-group input,
+            .vm-form-group select,
+            .vm-form-group textarea {
+              width: 100%; padding: 14px 18px;
+              background: rgba(255,255,255,0.06);
+              border: 1px solid rgba(255,255,255,0.12);
+              border-radius: 12px; color: #fff;
+              font-size: 0.95rem; font-family: inherit;
+              transition: border-color 0.2s, background 0.2s;
+              outline: none;
+            }
+            .vm-form-group input::placeholder,
+            .vm-form-group textarea::placeholder { color: rgba(255,255,255,0.3); }
+            .vm-form-group input:focus,
+            .vm-form-group select:focus,
+            .vm-form-group textarea:focus {
+              border-color: rgba(138,43,226,0.65);
+              background: rgba(138,43,226,0.08);
+            }
+            .vm-form-group select { cursor: pointer; }
+            .vm-form-group select option { background: #110826; color: #fff; }
+            .vm-form-group textarea { resize: vertical; min-height: 130px; }
+            .vm-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+            @media (max-width: 640px) { .vm-form-row { grid-template-columns: 1fr; } }
+            .vm-form-submit {
+              width: 100%; padding: 16px;
+              background: linear-gradient(135deg, rgba(138,43,226,1) 0%, rgba(219,39,119,1) 55%, rgba(215,177,90,0.95) 100%);
+              color: #fff; border: none; border-radius: 999px;
+              font-size: 1rem; font-weight: 800; font-family: inherit;
+              cursor: pointer; letter-spacing: 0.02em;
+              box-shadow: 0 0 28px rgba(138,43,226,0.35);
+              transition: transform 0.2s ease, box-shadow 0.2s ease;
+            }
+            .vm-form-submit:hover { transform: translateY(-2px); box-shadow: 0 0 40px rgba(138,43,226,0.55); }
+            .vm-contact-direct { text-align: center; margin-top: 1.5rem; font-size: 0.875rem; color: rgba(255,255,255,0.4); }
+            .vm-contact-direct a { color: rgba(138,43,226,0.9); text-decoration: none; font-weight: 600; }
+            .vm-contact-direct a:hover { color: #fff; }
+            .vm-social-row { display: flex; justify-content: center; align-items: center; gap: 2rem; margin-top: 1.5rem; }
+          </style>
+
+          <form action="https://formsubmit.co/violetmediastudio@gmail.com" method="POST">
+            <input type="hidden" name="_subject" value="New Project Inquiry — violetmedia.org">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_next" value="https://violetmedia.org/#contact">
+
+            <div class="vm-form-row">
+              <div class="vm-form-group">
+                <label for="vm-name">Your Name</label>
+                <input type="text" id="vm-name" name="name" placeholder="Jane Smith" required>
+              </div>
+              <div class="vm-form-group">
+                <label for="vm-email">Email</label>
+                <input type="email" id="vm-email" name="email" placeholder="jane@company.com" required>
+              </div>
+            </div>
+
+            <div class="vm-form-group">
+              <label for="vm-business">Business / Brand Name</label>
+              <input type="text" id="vm-business" name="business" placeholder="Your business or brand name">
+            </div>
+
+            <div class="vm-form-group">
+              <label for="vm-service">Interested In</label>
+              <select id="vm-service" name="service">
+                <option value="">Select a service...</option>
+                <option value="AI Video Production">AI Video Production</option>
+                <option value="Music Production">Music Production</option>
+                <option value="Website Design">Website Design</option>
+                <option value="Brand Identity / Logo">Brand Identity / Logo</option>
+                <option value="Content Strategy">Content Strategy</option>
+                <option value="Full Production Package">Full Production Package</option>
+                <option value="Not sure yet">Not sure yet</option>
+              </select>
+            </div>
+
+            <div class="vm-form-group">
+              <label for="vm-message">Tell us about your project</label>
+              <textarea id="vm-message" name="message" placeholder="What does your business do? What are your goals? What are you looking to create?"></textarea>
+            </div>
+
+            <button type="submit" class="vm-form-submit">
+              <i class="fas fa-paper-plane" style="margin-right:8px;"></i> Send Inquiry
+            </button>
+          </form>
+
+          <div class="vm-contact-direct">
+            Or email us directly at <a href="mailto:violetmediastudio@gmail.com">violetmediastudio@gmail.com</a>
           </div>
-          <div class="flex justify-center items-center gap-8">
+
+          <div class="vm-social-row">
             <a href="https://www.tiktok.com/@cosmictease" target="_blank" rel="noopener noreferrer"
-               class="text-4xl text-white/45 hover:text-pink-400 transition-colors" aria-label="TikTok">
+               class="text-3xl text-white/40 hover:text-pink-400 transition-colors" aria-label="TikTok">
               <i class="fab fa-tiktok"></i>
             </a>
             <a href="https://youtube.com/@cosmic_tease" target="_blank" rel="noopener noreferrer"
-               class="text-4xl text-white/45 hover:text-red-400 transition-colors" aria-label="YouTube">
+               class="text-3xl text-white/40 hover:text-red-400 transition-colors" aria-label="YouTube">
               <i class="fab fa-youtube"></i>
             </a>
             <a href="https://open.spotify.com/artist/6d1NDbxwj89zRTJ8lUp63g" target="_blank" rel="noopener noreferrer"
-               class="text-4xl text-white/45 hover:text-green-400 transition-colors" aria-label="Spotify">
+               class="text-3xl text-white/40 hover:text-green-400 transition-colors" aria-label="Spotify">
               <i class="fab fa-spotify"></i>
             </a>
           </div>
-          <div class="mt-10 text-sm text-white/45">
+
+          <div class="mt-8 text-center text-sm text-white/30">
             Violet Media • Perth, Australia • <span class="cosmic-text font-bold">Quality is for the ages</span>
           </div>
         </div>
