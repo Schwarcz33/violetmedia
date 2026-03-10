@@ -230,6 +230,8 @@
       box-shadow: 0 0 40px rgba(138,43,226,0.20);
     }
 
+    select option { background: #110826; color: #fff; }
+
     @media (prefers-reduced-motion: reduce){
       html{ scroll-behavior:auto; }
       .reveal{ opacity:1 !important; transform:none !important; transition:none !important; }
@@ -776,25 +778,76 @@
           <h2 class="text-4xl md:text-5xl font-display font-black mb-4 cosmic-text">JOIN THE COSMIC REVOLUTION</h2>
           <p class="text-lg text-white/60">Whether you're a creator, brand, or visionary — you're invited</p>
         </div>
-        <div class="max-w-4xl mx-auto text-center glass-card p-10 md:p-12 rounded-3xl reveal">
-          <h3 class="text-2xl md:text-3xl font-black mb-4 font-display">Get in Touch</h3>
-          <p class="text-base md:text-lg text-white/70 mb-8">
-            Ready to create something legendary? Let's build the future together and craft content that transcends boundaries.
+        <div class="max-w-4xl mx-auto glass-card p-10 md:p-12 rounded-3xl reveal">
+          <h3 class="text-2xl md:text-3xl font-black mb-4 font-display text-center">Get in Touch</h3>
+          <p class="text-base md:text-lg text-white/70 mb-8 text-center">
+            Ready to create something legendary? Tell us about your project and we'll get back to you within 24 hours.
           </p>
-          <div class="flex flex-col sm:flex-row gap-3 justify-center mb-8">
-            <a href="mailto:violetmediastudio@gmail.com?subject=Violet%20Media%20—%20Project%20Inquiry" class="btn-cosmic">
-              <i class="fas fa-envelope"></i> violetmediastudio@gmail.com
-            </a>
-            <a href="#cosmic-tease" class="btn-ghost">
-              See Viral Proof <i class="fa-solid fa-bolt"></i>
-            </a>
+
+          <!-- ENQUIRY FORM via FormSubmit -->
+          <div class="max-w-2xl mx-auto">
+            <form action="https://formsubmit.co/violetmediastudio@gmail.com" method="POST" class="space-y-5">
+              <input type="hidden" name="_subject" value="New Project Inquiry — violetmedia.org">
+              <input type="hidden" name="_captcha" value="false">
+              <input type="hidden" name="_next" value="https://violetmedia.org/#contact">
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label for="name" class="block text-sm font-semibold text-white/70 mb-2">Your Name</label>
+                  <input type="text" id="name" name="name" placeholder="Jane Smith" required
+                    class="w-full px-4 py-3 rounded-xl bg-cosmic-900/80 border border-white/10 text-white placeholder-white/30 text-sm focus:outline-none focus:border-purple-500/50 transition-colors">
+                </div>
+                <div>
+                  <label for="email" class="block text-sm font-semibold text-white/70 mb-2">Email</label>
+                  <input type="email" id="email" name="email" placeholder="jane@company.com" required
+                    class="w-full px-4 py-3 rounded-xl bg-cosmic-900/80 border border-white/10 text-white placeholder-white/30 text-sm focus:outline-none focus:border-purple-500/50 transition-colors">
+                </div>
+              </div>
+
+              <div>
+                <label for="business" class="block text-sm font-semibold text-white/70 mb-2">Business / Brand Name</label>
+                <input type="text" id="business" name="business" placeholder="Your business or brand name"
+                  class="w-full px-4 py-3 rounded-xl bg-cosmic-900/80 border border-white/10 text-white placeholder-white/30 text-sm focus:outline-none focus:border-purple-500/50 transition-colors">
+              </div>
+
+              <div>
+                <label for="service" class="block text-sm font-semibold text-white/70 mb-2">What are you looking for?</label>
+                <select id="service" name="service"
+                  class="w-full px-4 py-3 rounded-xl bg-cosmic-900/80 border border-white/10 text-white text-sm focus:outline-none focus:border-purple-500/50 transition-colors">
+                  <option value="">Select a service...</option>
+                  <option value="Branded Content / Video">Branded Content / Video Production</option>
+                  <option value="Music Production">Music Production</option>
+                  <option value="Music Video">Music Video Production</option>
+                  <option value="Website Design">Website Design</option>
+                  <option value="Voiceover / Avatar">Voiceover / Avatar</option>
+                  <option value="Brand Consultation">Brand Consultation</option>
+                  <option value="Collaboration">Brand Collaboration / Sponsorship</option>
+                  <option value="Other">Something else</option>
+                </select>
+              </div>
+
+              <div>
+                <label for="message" class="block text-sm font-semibold text-white/70 mb-2">Tell us about your project</label>
+                <textarea id="message" name="message" rows="4" placeholder="What are you trying to achieve? What's your timeline? Any details help us scope it properly."
+                  class="w-full px-4 py-3 rounded-xl bg-cosmic-900/80 border border-white/10 text-white placeholder-white/30 text-sm focus:outline-none focus:border-purple-500/50 transition-colors resize-vertical"></textarea>
+              </div>
+
+              <button type="submit" class="btn-cosmic w-full text-center justify-center py-4">
+                <i class="fa-solid fa-paper-plane"></i> Send Inquiry
+              </button>
+            </form>
+
+            <div class="mt-6 pt-6 border-t border-white/10 text-center text-sm text-white/45">
+              Or email us directly at <a href="mailto:violetmediastudio@gmail.com" class="text-purple-300 font-semibold hover:text-purple-200 transition-colors">violetmediastudio@gmail.com</a>
+            </div>
           </div>
-          <div class="flex justify-center items-center gap-8">
+
+          <div class="flex justify-center items-center gap-8 mt-8">
             <a href="https://www.tiktok.com/@cosmictease" target="_blank" rel="noopener noreferrer" class="text-4xl text-white/45 hover:text-pink-400 transition-colors" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
             <a href="https://youtube.com/@cosmic_tease" target="_blank" rel="noopener noreferrer" class="text-4xl text-white/45 hover:text-red-400 transition-colors" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
             <a href="https://open.spotify.com/artist/6d1NDbxwj89zRTJ8lUp63g" target="_blank" rel="noopener noreferrer" class="text-4xl text-white/45 hover:text-green-400 transition-colors" aria-label="Spotify"><i class="fab fa-spotify"></i></a>
           </div>
-          <div class="mt-10 text-sm text-white/45">
+          <div class="mt-10 text-sm text-white/45 text-center">
             Violet Media • Perth, Australia • <span class="cosmic-text font-bold">Quality is for the ages</span>
           </div>
         </div>
