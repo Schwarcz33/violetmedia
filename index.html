@@ -26,7 +26,17 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@300;500;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <!-- Three.js via importmap for post-processing addons -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+    }
+  }
+  </script>
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -115,7 +125,7 @@
       position: absolute;
       top: 50%;
       left: 50%;
-      width: 177.78vh; /* 16:9 ratio */
+      width: 177.78vh;
       height: 100vh;
       min-width: 100%;
       min-height: 56.25vw;
@@ -199,7 +209,6 @@
     }
     #toTop.show{ opacity:1; transform: translateY(0); pointer-events:auto; }
 
-    /* ── SERVICE CARDS ── */
     .service-card {
       position: relative;
       overflow: hidden;
@@ -215,7 +224,6 @@
     }
     .service-card:hover::after { opacity: 1; }
 
-    /* ── SPOTIFY EMBED ── */
     .spotify-embed {
       border-radius: 16px;
       overflow: hidden;
@@ -309,12 +317,9 @@
   </div>
 
   <main id="main">
-    <!-- ═══════════════════════════════════════════════════════════
-         HERO — with looping video background
-    ═══════════════════════════════════════════════════════════ -->
+    <!-- HERO -->
     <section id="top" class="min-h-screen flex items-center justify-center text-center relative pt-24 overflow-hidden">
 
-      <!-- VIDEO BACKGROUND -->
       <div id="hero-video-bg" aria-hidden="true">
         <iframe
           src="https://www.youtube.com/embed/c7NcEgxAGq0?autoplay=1&mute=1&loop=1&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&playlist=c7NcEgxAGq0"
@@ -353,7 +358,6 @@
           Where vision meets vibration. Where art, AI, and human spirit coalesce to create content that lasts.
         </p>
 
-        <!-- ── REAL TIKTOK STUDIO METRICS ── -->
         <div class="grid grid-cols-2 md:grid-cols-5 gap-4 max-w-5xl mx-auto mb-10 reveal" style="transition-delay: 280ms;">
           <div class="glass-card p-6 rounded-2xl text-left">
             <div class="flex items-center justify-between mb-3">
@@ -363,7 +367,6 @@
             <div class="text-3xl font-black text-white font-display">14M+</div>
             <div class="text-purple-200/80 font-semibold mt-1 text-sm">Total Views</div>
           </div>
-
           <div class="glass-card p-6 rounded-2xl text-left">
             <div class="flex items-center justify-between mb-3">
               <div class="text-xs tracking-[0.18em] uppercase text-white/50">Engagement</div>
@@ -372,7 +375,6 @@
             <div class="text-3xl font-black text-white font-display">718K+</div>
             <div class="text-purple-200/80 font-semibold mt-1 text-sm">Likes</div>
           </div>
-
           <div class="glass-card p-6 rounded-2xl text-left">
             <div class="flex items-center justify-between mb-3">
               <div class="text-xs tracking-[0.18em] uppercase text-white/50">Shares</div>
@@ -381,7 +383,6 @@
             <div class="text-3xl font-black text-white font-display">10K+</div>
             <div class="text-purple-200/80 font-semibold mt-1 text-sm">Shares</div>
           </div>
-
           <div class="glass-card p-6 rounded-2xl text-left">
             <div class="flex items-center justify-between mb-3">
               <div class="text-xs tracking-[0.18em] uppercase text-white/50">Community</div>
@@ -390,7 +391,6 @@
             <div class="text-3xl font-black text-white font-display">2.8K+</div>
             <div class="text-purple-200/80 font-semibold mt-1 text-sm">Comments</div>
           </div>
-
           <div class="glass-card p-6 rounded-2xl text-left">
             <div class="flex items-center justify-between mb-3">
               <div class="text-xs tracking-[0.18em] uppercase text-white/50">Discovery</div>
@@ -410,7 +410,6 @@
           </a>
         </div>
 
-        <!-- FYP Badge -->
         <div class="mt-5 reveal" style="transition-delay: 420ms;">
           <div class="inline-flex items-center gap-2 glass-card rounded-full px-5 py-2 text-xs font-bold text-white/75">
             <span class="w-2 h-2 rounded-full bg-green-400" style="box-shadow: 0 0 10px rgba(74,222,128,0.7);"></span>
@@ -442,7 +441,6 @@
     <section id="cosmic-tease" class="py-28 relative">
       <div class="container mx-auto px-6">
         <div class="text-center mb-16 reveal">
-          <!-- ── UPDATED: 14M+ ── -->
           <h2 class="text-4xl md:text-5xl font-display font-black mb-4 cosmic-text">COSMIC TEASE</h2>
           <p class="text-lg text-white/60">The Entertainment Empire • 14M Views • 718K Likes • 10K Shares</p>
           <div class="flex justify-center items-center gap-6 mt-6">
@@ -551,7 +549,6 @@
            style="background: radial-gradient(900px 520px at 50% 15%, rgba(138,43,226,0.10), transparent 60%),
                            radial-gradient(800px 520px at 70% 85%, rgba(45,107,255,0.08), transparent 62%);">
       </div>
-
       <div class="container mx-auto px-6 relative z-10">
         <div class="text-center mb-16 reveal">
           <h2 class="text-4xl md:text-5xl font-display font-black mb-4 cosmic-text">VIOLET RECORDS</h2>
@@ -559,18 +556,15 @@
         </div>
 
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-14 reveal">
-          <a href="https://open.spotify.com/artist/6d1NDbxwj89zRTJ8lUp63g" target="_blank" rel="noopener noreferrer"
-             class="glass-card rounded-2xl p-6 flex flex-col items-center justify-center hover:bg-green-500/10 transition-colors group">
+          <a href="https://open.spotify.com/artist/6d1NDbxwj89zRTJ8lUp63g" target="_blank" rel="noopener noreferrer" class="glass-card rounded-2xl p-6 flex flex-col items-center justify-center hover:bg-green-500/10 transition-colors group">
             <i class="fab fa-spotify text-3xl mb-3 text-green-500 group-hover:scale-110 transition-transform"></i>
             <span class="text-sm font-bold">Spotify</span>
           </a>
-          <a href="https://music.youtube.com/channel/UCKZerj7cXfr3sODhKtjPg6A" target="_blank" rel="noopener noreferrer"
-             class="glass-card rounded-2xl p-6 flex flex-col items-center justify-center hover:bg-red-500/10 transition-colors group">
+          <a href="https://music.youtube.com/channel/UCKZerj7cXfr3sODhKtjPg6A" target="_blank" rel="noopener noreferrer" class="glass-card rounded-2xl p-6 flex flex-col items-center justify-center hover:bg-red-500/10 transition-colors group">
             <i class="fab fa-youtube text-3xl mb-3 text-red-500 group-hover:scale-110 transition-transform"></i>
             <span class="text-sm font-bold">YT Music</span>
           </a>
-          <a href="https://music.apple.com/us/artist/violet-media/1803005671" target="_blank" rel="noopener noreferrer"
-             class="glass-card rounded-2xl p-6 flex flex-col items-center justify-center hover:bg-pink-500/10 transition-colors group">
+          <a href="https://music.apple.com/us/artist/violet-media/1803005671" target="_blank" rel="noopener noreferrer" class="glass-card rounded-2xl p-6 flex flex-col items-center justify-center hover:bg-pink-500/10 transition-colors group">
             <i class="fab fa-apple text-3xl mb-3 text-pink-300 group-hover:scale-110 transition-transform"></i>
             <span class="text-sm font-bold">Apple Music</span>
           </a>
@@ -578,31 +572,19 @@
             <i class="fab fa-itunes text-3xl mb-3 text-purple-300 group-hover:scale-110 transition-transform"></i>
             <span class="text-sm font-bold">iTunes</span>
           </a>
-          <a href="https://www.tiktok.com/@cosmictease" target="_blank" rel="noopener noreferrer"
-             class="glass-card rounded-2xl p-6 flex flex-col items-center justify-center hover:bg-cyan-500/10 transition-colors group">
+          <a href="https://www.tiktok.com/@cosmictease" target="_blank" rel="noopener noreferrer" class="glass-card rounded-2xl p-6 flex flex-col items-center justify-center hover:bg-cyan-500/10 transition-colors group">
             <i class="fab fa-tiktok text-3xl mb-3 text-cyan-300 group-hover:scale-110 transition-transform"></i>
             <span class="text-sm font-bold">TikTok</span>
           </a>
-          <a href="https://youtube.com/@cosmic_tease" target="_blank" rel="noopener noreferrer"
-             class="glass-card rounded-2xl p-6 flex flex-col items-center justify-center hover:bg-red-600/10 transition-colors group">
+          <a href="https://youtube.com/@cosmic_tease" target="_blank" rel="noopener noreferrer" class="glass-card rounded-2xl p-6 flex flex-col items-center justify-center hover:bg-red-600/10 transition-colors group">
             <i class="fab fa-youtube text-3xl mb-3 text-red-400 group-hover:scale-110 transition-transform"></i>
             <span class="text-sm font-bold">YouTube</span>
           </a>
         </div>
 
-        <!-- ── SPOTIFY EMBED ── -->
         <div class="max-w-5xl mx-auto mb-10 reveal">
           <div class="spotify-embed">
-            <iframe
-              src="https://open.spotify.com/embed/artist/6d1NDbxwj89zRTJ8lUp63g?utm_source=generator&theme=0"
-              width="100%"
-              height="352"
-              frameborder="0"
-              allowfullscreen=""
-              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-              loading="lazy"
-              title="Violet Media on Spotify">
-            </iframe>
+            <iframe src="https://open.spotify.com/embed/artist/6d1NDbxwj89zRTJ8lUp63g?utm_source=generator&theme=0" width="100%" height="352" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="Violet Media on Spotify"></iframe>
           </div>
         </div>
 
@@ -628,9 +610,7 @@
       </div>
     </section>
 
-    <!-- ═══════════════════════════════════════════════════════════
-         SERVICES — NEW SECTION
-    ═══════════════════════════════════════════════════════════ -->
+    <!-- SERVICES -->
     <section id="services" class="py-28 relative">
       <div class="absolute inset-0 -z-10" aria-hidden="true"
            style="background: radial-gradient(800px 500px at 80% 30%, rgba(138,43,226,0.09), transparent 60%),
@@ -643,79 +623,54 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto mb-14">
-
           <div class="glass-card service-card rounded-2xl p-8 reveal">
-            <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5"
-                 style="background: rgba(138,43,226,0.18); border: 1px solid rgba(138,43,226,0.30);">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background: rgba(138,43,226,0.18); border: 1px solid rgba(138,43,226,0.30);">
               <i class="fa-solid fa-clapperboard text-xl text-purple-300"></i>
             </div>
             <h3 class="text-xl font-black font-display mb-3">Branded Content</h3>
-            <p class="text-white/60 text-sm leading-relaxed mb-4">
-              Cinematic AI-powered content campaigns for brands that want to move people — not just sell to them. TikTok, YouTube, Instagram.
-            </p>
+            <p class="text-white/60 text-sm leading-relaxed mb-4">Cinematic AI-powered content campaigns for brands that want to move people — not just sell to them. TikTok, YouTube, Instagram.</p>
             <div class="text-xs text-purple-300/80 font-bold tracking-wider uppercase">Brand Campaigns · Reels · Shorts</div>
           </div>
-
           <div class="glass-card service-card rounded-2xl p-8 reveal" style="transition-delay: 90ms;">
-            <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5"
-                 style="background: rgba(219,39,119,0.15); border: 1px solid rgba(219,39,119,0.25);">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background: rgba(219,39,119,0.15); border: 1px solid rgba(219,39,119,0.25);">
               <i class="fa-solid fa-music text-xl text-pink-300"></i>
             </div>
             <h3 class="text-xl font-black font-display mb-3">Music Production</h3>
-            <p class="text-white/60 text-sm leading-relaxed mb-4">
-              Deep House, Ethereal Cosmic House, and AI-generated pop. Original tracks for sync licensing, content scoring, and commercial release.
-            </p>
+            <p class="text-white/60 text-sm leading-relaxed mb-4">Deep House, Ethereal Cosmic House, and AI-generated pop. Original tracks for sync licensing, content scoring, and commercial release.</p>
             <div class="text-xs text-pink-300/80 font-bold tracking-wider uppercase">Original Tracks · Sync Licensing · Scoring</div>
           </div>
-
           <div class="glass-card service-card rounded-2xl p-8 reveal" style="transition-delay: 180ms;">
-            <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5"
-                 style="background: rgba(215,177,90,0.12); border: 1px solid rgba(215,177,90,0.22);">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background: rgba(215,177,90,0.12); border: 1px solid rgba(215,177,90,0.22);">
               <i class="fa-solid fa-film text-xl text-yellow-300"></i>
             </div>
             <h3 class="text-xl font-black font-display mb-3">Music Video Production</h3>
-            <p class="text-white/60 text-sm leading-relaxed mb-4">
-              Full cinematic music video production using AI-generated imagery, character universes, and hyper-realistic visual storytelling.
-            </p>
+            <p class="text-white/60 text-sm leading-relaxed mb-4">Full cinematic music video production using AI-generated imagery, character universes, and hyper-realistic visual storytelling.</p>
             <div class="text-xs text-yellow-300/80 font-bold tracking-wider uppercase">Concept · Visuals · Full Video</div>
           </div>
-
           <div class="glass-card service-card rounded-2xl p-8 reveal">
-            <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5"
-                 style="background: rgba(45,107,255,0.13); border: 1px solid rgba(45,107,255,0.22);">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background: rgba(45,107,255,0.13); border: 1px solid rgba(45,107,255,0.22);">
               <i class="fa-solid fa-microphone text-xl text-blue-300"></i>
             </div>
             <h3 class="text-xl font-black font-display mb-3">Voiceover & Avatar</h3>
-            <p class="text-white/60 text-sm leading-relaxed mb-4">
-              ElevenLabs Pro voice synthesis and InfiniteTalk lipsync production for podcasts, explainers, ads, and documentary narration.
-            </p>
+            <p class="text-white/60 text-sm leading-relaxed mb-4">ElevenLabs Pro voice synthesis and InfiniteTalk lipsync production for podcasts, explainers, ads, and documentary narration.</p>
             <div class="text-xs text-blue-300/80 font-bold tracking-wider uppercase">ElevenLabs · InfiniteTalk · Character Voice</div>
           </div>
-
           <div class="glass-card service-card rounded-2xl p-8 reveal" style="transition-delay: 90ms;">
-            <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5"
-                 style="background: rgba(138,43,226,0.15); border: 1px solid rgba(138,43,226,0.25);">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background: rgba(138,43,226,0.15); border: 1px solid rgba(138,43,226,0.25);">
               <i class="fa-solid fa-rocket text-xl text-purple-200"></i>
             </div>
             <h3 class="text-xl font-black font-display mb-3">Creator Consultation</h3>
-            <p class="text-white/60 text-sm leading-relaxed mb-4">
-              Strategic guidance for creators wanting to build an AI-powered content system. Stack selection, workflow design, brand identity.
-            </p>
+            <p class="text-white/60 text-sm leading-relaxed mb-4">Strategic guidance for creators wanting to build an AI-powered content system. Stack selection, workflow design, brand identity.</p>
             <div class="text-xs text-purple-200/80 font-bold tracking-wider uppercase">Strategy · AI Stack · Brand Build</div>
           </div>
-
           <div class="glass-card service-card rounded-2xl p-8 reveal" style="transition-delay: 180ms;">
-            <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5"
-                 style="background: rgba(45,107,255,0.10); border: 1px solid rgba(45,107,255,0.20);">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background: rgba(45,107,255,0.10); border: 1px solid rgba(45,107,255,0.20);">
               <i class="fa-solid fa-handshake text-xl text-cyan-300"></i>
             </div>
             <h3 class="text-xl font-black font-display mb-3">Brand Collaborations</h3>
-            <p class="text-white/60 text-sm leading-relaxed mb-4">
-              Partner with Violet Media and Cosmic Tease for sponsored content, product integrations, and co-created campaigns reaching 14M+ views.
-            </p>
+            <p class="text-white/60 text-sm leading-relaxed mb-4">Partner with Violet Media and Cosmic Tease for sponsored content, product integrations, and co-created campaigns reaching 14M+ views.</p>
             <div class="text-xs text-cyan-300/80 font-bold tracking-wider uppercase">Sponsorship · Co-Creation · Reach</div>
           </div>
-
         </div>
 
         <div class="text-center reveal">
@@ -726,7 +681,7 @@
       </div>
     </section>
 
-    <!-- AI TECH — UPDATED WITH REAL STACK -->
+    <!-- AI TECH -->
     <section id="ai-tech" class="py-28 relative">
       <div class="container mx-auto px-6">
         <div class="text-center mb-16 reveal">
@@ -735,49 +690,42 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 max-w-6xl mx-auto">
-
           <div class="glass-card rounded-2xl p-8 text-center reveal">
             <i class="fas fa-music text-4xl text-purple-300 mb-4"></i>
             <h3 class="text-xl font-black mb-2 font-display">Suno AI 5.0</h3>
             <div class="text-xs text-purple-300/70 font-bold tracking-widest uppercase mb-3">Music Generation</div>
             <p class="text-white/60 text-sm leading-relaxed">Production-grade Deep House and Ethereal Cosmic House. Every track engineered for emotional impact and viral retention.</p>
           </div>
-
           <div class="glass-card rounded-2xl p-8 text-center reveal" style="transition-delay: 90ms;">
             <i class="fas fa-microphone text-4xl text-pink-300 mb-4"></i>
             <h3 class="text-xl font-black mb-2 font-display">ElevenLabs Pro</h3>
             <div class="text-xs text-pink-300/70 font-bold tracking-widest uppercase mb-3">Voice Synthesis</div>
             <p class="text-white/60 text-sm leading-relaxed">Ultra-realistic voice characters for narration, avatars, and character universes. Nova Violet. Violet Echo. Stella. Violet Myst.</p>
           </div>
-
           <div class="glass-card rounded-2xl p-8 text-center reveal" style="transition-delay: 180ms;">
             <i class="fas fa-user-astronaut text-4xl text-cyan-200 mb-4"></i>
             <h3 class="text-xl font-black mb-2 font-display">InfiniteTalk</h3>
             <div class="text-xs text-cyan-200/70 font-bold tracking-widest uppercase mb-3">Lipsync & Avatar</div>
             <p class="text-white/60 text-sm leading-relaxed">Cost-effective hyper-realistic lipsync and talking avatar generation. The backbone of our character universe and presenter content.</p>
           </div>
-
           <div class="glass-card rounded-2xl p-8 text-center reveal">
             <i class="fas fa-bolt text-4xl text-yellow-300 mb-4"></i>
             <h3 class="text-xl font-black mb-2 font-display">WaveSpeed AI</h3>
             <div class="text-xs text-yellow-300/70 font-bold tracking-widest uppercase mb-3">Video Generation · Partner</div>
             <p class="text-white/60 text-sm leading-relaxed">Official WaveSpeed AI Partner Creator. Image-to-video animation powering cinematic motion across 600+ AI models.</p>
           </div>
-
           <div class="glass-card rounded-2xl p-8 text-center reveal" style="transition-delay: 90ms;">
             <i class="fas fa-image text-4xl text-green-300 mb-4"></i>
             <h3 class="text-xl font-black mb-2 font-display">Flow / Gemini Pro</h3>
             <div class="text-xs text-green-300/70 font-bold tracking-widest uppercase mb-3">Image Generation</div>
             <p class="text-white/60 text-sm leading-relaxed">8K hyper-realistic cinematic image generation via Nano Banana Pro. The visual DNA of every Violet Media production.</p>
           </div>
-
           <div class="glass-card rounded-2xl p-8 text-center reveal" style="transition-delay: 180ms;">
             <i class="fas fa-brain text-4xl text-orange-300 mb-4"></i>
             <h3 class="text-xl font-black mb-2 font-display">Claude / Anthropic</h3>
             <div class="text-xs text-orange-300/70 font-bold tracking-widest uppercase mb-3">Creative Intelligence</div>
             <p class="text-white/60 text-sm leading-relaxed">The strategic and creative AI brain behind Violet Media's content architecture, prompt engineering, and production workflows.</p>
           </div>
-
         </div>
 
         <div class="glass-card rounded-3xl p-10 mt-12 max-w-5xl mx-auto reveal">
@@ -823,13 +771,11 @@
               radial-gradient(900px 600px at 50% 20%, rgba(138,43,226,0.12), transparent 62%),
               linear-gradient(to top, rgba(138,43,226,0.10), transparent 45%);">
       </div>
-
       <div class="container mx-auto px-6 relative z-10">
         <div class="text-center mb-14 reveal">
           <h2 class="text-4xl md:text-5xl font-display font-black mb-4 cosmic-text">JOIN THE COSMIC REVOLUTION</h2>
           <p class="text-lg text-white/60">Whether you're a creator, brand, or visionary — you're invited</p>
         </div>
-
         <div class="max-w-4xl mx-auto text-center glass-card p-10 md:p-12 rounded-3xl reveal">
           <h3 class="text-2xl md:text-3xl font-black mb-4 font-display">Get in Touch</h3>
           <p class="text-base md:text-lg text-white/70 mb-8">
@@ -844,18 +790,9 @@
             </a>
           </div>
           <div class="flex justify-center items-center gap-8">
-            <a href="https://www.tiktok.com/@cosmictease" target="_blank" rel="noopener noreferrer"
-               class="text-4xl text-white/45 hover:text-pink-400 transition-colors" aria-label="TikTok">
-              <i class="fab fa-tiktok"></i>
-            </a>
-            <a href="https://youtube.com/@cosmic_tease" target="_blank" rel="noopener noreferrer"
-               class="text-4xl text-white/45 hover:text-red-400 transition-colors" aria-label="YouTube">
-              <i class="fab fa-youtube"></i>
-            </a>
-            <a href="https://open.spotify.com/artist/6d1NDbxwj89zRTJ8lUp63g" target="_blank" rel="noopener noreferrer"
-               class="text-4xl text-white/45 hover:text-green-400 transition-colors" aria-label="Spotify">
-              <i class="fab fa-spotify"></i>
-            </a>
+            <a href="https://www.tiktok.com/@cosmictease" target="_blank" rel="noopener noreferrer" class="text-4xl text-white/45 hover:text-pink-400 transition-colors" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+            <a href="https://youtube.com/@cosmic_tease" target="_blank" rel="noopener noreferrer" class="text-4xl text-white/45 hover:text-red-400 transition-colors" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+            <a href="https://open.spotify.com/artist/6d1NDbxwj89zRTJ8lUp63g" target="_blank" rel="noopener noreferrer" class="text-4xl text-white/45 hover:text-green-400 transition-colors" aria-label="Spotify"><i class="fab fa-spotify"></i></a>
           </div>
           <div class="mt-10 text-sm text-white/45">
             Violet Media • Perth, Australia • <span class="cosmic-text font-bold">Quality is for the ages</span>
@@ -864,14 +801,12 @@
       </div>
     </section>
 
-    <!-- FOOTER — UPDATED © 2026 -->
+    <!-- FOOTER -->
     <footer class="py-14 text-center border-t border-white/5 bg-cosmic-900/60">
       <div class="container mx-auto px-6">
-        <!-- Logo Lockup -->
         <div class="flex justify-center mb-8">
           <img src="vm-logo-horizontal-footer.jpg" alt="Violet Media - AI-Powered Cosmic Visuals" class="w-full max-w-3xl rounded-2xl" style="max-width: 768px; width: 100%; height: auto;" />
         </div>
-        
         <p class="text-white/45 mb-3">© 2026 Violet Media. All rights reserved.</p>
         <p class="text-xl md:text-2xl font-black cosmic-text font-display">
           Quality is for the ages. This is Violet Media.
@@ -884,6 +819,60 @@
     <i class="fa-solid fa-arrow-up"></i> Top
   </button>
 
+  <!-- ═══════════════════════════════════════════════════════════
+       VERTEX SHADER — Round glowing particles
+  ═══════════════════════════════════════════════════════════ -->
+  <script id="vs" type="x-shader/x-vertex">
+    uniform float uTime;
+    uniform vec2 uMouse;
+    attribute float aScale;
+    attribute vec3 aColor;
+    attribute vec3 aDrift;
+    varying vec3 vColor;
+
+    void main() {
+      vColor = aColor;
+      vec3 pos = position;
+
+      // Gentle organic drift via Lissajous
+      pos.x += sin(uTime * aDrift.x * 0.2) * 1.5;
+      pos.y += cos(uTime * aDrift.y * 0.2) * 1.5;
+
+      // Mouse repulsion in screen space
+      vec4 proj = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+      vec2 sp = proj.xy / proj.w;
+      float d = distance(sp, uMouse);
+      if (d < 0.2) {
+        vec2 dir = normalize(sp - uMouse);
+        float f = smoothstep(0.2, 0.0, d);
+        pos.x += dir.x * f * 8.0;
+        pos.y += dir.y * f * 8.0;
+        vColor *= (1.0 + f * 1.0);
+      }
+
+      vec4 mv = modelViewMatrix * vec4(pos, 1.0);
+      gl_PointSize = 8.0 * aScale * (200.0 / -mv.z);
+      gl_Position = projectionMatrix * mv;
+    }
+  </script>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       FRAGMENT SHADER — Soft anti-aliased circles with glow
+  ═══════════════════════════════════════════════════════════ -->
+  <script id="fs" type="x-shader/x-fragment">
+    varying vec3 vColor;
+    void main() {
+      vec2 c = 2.0 * gl_PointCoord - 1.0;
+      float r = dot(c, c);
+      float delta = fwidth(r);
+      float mask = 1.0 - smoothstep(1.0 - delta, 1.0 + delta, r);
+      float glow = exp(-r * 3.0);
+      if (mask < 0.01) discard;
+      gl_FragColor = vec4(vColor * glow, mask * 0.7);
+    }
+  </script>
+
+  <!-- NON-THREE.JS SCRIPTS (menu, reveal, nav spy, toTop) -->
   <script>
     const prefersReducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -923,63 +912,207 @@
       const spy = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) setActiveNav(entry.target.id); }); }, { rootMargin: "-35% 0px -55% 0px", threshold: 0.01 });
       sections.forEach(s => spy.observe(s));
     }
-
-    if (!prefersReducedMotion && window.THREE) {
-      const host = document.getElementById("three-host");
-      const scene = new THREE.Scene();
-      scene.fog = new THREE.FogExp2(0x050214, 0.045);
-      const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-      camera.position.z = 7;
-      const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: "high-performance" });
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      host.appendChild(renderer.domElement);
-
-      const particlesGeometry = new THREE.BufferGeometry();
-      const particlesCount = Math.min(2400, Math.floor((window.innerWidth * window.innerHeight) / 450));
-      const posArray = new Float32Array(particlesCount * 3);
-      const colorsArray = new Float32Array(particlesCount * 3);
-
-      for (let i = 0; i < particlesCount * 3; i += 3) {
-        posArray[i]     = (Math.random() - 0.5) * 48;
-        posArray[i + 1] = (Math.random() - 0.5) * 38;
-        posArray[i + 2] = (Math.random() - 0.5) * 60;
-        const t = Math.random();
-        if (t > 0.965) { colorsArray[i] = 0.85; colorsArray[i+1] = 0.69; colorsArray[i+2] = 0.35; }
-        else if (t > 0.90) { colorsArray[i] = 0.92; colorsArray[i+1] = 0.28; colorsArray[i+2] = 0.60; }
-        else if (t > 0.78) { colorsArray[i] = 0.54; colorsArray[i+1] = 0.17; colorsArray[i+2] = 0.89; }
-        else if (t > 0.64) { colorsArray[i] = 0.18; colorsArray[i+1] = 0.42; colorsArray[i+2] = 1.00; }
-        else { colorsArray[i] = 1.0; colorsArray[i+1] = 1.0; colorsArray[i+2] = 1.0; }
-      }
-
-      particlesGeometry.setAttribute("position", new THREE.BufferAttribute(posArray, 3));
-      particlesGeometry.setAttribute("color", new THREE.BufferAttribute(colorsArray, 3));
-      const material = new THREE.PointsMaterial({ size: 0.05, sizeAttenuation: true, vertexColors: true, transparent: true, opacity: 0.78, blending: THREE.AdditiveBlending, depthWrite: false });
-      const stars = new THREE.Points(particlesGeometry, material);
-      scene.add(stars);
-
-      let mouseX = 0, mouseY = 0;
-      document.addEventListener("mousemove", (e) => { mouseX = (e.clientX / window.innerWidth) * 2 - 1; mouseY = -(e.clientY / window.innerHeight) * 2 + 1; }, { passive: true });
-
-      const clock = new THREE.Clock();
-      function animate() {
-        const t = clock.getElapsedTime();
-        stars.rotation.y = t * 0.035 + mouseX * 0.08;
-        stars.rotation.x = t * 0.015 + mouseY * 0.06;
-        const scroll = Math.min(window.scrollY / 1200, 1);
-        camera.position.z = 7 + scroll * 1.3;
-        renderer.render(scene, camera);
-        requestAnimationFrame(animate);
-      }
-      animate();
-
-      window.addEventListener("resize", () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      });
-    }
   </script>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       CINEMATIC THREE.JS ENGINE — Custom shaders + Bloom + Nebula
+  ═══════════════════════════════════════════════════════════ -->
+  <script type="module">
+    import * as THREE from 'three';
+    import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+    import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+    import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+    import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      // Skip entire WebGL setup for accessibility
+    } else {
+
+    const mobile = window.innerWidth < 768;
+    const host = document.getElementById("three-host");
+
+    // Scene
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x050214, 0.04);
+
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.z = 7;
+
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: false, powerPreference: "high-performance" });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.toneMapping = THREE.ReinhardToneMapping;
+    renderer.toneMappingExposure = 0.8;
+    host.appendChild(renderer.domElement);
+
+    // Post-processing
+    const composer = new EffectComposer(renderer);
+    composer.addPass(new RenderPass(scene, camera));
+
+    if (!mobile) {
+      // Selective bloom: only HDR particles glow
+      const bloom = new UnrealBloomPass(
+        new THREE.Vector2(window.innerWidth, window.innerHeight),
+        0.45,  // Strength — subtle
+        0.4,   // Radius — soft spread
+        1.2    // Threshold — only bright stars
+      );
+      composer.addPass(bloom);
+    }
+
+    composer.addPass(new OutputPass());
+
+    // Particles with custom shaders
+    const COUNT = mobile ? 2000 : 5000;
+    const geo = new THREE.BufferGeometry();
+    const pos = new Float32Array(COUNT * 3);
+    const col = new Float32Array(COUNT * 3);
+    const scl = new Float32Array(COUNT);
+    const dft = new Float32Array(COUNT * 3);
+
+    const violet = new THREE.Color(0x8A2BE2);
+    const blue = new THREE.Color(0x2D6BFF);
+    const gold = new THREE.Color(0xD7B15A);
+    const pink = new THREE.Color(0xDB2777);
+    const white = new THREE.Color(0xFFFFFF);
+
+    for (let i = 0; i < COUNT; i++) {
+      pos[i*3]   = (Math.random() - 0.5) * 48;
+      pos[i*3+1] = (Math.random() - 0.5) * 38;
+      pos[i*3+2] = (Math.random() - 0.5) * 60;
+
+      // Color distribution matching original site
+      const t = Math.random();
+      let c;
+      if (t > 0.965) c = gold;
+      else if (t > 0.90) c = pink;
+      else if (t > 0.78) c = violet;
+      else if (t > 0.64) c = blue;
+      else c = white;
+
+      // 5% become bright bloom stars, rest stay subtle
+      const bright = Math.random() < 0.05;
+      const hdr = bright ? 2.5 : 0.85;
+
+      col[i*3]   = c.r * hdr;
+      col[i*3+1] = c.g * hdr;
+      col[i*3+2] = c.b * hdr;
+
+      scl[i] = Math.random() * 0.8 + 0.2;
+      if (bright) scl[i] *= 2.0;
+
+      dft[i*3]   = Math.random() * 0.6 + 0.1;
+      dft[i*3+1] = Math.random() * 0.6 + 0.1;
+      dft[i*3+2] = Math.random() * 0.3 + 0.05;
+    }
+
+    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    geo.setAttribute('aColor', new THREE.BufferAttribute(col, 3));
+    geo.setAttribute('aScale', new THREE.BufferAttribute(scl, 1));
+    geo.setAttribute('aDrift', new THREE.BufferAttribute(dft, 3));
+
+    const mat = new THREE.ShaderMaterial({
+      vertexShader: document.getElementById('vs').textContent,
+      fragmentShader: document.getElementById('fs').textContent,
+      uniforms: {
+        uTime: { value: 0 },
+        uMouse: { value: new THREE.Vector2(-9, -9) }
+      },
+      transparent: true,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending
+    });
+
+    const stars = new THREE.Points(geo, mat);
+    scene.add(stars);
+
+    // Subtle nebula wisps
+    const clouds = [];
+    const cloudScales = [];
+
+    if (!mobile) {
+      const l1 = new THREE.PointLight(0x5a1daa, 30, 40);
+      l1.position.set(5, 3, -10);
+      scene.add(l1);
+      const l2 = new THREE.PointLight(0x002266, 30, 40);
+      l2.position.set(-4, -2, -15);
+      scene.add(l2);
+
+      new THREE.TextureLoader().load(
+        'https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/sprites/cloud2.png',
+        (tex) => {
+          const cGeo = new THREE.PlaneGeometry(25, 25);
+          for (let i = 0; i < 10; i++) {
+            const cMat = new THREE.MeshLambertMaterial({
+              map: tex, transparent: true, opacity: 0.015,
+              blending: THREE.AdditiveBlending, depthWrite: false,
+              color: new THREE.Color(0x5a1daa)
+            });
+            cMat.color.offsetHSL((Math.random()-0.5)*0.04, 0, (Math.random()-0.5)*0.04);
+            const m = new THREE.Mesh(cGeo, cMat);
+            m.position.set((Math.random()-0.5)*40, (Math.random()-0.5)*25, -5 + (Math.random()-0.5)*20);
+            m.rotation.z = Math.random() * Math.PI * 2;
+            const s = Math.random() * 1.2 + 0.4;
+            m.scale.setScalar(s);
+            scene.add(m);
+            clouds.push(m);
+            cloudScales.push(s);
+          }
+        }
+      );
+    }
+
+    // Mouse tracking
+    const tMouse = new THREE.Vector2(-9, -9);
+    let mouseX = 0, mouseY = 0;
+    document.addEventListener("mousemove", (e) => {
+      mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+      mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+      tMouse.set(mouseX, mouseY);
+    }, { passive: true });
+
+    // Resize
+    window.addEventListener("resize", () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      composer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    });
+
+    // Render loop
+    const clock = new THREE.Clock();
+    const sMouse = new THREE.Vector2(-9, -9);
+
+    function animate() {
+      const t = clock.getElapsedTime();
+
+      // Shader uniforms
+      mat.uniforms.uTime.value = t;
+      sMouse.lerp(tMouse, 0.07);
+      mat.uniforms.uMouse.value.copy(sMouse);
+
+      // Rotation — matching original site feel but smoother
+      stars.rotation.y = t * 0.035 + mouseX * 0.08;
+      stars.rotation.x = t * 0.015 + mouseY * 0.06;
+
+      // Scroll depth — subtle
+      const scroll = Math.min(window.scrollY / 1200, 1);
+      camera.position.z = 7 + scroll * 1.3;
+
+      // Nebula breathing
+      for (let i = 0; i < clouds.length; i++) {
+        clouds[i].rotation.z -= 0.0002;
+        clouds[i].scale.setScalar(cloudScales[i] * (1 + Math.sin(t * 0.1 + i) * 0.015));
+      }
+
+      composer.render();
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    } // end reduced-motion check
+  </script>
+
 </body>
 </html>
