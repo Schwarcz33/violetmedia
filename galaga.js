@@ -49,6 +49,9 @@
   let lastTime = 0;
   let soundEnabled = true;
   let isMobile = false;
+  let isFullscreen = false;
+  let renderScale = 1;
+  let canvasContainer = null;
 
   // Player
   let player = { x: 0, y: 0, w: PLAYER_W, h: PLAYER_H, lastFire: 0, invincible: 0, shield: false, rapidFire: false, spreadShot: false, rapidEnd: 0, spreadEnd: 0 };
@@ -697,7 +700,7 @@
     // Controls info
     ctx.font = "500 13px 'Inter', monospace";
     ctx.fillStyle = "rgba(255,255,255,0.4)";
-    ctx.fillText("ARROW KEYS / WASD to move  •  SPACE to fire  •  ESC to pause", GW / 2, GH * 0.55);
+    ctx.fillText("ARROW KEYS / WASD to move  •  SPACE to fire  •  F fullscreen  •  ESC pause", GW / 2, GH * 0.55);
     if (isMobile) {
       ctx.fillText("TAP left/right to move  •  TAP center to fire", GW / 2, GH * 0.60);
     }
@@ -1132,6 +1135,58 @@
     requestAnimationFrame(loop);
   }
 
+  // ── FULLSCREEN ──
+  function toggleFullscreen() {
+    canvasContainer = canvas.parentElement;
+    if (!document.fullscreenElement) {
+      const el = canvasContainer || canvas;
+      (el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen).call(el);
+    } else {
+      (document.exitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen).call(document);
+    }
+  }
+
+  function handleFullscreenChange() {
+    isFullscreen = !!document.fullscreenElement;
+    if (isFullscreen) {
+      // Scale canvas to fill screen while maintaining 4:3 aspect ratio
+      const screenW = window.innerWidth || screen.width;
+      const screenH = window.innerHeight || screen.height;
+      const scaleX = screenW / GW;
+      const scaleY = screenH / GH;
+      renderScale = Math.min(scaleX, scaleY);
+      const newW = Math.floor(GW * renderScale);
+      const newH = Math.floor(GH * renderScale);
+      canvas.width = GW;
+      canvas.height = GH;
+      canvas.style.width = newW + "px";
+      canvas.style.height = newH + "px";
+      canvas.style.maxWidth = "none";
+      // Center in fullscreen container
+      canvas.style.position = "fixed";
+      canvas.style.top = "50%";
+      canvas.style.left = "50%";
+      canvas.style.transform = "translate(-50%, -50%)";
+      canvas.style.zIndex = "9999";
+    } else {
+      // Restore original canvas styling
+      renderScale = 1;
+      canvas.width = GW;
+      canvas.height = GH;
+      canvas.style.width = "";
+      canvas.style.height = "";
+      canvas.style.maxWidth = "";
+      canvas.style.position = "";
+      canvas.style.top = "";
+      canvas.style.left = "";
+      canvas.style.transform = "";
+      canvas.style.zIndex = "";
+    }
+  }
+
+  // Expose for external button
+  window.VioletGalagaFullscreen = toggleFullscreen;
+
   // ── INPUT ──
   function setupInput() {
     window.addEventListener("keydown", (e) => {
@@ -1146,9 +1201,14 @@
         else if (gameState === "paused") gameState = "playing";
       }
       if (e.code === "KeyM") soundEnabled = !soundEnabled;
+      if (e.code === "KeyF") toggleFullscreen();
       if (e.code === "Space") e.preventDefault();
     });
     window.addEventListener("keyup", (e) => { keys[e.code] = false; });
+
+    // Fullscreen change listener
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    document.addEventListener("webkitfullscreenchange", handleFullscreenChange);
 
     // Touch
     canvas.addEventListener("touchstart", (e) => {

@@ -222,6 +222,18 @@
       image-rendering: pixelated;
       cursor: crosshair;
     }
+    /* Fullscreen mode */
+    #galaga-canvas:fullscreen,
+    #galaga-canvas:-webkit-full-screen {
+      border-radius: 0;
+      border: none;
+      box-shadow: none;
+      background: #050214;
+    }
+    *:fullscreen,
+    *:-webkit-full-screen {
+      background: #050214;
+    }
     @media (prefers-reduced-motion: reduce){
       html{ scroll-behavior:auto; }
       .reveal{ opacity:1 !important; transform:none !important; transition:none !important; }
@@ -737,15 +749,20 @@
           </div>
           <h2 class="text-4xl md:text-5xl font-display font-black mb-4 cosmic-text">VIOLET MEDIA GAMES</h2>
           <p class="text-lg text-white/60 mb-2">Arcade-grade entertainment, Violet-grade quality</p>
-          <p class="text-sm text-white/40">Arrow keys / WASD to move &bull; SPACE to fire &bull; ESC to pause &bull; M for sound</p>
+          <p class="text-sm text-white/40">Arrow keys / WASD to move &bull; SPACE to fire &bull; F fullscreen &bull; ESC pause &bull; M sound</p>
         </div>
         <div class="flex justify-center reveal" style="transition-delay: 100ms;">
           <div class="relative">
             <canvas id="galaga-canvas" width="800" height="600"></canvas>
-            <!-- Sound toggle floating button -->
-            <button id="game-sound-toggle" class="absolute top-3 right-3 z-10 w-10 h-10 rounded-full flex items-center justify-center text-white/50 hover:text-white transition-colors" style="background: rgba(17,8,38,0.6); border: 1px solid rgba(255,255,255,0.1);" aria-label="Toggle game sound">
-              <i class="fas fa-volume-up text-sm"></i>
-            </button>
+            <!-- Game control buttons -->
+            <div class="absolute top-3 right-3 z-10 flex gap-2">
+              <button id="game-fullscreen-toggle" class="w-10 h-10 rounded-full flex items-center justify-center text-white/50 hover:text-white transition-colors" style="background: rgba(17,8,38,0.6); border: 1px solid rgba(255,255,255,0.1);" aria-label="Toggle fullscreen">
+                <i class="fas fa-expand text-sm"></i>
+              </button>
+              <button id="game-sound-toggle" class="w-10 h-10 rounded-full flex items-center justify-center text-white/50 hover:text-white transition-colors" style="background: rgba(17,8,38,0.6); border: 1px solid rgba(255,255,255,0.1);" aria-label="Toggle game sound">
+                <i class="fas fa-volume-up text-sm"></i>
+              </button>
+            </div>
           </div>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-3xl mx-auto mt-10 reveal" style="transition-delay: 200ms;">
@@ -943,12 +960,25 @@
     // Game sound toggle button
     document.getElementById("game-sound-toggle").addEventListener("click", function() {
       if (window.VioletGalaga) {
-        // Toggle via M key simulation
         window.dispatchEvent(new KeyboardEvent("keydown", { code: "KeyM" }));
         window.dispatchEvent(new KeyboardEvent("keyup", { code: "KeyM" }));
         const icon = this.querySelector("i");
         icon.classList.toggle("fa-volume-up");
         icon.classList.toggle("fa-volume-mute");
+      }
+    });
+    // Fullscreen toggle button
+    document.getElementById("game-fullscreen-toggle").addEventListener("click", function() {
+      if (window.VioletGalagaFullscreen) {
+        window.VioletGalagaFullscreen();
+      }
+    });
+    // Update fullscreen icon on change
+    document.addEventListener("fullscreenchange", function() {
+      const icon = document.querySelector("#game-fullscreen-toggle i");
+      if (icon) {
+        icon.classList.toggle("fa-expand", !document.fullscreenElement);
+        icon.classList.toggle("fa-compress", !!document.fullscreenElement);
       }
     });
   </script>
