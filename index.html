@@ -24,7 +24,10 @@
   <meta property="og:type" content="website" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@300;500;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@300;500;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet" />
+  <!-- GSAP + ScrollTrigger for cinematic scroll animations -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" />
   <!-- Three.js via importmap for post-processing addons -->
   <script type="importmap">
@@ -54,7 +57,8 @@
           },
           fontFamily: {
             sans: ["Inter", "sans-serif"],
-            display: ["Space Grotesk", "sans-serif"]
+            display: ["Space Grotesk", "sans-serif"],
+            drama: ["Playfair Display", "Georgia", "serif"]
           }
         }
       }
@@ -158,24 +162,30 @@
       background: linear-gradient(135deg, rgba(138,43,226,1) 0%, rgba(107,33,168,1) 55%, rgba(215,177,90,0.95) 100%);
       color:#fff; border-radius: 999px; padding: 14px 22px; font-weight: 800; letter-spacing: .2px;
       box-shadow: 0 0 22px rgba(138,43,226,0.28);
-      transition: transform .22s ease, box-shadow .22s ease, filter .22s ease; overflow:hidden;
+      transition: transform .28s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow .28s ease, filter .28s ease; overflow:hidden;
+    }
+    .btn-cosmic::before{
+      content:""; position:absolute; inset:0; border-radius:inherit;
+      background: linear-gradient(135deg, rgba(215,177,90,1) 0%, rgba(138,43,226,1) 55%, rgba(107,33,168,1) 100%);
+      opacity:0; transition: opacity .35s ease; z-index:0;
     }
     .btn-cosmic::after{
       content:""; position:absolute; inset:-40%;
       background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.20), transparent 45%);
-      transform: translateX(-18%); opacity:.65; pointer-events:none;
+      transform: translateX(-18%); opacity:.65; pointer-events:none; z-index:1;
     }
-    .btn-cosmic:hover{ transform: translateY(-2px); box-shadow: 0 0 42px rgba(138,43,226,0.38); filter: saturate(1.08); }
+    .btn-cosmic:hover{ transform: translateY(-2px) scale(1.03); box-shadow: 0 0 50px rgba(138,43,226,0.45); filter: saturate(1.08); }
+    .btn-cosmic:hover::before{ opacity:1; }
+    .btn-cosmic span, .btn-cosmic i{ position:relative; z-index:2; }
     .btn-ghost{
       display:inline-flex; align-items:center; justify-content:center; gap:.6rem;
       border-radius: 999px; padding: 14px 22px; font-weight: 800; color: rgba(255,255,255,0.92);
       border: 1px solid rgba(255,255,255,0.16); background: rgba(17, 8, 38, 0.35);
       backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-      transition: transform .22s ease, background .22s ease, border-color .22s ease;
+      transition: transform .28s cubic-bezier(0.25, 0.46, 0.45, 0.94), background .28s ease, border-color .28s ease;
     }
-    .btn-ghost:hover{ transform: translateY(-2px); background: rgba(17, 8, 38, 0.55); border-color: rgba(138,43,226,0.35); }
-    .reveal{ opacity:0; transform: translateY(26px); transition: opacity .85s ease, transform .85s ease; will-change: opacity, transform; }
-    .reveal.active{ opacity:1; transform: translateY(0); }
+    .btn-ghost:hover{ transform: translateY(-1px) scale(1.03); background: rgba(17, 8, 38, 0.55); border-color: rgba(138,43,226,0.35); }
+    .reveal{ opacity:0; transform: translateY(40px); will-change: opacity, transform; }
     .mobile-menu{
       transition: transform .28s ease, opacity .28s ease, visibility .28s ease;
       transform: translateX(100%); opacity:0; visibility:hidden;
@@ -246,9 +256,9 @@
   <div id="three-host" aria-hidden="true"></div>
   <div class="aether-overlay" aria-hidden="true"></div>
   <div class="noise-overlay" aria-hidden="true"></div>
-  <!-- NAV -->
-  <nav class="fixed top-0 w-full z-50 border-b border-white/10 bg-cosmic-900/70 backdrop-blur-md" role="banner">
-    <div class="container mx-auto px-6 h-20 flex items-center justify-between">
+  <!-- NAV — Morphing Floating Island -->
+  <nav id="main-nav" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[96%] max-w-6xl rounded-full px-6 h-16 flex items-center justify-between transition-all duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]" role="banner" style="background: transparent; border: 1px solid transparent;">
+    <div class="flex items-center justify-between w-full">
       <a href="#top" class="flex items-center gap-3">
         <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="border-radius:14px; background: rgba(17, 8, 38, 0.8); border: 1px solid rgba(138,43,226,0.3);">
           <img src="favicon.png" alt="VM" class="w-6 h-6" />
@@ -258,28 +268,37 @@
           <div class="text-[11px] tracking-[0.18em] uppercase text-white/50">Cosmic Empire</div>
         </div>
       </a>
-      <div class="hidden md:flex items-center gap-8 text-sm font-semibold text-white/70">
+      <div class="hidden lg:flex items-center gap-6 text-sm font-semibold text-white/70">
         <a data-nav href="#cosmic-tease" class="hover:text-white hover:text-purple-300 transition-colors">Cosmic Tease</a>
         <a data-nav href="#music" class="hover:text-white hover:text-purple-300 transition-colors">Music</a>
         <a data-nav href="#services" class="hover:text-white hover:text-purple-300 transition-colors">Services</a>
-        <a data-nav href="#ai-tech" class="hover:text-white hover:text-purple-300 transition-colors">AI Technology</a>
+        <a data-nav href="#ai-tech" class="hover:text-white hover:text-purple-300 transition-colors">AI Tech</a>
         <a data-nav href="#games" class="hover:text-white hover:text-purple-300 transition-colors">Games</a>
         <a data-nav href="#contact" class="hover:text-white hover:text-purple-300 transition-colors">Contact</a>
         <span class="w-px h-4 bg-white/15"></span>
         <a href="https://web.violetmedia.org" target="_blank" class="hover:text-white hover:text-purple-300 transition-colors">Web Design</a>
         <a href="https://store.violetmedia.org" target="_blank" class="relative hover:text-white hover:text-purple-300 transition-colors">Store <span class="absolute -top-2 -right-6 text-[9px] bg-purple-500/30 text-purple-200 px-1.5 py-0.5 rounded-full border border-purple-400/20 font-black">SOON</span></a>
       </div>
-      <div class="hidden md:flex items-center gap-3">
+      <div class="hidden lg:flex items-center gap-3">
         <a href="#contact" class="btn-ghost">
           <i class="fa-solid fa-sparkles"></i>
           Start a Project
         </a>
       </div>
-      <button id="mobile-btn" class="md:hidden text-white text-2xl" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+      <button id="mobile-btn" class="lg:hidden text-white text-2xl" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
         <i class="fas fa-bars"></i>
       </button>
     </div>
   </nav>
+  <style>
+    #main-nav.scrolled {
+      background: rgba(5, 2, 20, 0.60);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-color: rgba(138, 43, 226, 0.18);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3), 0 0 40px rgba(138,43,226,0.08);
+    }
+  </style>
   <!-- MOBILE MENU -->
   <div id="mobile-menu" class="mobile-menu fixed inset-0 z-[70] bg-cosmic-900/95 backdrop-blur-lg">
     <div class="absolute inset-0" aria-hidden="true"
@@ -340,16 +359,17 @@
           <span class="w-2 h-2 rounded-full" style="background: var(--violet); box-shadow:0 0 18px rgba(138,43,226,0.6);"></span>
           Violet Media × Cosmic Tease • Perth, Australia • Legendary-Grade Output
         </div>
-        <h1 class="text-5xl md:text-7xl lg:text-8xl font-display font-black tracking-tight mb-6 reveal">
-          The <span class="cosmic-text">Cosmic Empire</span>
+        <h1 class="mb-6 reveal">
+          <span class="block text-2xl md:text-3xl lg:text-4xl font-display font-black tracking-tight text-white/90 mb-2">The</span>
+          <span class="block text-6xl md:text-7xl lg:text-[10rem] font-drama italic cosmic-text leading-[0.9] tracking-tight">Cosmic Empire</span>
         </h1>
         <p class="text-lg md:text-2xl cosmic-subtext mb-5 max-w-3xl mx-auto font-light reveal" style="transition-delay: 110ms;">
           A cinematic, musical, and AI-powered creative house engineered for the new era.
         </p>
         <p class="text-base md:text-lg text-white/60 mb-10 max-w-2xl mx-auto reveal" style="transition-delay: 200ms;">
-          Where vision meets vibration. Where art, AI, and human spirit coalesce to create content that lasts.
+          Where vision meets vibration. Where art, AI, and human spirit coalesce to create content that <em class="font-drama italic text-purple-300/90 not-italic">lasts.</em>
         </p>
-        <div class="grid grid-cols-2 md:grid-cols-5 gap-4 max-w-5xl mx-auto mb-10 reveal" style="transition-delay: 280ms;">
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 max-w-5xl mx-auto mb-10 reveal" style="transition-delay: 280ms;">
           <div class="glass-card p-6 rounded-2xl text-left">
             <div class="flex items-center justify-between mb-3">
               <div class="text-xs tracking-[0.18em] uppercase text-white/50">Reach</div>
@@ -427,7 +447,8 @@
     <section id="cosmic-tease" class="py-28 relative">
       <div class="container mx-auto px-6">
         <div class="text-center mb-16 reveal">
-          <h2 class="text-4xl md:text-5xl font-display font-black mb-4 cosmic-text">COSMIC TEASE</h2>
+          <h2 class="text-4xl md:text-5xl font-display font-black mb-1 cosmic-text">COSMIC TEASE</h2>
+          <div class="text-2xl md:text-3xl font-drama italic text-white/30 mb-2">the entertainment engine</div>
           <p class="text-lg text-white/60">The Entertainment Empire • 14M Views • 718K Likes • 10K Shares</p>
           <div class="flex justify-center items-center gap-6 mt-6">
             <a href="https://www.tiktok.com/@cosmictease" target="_blank" rel="noopener noreferrer"
@@ -530,7 +551,8 @@
       </div>
       <div class="container mx-auto px-6 relative z-10">
         <div class="text-center mb-16 reveal">
-          <h2 class="text-4xl md:text-5xl font-display font-black mb-4 cosmic-text">VIOLET RECORDS</h2>
+          <h2 class="text-4xl md:text-5xl font-display font-black mb-1 cosmic-text">VIOLET RECORDS</h2>
+          <div class="text-2xl md:text-3xl font-drama italic text-white/30 mb-2">sound that moves</div>
           <p class="text-lg text-white/60">We craft musical worlds</p>
         </div>
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-14 reveal">
@@ -593,33 +615,69 @@
       </div>
       <div class="container mx-auto px-6">
         <div class="text-center mb-16 reveal">
-          <h2 class="text-4xl md:text-5xl font-display font-black mb-4 cosmic-text">WHAT WE BUILD</h2>
+          <h2 class="text-4xl md:text-5xl font-display font-black mb-1 cosmic-text">WHAT WE BUILD</h2>
+          <div class="text-2xl md:text-3xl font-drama italic text-white/30 mb-2">precision meets vision</div>
           <p class="text-lg text-white/60">Start a Project means something specific here</p>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto mb-14">
+          <!-- Card 1 — Diagnostic Shuffler: cycling overlapping cards -->
           <div class="glass-card service-card rounded-2xl p-8 reveal">
             <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background: rgba(138,43,226,0.18); border: 1px solid rgba(138,43,226,0.30);">
               <i class="fa-solid fa-clapperboard text-xl text-purple-300"></i>
             </div>
             <h3 class="text-xl font-black font-display mb-3">Branded Content</h3>
-            <p class="text-white/60 text-sm leading-relaxed mb-4">Cinematic AI-powered content campaigns for brands that want to move people — not just sell to them. TikTok, YouTube, Instagram.</p>
-            <div class="text-xs text-purple-300/80 font-bold tracking-wider uppercase">Brand Campaigns · Reels · Shorts</div>
+            <p class="text-white/60 text-sm leading-relaxed mb-4">Cinematic AI-powered content campaigns for brands that want to move people — not just sell to them.</p>
+            <!-- Diagnostic Shuffler micro-UI -->
+            <div id="shuffler" class="relative h-[72px] mt-4 mb-2" aria-label="Campaign types cycling">
+              <div class="shuffler-card absolute inset-x-0 rounded-xl px-4 py-3 text-xs font-bold border border-purple-500/20" style="background: rgba(138,43,226,0.12); top:0; z-index:3;">
+                <i class="fa-solid fa-video mr-2 text-purple-400"></i>TikTok Campaigns
+              </div>
+              <div class="shuffler-card absolute inset-x-0 rounded-xl px-4 py-3 text-xs font-bold border border-blue-500/20" style="background: rgba(45,107,255,0.10); top:8px; z-index:2; opacity:0.7; transform: scale(0.97);">
+                <i class="fa-solid fa-play mr-2 text-blue-400"></i>YouTube Shorts
+              </div>
+              <div class="shuffler-card absolute inset-x-0 rounded-xl px-4 py-3 text-xs font-bold border border-yellow-500/20" style="background: rgba(215,177,90,0.10); top:16px; z-index:1; opacity:0.4; transform: scale(0.94);">
+                <i class="fa-solid fa-camera mr-2 text-yellow-400"></i>Instagram Reels
+              </div>
+            </div>
           </div>
+          <!-- Card 2 — Telemetry Typewriter: live-text feed -->
           <div class="glass-card service-card rounded-2xl p-8 reveal" style="transition-delay: 90ms;">
             <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background: rgba(138,43,226,0.15); border: 1px solid rgba(138,43,226,0.25);">
               <i class="fa-solid fa-music text-xl text-purple-300"></i>
             </div>
             <h3 class="text-xl font-black font-display mb-3">Music Production</h3>
-            <p class="text-white/60 text-sm leading-relaxed mb-4">Deep House, Ethereal Cosmic House, and AI-generated pop. Original tracks for sync licensing, content scoring, and commercial release.</p>
-            <div class="text-xs text-purple-300/80 font-bold tracking-wider uppercase">Original Tracks · Sync Licensing · Scoring</div>
+            <p class="text-white/60 text-sm leading-relaxed mb-4">Deep House, Ethereal Cosmic House, and AI-generated pop. Original tracks for sync licensing and commercial release.</p>
+            <!-- Typewriter micro-UI -->
+            <div class="mt-4 rounded-xl px-4 py-3 border border-purple-500/15" style="background: rgba(5,2,20,0.6);">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" style="box-shadow: 0 0 6px rgba(74,222,128,0.6);"></span>
+                <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-white/40 font-mono">Live Feed</span>
+              </div>
+              <div id="typewriter" class="font-mono text-xs text-purple-300/80 h-[18px] overflow-hidden">
+                <span id="typewriter-text"></span><span class="inline-block w-[6px] h-[14px] ml-0.5 animate-pulse" style="background: var(--violet);"></span>
+              </div>
+            </div>
           </div>
+          <!-- Card 3 — Weekly Grid Scheduler -->
           <div class="glass-card service-card rounded-2xl p-8 reveal" style="transition-delay: 180ms;">
             <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background: rgba(215,177,90,0.12); border: 1px solid rgba(215,177,90,0.22);">
               <i class="fa-solid fa-film text-xl text-yellow-300"></i>
             </div>
             <h3 class="text-xl font-black font-display mb-3">Music Video Production</h3>
-            <p class="text-white/60 text-sm leading-relaxed mb-4">Full cinematic music video production using AI-generated imagery, character universes, and hyper-realistic visual storytelling.</p>
-            <div class="text-xs text-yellow-300/80 font-bold tracking-wider uppercase">Concept · Visuals · Full Video</div>
+            <p class="text-white/60 text-sm leading-relaxed mb-4">Full cinematic music video production using AI-generated imagery and hyper-realistic visual storytelling.</p>
+            <!-- Weekly Grid micro-UI -->
+            <div class="mt-4 rounded-xl px-4 py-3 border border-yellow-500/15" style="background: rgba(5,2,20,0.6);">
+              <div class="text-[10px] font-bold tracking-[0.2em] uppercase text-white/40 mb-2">Production Schedule</div>
+              <div id="week-grid" class="grid grid-cols-7 gap-1">
+                <div class="week-day text-center rounded-lg py-1.5 text-[10px] font-bold text-white/40 border border-white/5 transition-all duration-300">S</div>
+                <div class="week-day text-center rounded-lg py-1.5 text-[10px] font-bold text-white/40 border border-white/5 transition-all duration-300">M</div>
+                <div class="week-day text-center rounded-lg py-1.5 text-[10px] font-bold text-white/40 border border-white/5 transition-all duration-300">T</div>
+                <div class="week-day text-center rounded-lg py-1.5 text-[10px] font-bold text-white/40 border border-white/5 transition-all duration-300">W</div>
+                <div class="week-day text-center rounded-lg py-1.5 text-[10px] font-bold text-white/40 border border-white/5 transition-all duration-300">T</div>
+                <div class="week-day text-center rounded-lg py-1.5 text-[10px] font-bold text-white/40 border border-white/5 transition-all duration-300">F</div>
+                <div class="week-day text-center rounded-lg py-1.5 text-[10px] font-bold text-white/40 border border-white/5 transition-all duration-300">S</div>
+              </div>
+            </div>
           </div>
           <div class="glass-card service-card rounded-2xl p-8 reveal">
             <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background: rgba(45,107,255,0.13); border: 1px solid rgba(45,107,255,0.22);">
@@ -653,11 +711,45 @@
         </div>
       </div>
     </section>
+    <!-- PHILOSOPHY — The Manifesto (Nick Saraev technique) -->
+    <section id="philosophy" class="py-32 relative overflow-hidden">
+      <div class="absolute inset-0 -z-10" aria-hidden="true"
+           style="background: linear-gradient(180deg, rgba(3,1,10,1) 0%, rgba(17,8,38,0.95) 50%, rgba(3,1,10,1) 100%);">
+      </div>
+      <div class="absolute inset-0 -z-[5] opacity-[0.04]" aria-hidden="true"
+           style="background-image: url('https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?w=1920&q=60'); background-size: cover; background-position: center;">
+      </div>
+      <div class="container mx-auto px-6 relative z-10 max-w-5xl">
+        <div class="manifesto-block text-center">
+          <p class="text-lg md:text-xl text-white/40 font-sans font-light mb-8 tracking-wide manifesto-line">
+            Most creative agencies focus on: <span class="text-white/60">templates, stock footage, and safe formulas.</span>
+          </p>
+          <h2 class="text-4xl md:text-5xl lg:text-7xl font-drama italic leading-[1.1] mb-8 manifesto-line">
+            We focus on: <br>
+            <span class="cosmic-text">cinematic obsession</span><span class="text-white/30">.</span>
+          </h2>
+          <p class="text-lg md:text-xl text-white/40 font-sans font-light mb-8 tracking-wide manifesto-line">
+            Most content creators use AI as: <span class="text-white/60">a shortcut to mediocrity.</span>
+          </p>
+          <h2 class="text-4xl md:text-5xl lg:text-7xl font-drama italic leading-[1.1] mb-12 manifesto-line">
+            We use AI as: <br>
+            <span style="background: linear-gradient(135deg, #D7B15A 0%, #8A2BE2 100%); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;">an instrument of craft</span><span class="text-white/30">.</span>
+          </h2>
+          <div class="w-16 h-px bg-gradient-to-r from-transparent via-purple-500/40 to-transparent mx-auto mb-8"></div>
+          <p class="text-base text-white/50 font-light max-w-2xl mx-auto manifesto-line">
+            Every frame. Every beat. Every pixel — engineered with intention.<br>
+            <span class="font-drama italic text-white/70">Quality is for the ages.</span>
+          </p>
+        </div>
+      </div>
+    </section>
+
     <!-- AI TECH -->
     <section id="ai-tech" class="py-28 relative">
       <div class="container mx-auto px-6">
         <div class="text-center mb-16 reveal">
-          <h2 class="text-4xl md:text-5xl font-display font-black mb-4 cosmic-text">AI-DRIVEN, HUMAN-TOUCHED</h2>
+          <h2 class="text-4xl md:text-5xl font-display font-black mb-1 cosmic-text">AI-DRIVEN, HUMAN-TOUCHED</h2>
+          <div class="text-2xl md:text-3xl font-drama italic text-white/30 mb-2">the instrument, not the shortcut</div>
           <p class="text-lg text-white/60">We don't just use AI — we co-create with it</p>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 max-w-6xl mx-auto">
@@ -860,15 +952,47 @@
         </div>
       </div>
     </section>
-    <!-- FOOTER -->
-    <footer class="py-14 text-center border-t border-white/5 bg-cosmic-900/60">
+    <!-- FOOTER — rounded top, deep dark -->
+    <footer class="pt-16 pb-10 text-center bg-cosmic-950 rounded-t-[4rem] relative mt-8">
       <div class="container mx-auto px-6">
         <div class="flex justify-center mb-8">
           <img src="vm-logo-horizontal-footer.jpg" alt="Violet Media - AI-Powered Cosmic Visuals" class="w-full max-w-3xl rounded-2xl" style="max-width: 768px; width: 100%; height: auto;" />
         </div>
-        <p class="text-white/45 mb-3">© 2026 Violet Media. All rights reserved.</p>
-        <p class="text-xl md:text-2xl font-black cosmic-text font-display">
-          Quality is for the ages. This is Violet Media.
+        <!-- System Operational indicator (Nick technique) -->
+        <div class="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full border border-white/5" style="background: rgba(17,8,38,0.4);">
+          <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse" style="box-shadow: 0 0 8px rgba(74,222,128,0.5);"></span>
+          <span class="text-[11px] font-mono font-bold tracking-widest uppercase text-white/35">All Systems Operational</span>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl mx-auto mb-8 text-sm">
+          <div>
+            <div class="text-white/30 font-bold text-xs tracking-widest uppercase mb-3">Empire</div>
+            <a href="#cosmic-tease" class="block text-white/50 hover:text-purple-300 transition-colors mb-1">Cosmic Tease</a>
+            <a href="#music" class="block text-white/50 hover:text-purple-300 transition-colors mb-1">Music</a>
+            <a href="#services" class="block text-white/50 hover:text-purple-300 transition-colors">Services</a>
+          </div>
+          <div>
+            <div class="text-white/30 font-bold text-xs tracking-widest uppercase mb-3">Technology</div>
+            <a href="#ai-tech" class="block text-white/50 hover:text-purple-300 transition-colors mb-1">AI Stack</a>
+            <a href="#games" class="block text-white/50 hover:text-purple-300 transition-colors mb-1">Games</a>
+            <a href="https://web.violetmedia.org" target="_blank" class="block text-white/50 hover:text-purple-300 transition-colors">Web Design</a>
+          </div>
+          <div>
+            <div class="text-white/30 font-bold text-xs tracking-widest uppercase mb-3">Listen</div>
+            <a href="https://open.spotify.com/artist/6d1NDbxwj89zRTJ8lUp63g" target="_blank" rel="noopener noreferrer" class="block text-white/50 hover:text-green-400 transition-colors mb-1">Spotify</a>
+            <a href="https://music.apple.com/us/artist/violet-media/1803005671" target="_blank" rel="noopener noreferrer" class="block text-white/50 hover:text-purple-300 transition-colors mb-1">Apple Music</a>
+            <a href="https://music.youtube.com/channel/UCKZerj7cXfr3sODhKtjPg6A" target="_blank" rel="noopener noreferrer" class="block text-white/50 hover:text-red-400 transition-colors">YT Music</a>
+          </div>
+          <div>
+            <div class="text-white/30 font-bold text-xs tracking-widest uppercase mb-3">Follow</div>
+            <a href="https://www.tiktok.com/@cosmictease" target="_blank" rel="noopener noreferrer" class="block text-white/50 hover:text-cyan-300 transition-colors mb-1">TikTok</a>
+            <a href="https://youtube.com/@cosmic_tease" target="_blank" rel="noopener noreferrer" class="block text-white/50 hover:text-red-400 transition-colors mb-1">YouTube</a>
+            <a href="#contact" class="block text-white/50 hover:text-purple-300 transition-colors">Contact</a>
+          </div>
+        </div>
+        <div class="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent mb-6"></div>
+        <p class="text-white/35 mb-3 text-sm">© 2026 Violet Media. All rights reserved. Perth, Australia.</p>
+        <p class="text-xl md:text-2xl font-drama italic cosmic-text">
+          Quality is for the ages.
         </p>
       </div>
     </footer>
@@ -923,41 +1047,197 @@
       gl_FragColor = vec4(vColor * glow, mask * 0.5);
     }
   </script>
-  <!-- NON-THREE.JS SCRIPTS (menu, reveal, nav spy, toTop) -->
+  <!-- NON-THREE.JS SCRIPTS (GSAP reveals, menu, nav spy, micro-UIs) -->
   <script>
     const prefersReducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (!prefersReducedMotion) {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add("active"); });
-      }, { threshold: 0.12 });
-      document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
+
+    // ── GSAP SCROLL REVEALS ──
+    if (!prefersReducedMotion && typeof gsap !== "undefined") {
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Reveal elements with staggered fade-up
+      document.querySelectorAll(".reveal").forEach(el => {
+        gsap.fromTo(el,
+          { opacity: 0, y: 40 },
+          {
+            opacity: 1, y: 0,
+            duration: 0.9,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: el,
+              start: "top 88%",
+              toggleActions: "play none none none"
+            }
+          }
+        );
+      });
+
+      // Manifesto lines — word-by-word stagger
+      document.querySelectorAll(".manifesto-line").forEach(el => {
+        gsap.fromTo(el,
+          { opacity: 0, y: 50 },
+          {
+            opacity: 1, y: 0,
+            duration: 1.1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: el,
+              start: "top 85%",
+              toggleActions: "play none none none"
+            }
+          }
+        );
+      });
+
+      // Hero entrance — staggered cascade
+      gsap.fromTo("#top .reveal",
+        { opacity: 0, y: 40 },
+        { opacity: 1, y: 0, duration: 1, ease: "power3.out", stagger: 0.08, delay: 0.3 }
+      );
     } else {
-      document.querySelectorAll(".reveal").forEach(el => el.classList.add("active"));
+      document.querySelectorAll(".reveal").forEach(el => { el.style.opacity = "1"; el.style.transform = "none"; });
+      document.querySelectorAll(".manifesto-line").forEach(el => { el.style.opacity = "1"; el.style.transform = "none"; });
     }
+
+    // ── MORPHING NAVBAR ──
+    const mainNav = document.getElementById("main-nav");
+    const heroSection = document.getElementById("top");
+    if (mainNav && heroSection) {
+      const navObserver = new IntersectionObserver(([entry]) => {
+        mainNav.classList.toggle("scrolled", !entry.isIntersecting);
+      }, { threshold: 0.15 });
+      navObserver.observe(heroSection);
+    }
+
+    // ── MOBILE MENU ──
     const btn = document.getElementById("mobile-btn");
     const menu = document.getElementById("mobile-menu");
     const close = document.getElementById("close-menu");
-    const links = document.querySelectorAll(".mobile-link");
+    const mobileLinks = document.querySelectorAll(".mobile-link");
     function openMenu(){ menu.classList.add("open"); document.body.classList.add("no-scroll"); btn.setAttribute("aria-expanded","true"); close.focus(); }
     function closeMenu(){ menu.classList.remove("open"); document.body.classList.remove("no-scroll"); btn.setAttribute("aria-expanded","false"); btn.focus(); }
     function toggleMenu(){ if (menu.classList.contains("open")) closeMenu(); else openMenu(); }
     btn.addEventListener("click", toggleMenu);
     close.addEventListener("click", closeMenu);
-    links.forEach(link => link.addEventListener("click", closeMenu));
+    mobileLinks.forEach(link => link.addEventListener("click", closeMenu));
     window.addEventListener("keydown", (e) => { if (e.key === "Escape" && menu.classList.contains("open")) closeMenu(); });
+
+    // ── TO TOP BUTTON ──
     const toTop = document.getElementById("toTop");
     function updateToTop(){ toTop.classList.toggle("show", window.scrollY > 700); }
     updateToTop();
     window.addEventListener("scroll", updateToTop, { passive: true });
     toTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: prefersReducedMotion ? "auto" : "smooth" }));
+
+    // ── NAV SPY ──
     const navLinks = Array.from(document.querySelectorAll("[data-nav]"));
-    const sections = navLinks.map(a => document.querySelector(a.getAttribute("href"))).filter(Boolean);
+    const spySections = navLinks.map(a => document.querySelector(a.getAttribute("href"))).filter(Boolean);
     function setActiveNav(id){ navLinks.forEach(a => { const active = a.getAttribute("href") === "#" + id; a.classList.toggle("text-white", active); a.classList.toggle("text-purple-300", active); }); }
-    if (sections.length) {
+    if (spySections.length) {
       const spy = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) setActiveNav(entry.target.id); }); }, { rootMargin: "-35% 0px -55% 0px", threshold: 0.01 });
-      sections.forEach(s => spy.observe(s));
+      spySections.forEach(s => spy.observe(s));
     }
-    // Game sound toggle button
+
+    // ── DIAGNOSTIC SHUFFLER (Card 1) ──
+    (function() {
+      const shuffler = document.getElementById("shuffler");
+      if (!shuffler) return;
+      const cards = Array.from(shuffler.querySelectorAll(".shuffler-card"));
+      let idx = 0;
+      setInterval(() => {
+        idx = (idx + 1) % cards.length;
+        cards.forEach((card, i) => {
+          const offset = (i - idx + cards.length) % cards.length;
+          card.style.transition = "all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)";
+          card.style.top = (offset * 8) + "px";
+          card.style.zIndex = 3 - offset;
+          card.style.opacity = offset === 0 ? "1" : offset === 1 ? "0.7" : "0.4";
+          card.style.transform = "scale(" + (1 - offset * 0.03) + ")";
+        });
+      }, 3000);
+    })();
+
+    // ── TELEMETRY TYPEWRITER (Card 2) ──
+    (function() {
+      const el = document.getElementById("typewriter-text");
+      if (!el) return;
+      const messages = [
+        "▸ Mastering: Cosmic Tease — Stellar Awakening",
+        "▸ Rendering: Deep House beat @ 128bpm",
+        "▸ Sync license approved — Netflix AU",
+        "▸ New track: Ethereal Cosmos Vol. III",
+        "▸ ElevenLabs: Nova Violet voice cloned",
+        "▸ Suno AI 5.0: generating cosmic house drop",
+        "▸ Mix finalized: Nebula X — radio edit",
+      ];
+      let msgIdx = 0, charIdx = 0, deleting = false;
+      function tick() {
+        const msg = messages[msgIdx];
+        if (!deleting) {
+          el.textContent = msg.slice(0, charIdx + 1);
+          charIdx++;
+          if (charIdx >= msg.length) {
+            deleting = true;
+            setTimeout(tick, 2200);
+            return;
+          }
+          setTimeout(tick, 38 + Math.random() * 28);
+        } else {
+          charIdx = 0;
+          msgIdx = (msgIdx + 1) % messages.length;
+          el.textContent = "";
+          deleting = false;
+          setTimeout(tick, 400);
+        }
+      }
+      tick();
+    })();
+
+    // ── WEEK GRID SCHEDULER (Card 3) ──
+    (function() {
+      const days = document.querySelectorAll(".week-day");
+      if (!days.length) return;
+      let current = 0;
+      function activateDay() {
+        days.forEach((d, i) => {
+          if (i === current) {
+            d.style.background = "rgba(215,177,90,0.25)";
+            d.style.borderColor = "rgba(215,177,90,0.5)";
+            d.style.color = "#D7B15A";
+            d.style.transform = "scale(0.95)";
+            setTimeout(() => { d.style.transform = "scale(1)"; }, 150);
+          } else if (i < current) {
+            d.style.background = "rgba(138,43,226,0.15)";
+            d.style.borderColor = "rgba(138,43,226,0.25)";
+            d.style.color = "rgba(138,43,226,0.7)";
+            d.style.transform = "scale(1)";
+          } else {
+            d.style.background = "transparent";
+            d.style.borderColor = "rgba(255,255,255,0.05)";
+            d.style.color = "rgba(255,255,255,0.4)";
+            d.style.transform = "scale(1)";
+          }
+        });
+        current = (current + 1) % (days.length + 2); // +2 for pause
+        if (current >= days.length) {
+          // Reset cycle
+          setTimeout(() => {
+            current = 0;
+            days.forEach(d => {
+              d.style.background = "transparent";
+              d.style.borderColor = "rgba(255,255,255,0.05)";
+              d.style.color = "rgba(255,255,255,0.4)";
+            });
+            setTimeout(activateDay, 800);
+          }, 1200);
+          return;
+        }
+        setTimeout(activateDay, 700);
+      }
+      setTimeout(activateDay, 1500);
+    })();
+
+    // ── GAME CONTROLS ──
     document.getElementById("game-sound-toggle").addEventListener("click", function() {
       if (window.VioletGalaga) {
         window.dispatchEvent(new KeyboardEvent("keydown", { code: "KeyM" }));
@@ -967,13 +1247,11 @@
         icon.classList.toggle("fa-volume-mute");
       }
     });
-    // Fullscreen toggle button
     document.getElementById("game-fullscreen-toggle").addEventListener("click", function() {
       if (window.VioletGalagaFullscreen) {
         window.VioletGalagaFullscreen();
       }
     });
-    // Update fullscreen icon on change
     document.addEventListener("fullscreenchange", function() {
       const icon = document.querySelector("#game-fullscreen-toggle i");
       if (icon) {
