@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "site",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": ["-c", "cd '/c/Users/Home/Claude Code New work/violetmedia' && python -m http.server 3456"],
+      "port": 3456
+    }
+  ]
+}
