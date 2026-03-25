@@ -303,7 +303,16 @@ SPEAKING RULES:
     document.getElementById('vc-backdrop').classList.toggle('show', isOpen);
     document.getElementById('vc-fab').classList.toggle('open', isOpen);
 
-    // No auto welcome — chat opens clean. AI responds when client speaks first.
+    // Auto-start listening when panel opens — voice-first experience
+    if (isOpen && !isListening && !isSpeaking) {
+      setTimeout(() => {
+        micActivated = true;
+        startListening();
+      }, 500);
+    }
+    if (!isOpen && isListening) {
+      stopListening();
+    }
   }
 
   // ── Mute Toggle ──
@@ -318,7 +327,7 @@ SPEAKING RULES:
   // ── Mic Toggle ──
   function toggleMic() {
     if (isListening) {
-      stopListening();
+      stopListening(true); // User explicitly toggled off
     } else {
       startListening();
     }
@@ -401,12 +410,13 @@ SPEAKING RULES:
     }
   }
 
-  function stopListening() {
+  function stopListening(userToggled) {
     if (recognition) {
       try { recognition.stop(); } catch (e) {}
     }
     isListening = false;
-    micActivated = false;
+    // Only clear micActivated when user explicitly toggles mic off
+    if (userToggled) micActivated = false;
     document.getElementById('vc-mic-btn').classList.remove('active');
     setStatus('idle', 'Ready');
   }
