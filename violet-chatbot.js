@@ -518,10 +518,11 @@ SPEAKING RULES:
         speakBrowser(text, gen);
       };
 
-      audio.play().catch(() => {
-        // Autoplay blocked — fallback
-        isSpeaking = false;
-        setStatus('idle', 'Ready');
+      audio.play().catch((e) => {
+        console.warn('[VioletChat] ElevenLabs play blocked:', e.message, '— falling back to browser TTS');
+        URL.revokeObjectURL(url);
+        currentAudio = null;
+        speakBrowser(text, gen);
       });
     })
     .catch(err => {
