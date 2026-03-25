@@ -327,10 +327,23 @@ SPEAKING RULES:
   }
 
   // ── Speech Recognition ──
-  function startListening() {
+  async function startListening() {
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SR) {
       addMessage('ai', "Voice input isn't supported in this browser. Please use Chrome or Edge, or type your message instead.");
+      return;
+    }
+
+    // Force Chrome to grant mic permission via getUserMedia first
+    // This triggers the permission prompt if needed and ensures recognition works
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      // Stop the stream immediately — we just needed the permission grant
+      stream.getTracks().forEach(t => t.stop());
+      console.log('[VioletChat] Microphone permission granted via getUserMedia');
+    } catch(e) {
+      console.warn('[VioletChat] Mic permission denied:', e.message);
+      addMessage('ai', "I need microphone access to listen. Please allow it in your browser and try again, or type your message instead.");
       return;
     }
 
