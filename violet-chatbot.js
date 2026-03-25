@@ -16,6 +16,8 @@
     welcomeMessage: null,
     position: 'right',
     maxTokens: 300,
+    logoUrl: null, // URL to logo image (replaces initials)
+    continuousListening: true, // auto-restart mic after AI speaks
   }, window.VIOLET_CHAT_CONFIG || {});
 
   // ── System Prompts ──
@@ -90,6 +92,7 @@ SPEAKING RULES:
   let recognition = null;
   let currentAudio = null;
   let history = [];
+  let micActivated = false; // true once user clicks mic (stays on for continuous mode)
 
   // ── CSS Injection ──
   function injectStyles() {
@@ -99,9 +102,9 @@ SPEAKING RULES:
 #vc-root{font-family:'Inter','Space Grotesk',system-ui,sans-serif;font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
 
 /* FAB Button */
-#vc-fab{position:fixed;bottom:24px;${CFG.position}:24px;width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,${accent},#5b3fd4);border:none;cursor:pointer;z-index:10000;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 25px ${accent}50,0 0 40px ${accent}25;transition:all .3s cubic-bezier(.4,0,.2,1);animation:vc-pulse 3s infinite}
-#vc-fab:hover{transform:scale(1.1);box-shadow:0 6px 35px ${accent}70}
-#vc-fab svg{width:28px;height:28px;fill:#fff;transition:transform .3s}
+#vc-fab{position:fixed;bottom:28px;${CFG.position}:28px;width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,${accent},#5b3fd4);border:none;cursor:pointer;z-index:10000;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 30px ${accent}60,0 0 50px ${accent}30;transition:all .3s cubic-bezier(.4,0,.2,1);animation:vc-pulse 3s infinite}
+#vc-fab:hover{transform:scale(1.1);box-shadow:0 8px 40px ${accent}80}
+#vc-fab svg{width:36px;height:36px;fill:#fff;transition:transform .3s}
 #vc-fab.open svg{transform:rotate(90deg)}
 @keyframes vc-pulse{0%,100%{box-shadow:0 4px 25px ${accent}50,0 0 40px ${accent}25}50%{box-shadow:0 4px 30px ${accent}70,0 0 60px ${accent}35}}
 
@@ -116,7 +119,8 @@ SPEAKING RULES:
 /* Header */
 #vc-header{padding:1.25rem 1.25rem 1rem;border-bottom:1px solid rgba(255,255,255,.08);flex-shrink:0;display:flex;align-items:center;justify-content:space-between}
 #vc-header-left{display:flex;align-items:center;gap:.75rem}
-#vc-avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,${accent},#4f46e5);display:flex;align-items:center;justify-content:center;font-size:1rem;color:#fff;font-weight:700;flex-shrink:0;box-shadow:0 0 15px ${accent}40}
+#vc-avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,${accent},#4f46e5);display:flex;align-items:center;justify-content:center;font-size:1rem;color:#fff;font-weight:700;flex-shrink:0;box-shadow:0 0 15px ${accent}40;overflow:hidden}
+#vc-avatar img{width:100%;height:100%;object-fit:cover}
 #vc-header-info h3{font-size:.95rem;font-weight:700;color:#fff;margin:0;line-height:1.2}
 #vc-header-info span{font-size:.7rem;color:rgba(255,255,255,.5);font-weight:400}
 .vc-hdr-btn{background:none;border:none;color:rgba(255,255,255,.5);cursor:pointer;padding:6px;border-radius:8px;transition:all .2s;display:flex;align-items:center}
@@ -173,7 +177,7 @@ SPEAKING RULES:
 /* Mobile */
 @media(max-width:600px){
   #vc-panel{width:100%;border-left:none}
-  #vc-fab{bottom:16px;${CFG.position}:16px;width:54px;height:54px}
+  #vc-fab{bottom:20px;${CFG.position}:20px;width:70px;height:70px}
 }
 `;
     document.head.appendChild(css);
@@ -201,11 +205,14 @@ SPEAKING RULES:
     panel.id = 'vc-panel';
 
     const initials = CFG.name.split(' ').map(w => w[0]).join('');
+    const avatarContent = CFG.logoUrl
+      ? `<img src="${CFG.logoUrl}" alt="${CFG.name}">`
+      : initials;
 
     panel.innerHTML = `
       <div id="vc-header">
         <div id="vc-header-left">
-          <div id="vc-avatar">${initials}</div>
+          <div id="vc-avatar">${avatarContent}</div>
           <div id="vc-header-info">
             <h3>${CFG.name}</h3>
             <span>${CFG.subtitle}</span>
@@ -330,10 +337,19 @@ SPEAKING RULES:
       recognition.onend = () => {
         isListening = false;
         document.getElementById('vc-mic-btn').classList.remove('active');
-        if (isOpen && !isSpeaking) {
-          // Don't auto-restart — let user tap mic again
+        if (isOpen && !isSpeaking && CFG.continuousListening && micActivated) {
+          // Auto-restart mic for continuous conversation
+          setTimeout(() => {
+            if (isOpen && !isSpeaking && micActivated) {
+              try { recognition.start(); isListening = true;
+                document.getElementById('vc-mic-btn').classList.add('active');
+                setStatus('listening', 'Listening...');
+              } catch(e) {}
+            }
+          }, 300);
+          return;
         }
-        setStatus('idle', 'Ready');
+        if (!isSpeaking) setStatus('idle', 'Ready');
       };
 
       recognition.onerror = (e) => {
@@ -345,6 +361,7 @@ SPEAKING RULES:
     try {
       recognition.start();
       isListening = true;
+      micActivated = true;
       document.getElementById('vc-mic-btn').classList.add('active');
       setStatus('listening', 'Listening...');
     } catch (e) {
@@ -357,6 +374,7 @@ SPEAKING RULES:
       try { recognition.stop(); } catch (e) {}
     }
     isListening = false;
+    micActivated = false;
     document.getElementById('vc-mic-btn').classList.remove('active');
     setStatus('idle', 'Ready');
   }
@@ -459,7 +477,7 @@ SPEAKING RULES:
         currentAudio = null;
         if (gen !== speakGen) return;
         isSpeaking = false;
-        setStatus('idle', 'Ready');
+        resumeMicAfterSpeak();
       };
 
       audio.onerror = () => {
@@ -504,7 +522,7 @@ SPEAKING RULES:
     utt.onend = () => {
       if (gen !== speakGen) return;
       isSpeaking = false;
-      setStatus('idle', 'Ready');
+      resumeMicAfterSpeak();
     };
     speechSynthesis.speak(utt);
   }
@@ -517,6 +535,23 @@ SPEAKING RULES:
     }
     if (typeof speechSynthesis !== 'undefined') speechSynthesis.cancel();
     isSpeaking = false;
+  }
+
+  function resumeMicAfterSpeak() {
+    if (CFG.continuousListening && micActivated && isOpen && !isMuted) {
+      setStatus('listening', 'Listening...');
+      setTimeout(() => {
+        if (isOpen && !isSpeaking && micActivated) {
+          try {
+            if (recognition) recognition.start();
+            isListening = true;
+            document.getElementById('vc-mic-btn').classList.add('active');
+          } catch(e) {}
+        }
+      }, 400);
+    } else {
+      setStatus('idle', 'Ready');
+    }
   }
 
   // ── UI Helpers ──
