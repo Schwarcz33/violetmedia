@@ -303,11 +303,7 @@ SPEAKING RULES:
     document.getElementById('vc-backdrop').classList.toggle('show', isOpen);
     document.getElementById('vc-fab').classList.toggle('open', isOpen);
 
-    if (isOpen && history.length === 0) {
-      const msg = CFG.welcomeMessage || WELCOME[CFG.personality] || WELCOME.echo;
-      addMessage('ai', msg);
-      // DON'T auto-speak welcome — Chrome blocks it. Voice starts on first real interaction.
-    }
+    // No auto welcome — chat opens clean. AI responds when client speaks first.
   }
 
   // ── Mute Toggle ──
@@ -490,8 +486,9 @@ SPEAKING RULES:
       speakBrowser(text, speakGen);
       return;
     }
-    const gen = ++speakGen;
+    // Stop any current audio first, THEN capture generation
     stopAudio();
+    const gen = ++speakGen; // Must be AFTER stopAudio to avoid double-increment
     isSpeaking = true;
     setStatus('speaking', 'Speaking...');
 
