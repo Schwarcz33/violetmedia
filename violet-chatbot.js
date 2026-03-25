@@ -266,25 +266,28 @@ SPEAKING RULES:
   // We track when a real gesture happens and only speak after that.
   let hasUserGesture = false;
 
-  // Persistent AudioContext — once unlocked via user gesture, stays unlocked
-  let audioCtx = null;
+  // ONE reusable Audio element — primed on first click, reused forever.
+  // Chrome allows .play() on an element that was previously played during a gesture.
+  let playerEl = null;
 
   function markUserGesture() {
     if (hasUserGesture) return;
     hasUserGesture = true;
-    try {
-      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      audioCtx.resume();
-      // Play tiny silent buffer to fully activate
-      const buf = audioCtx.createBuffer(1, 1, 22050);
-      const src = audioCtx.createBufferSource();
-      src.buffer = buf;
-      src.connect(audioCtx.destination);
-      src.start(0);
-    } catch(e) {
-      console.warn('[VioletChat] AudioContext init failed:', e);
-    }
-    console.log('[VioletChat] Audio unlocked via user gesture');
+
+    // Create and prime the audio element during this user gesture
+    playerEl = new Audio();
+    playerEl.volume = 1;
+    // Play silent WAV to activate — Chrome remembers this element is "user-activated"
+    playerEl.src = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=';
+    playerEl.play().then(() => {
+      playerEl.pause();
+      playerEl.currentTime = 0;
+      console.log('[VioletChat] Audio element primed and ready');
+    }).catch(e => {
+      console.warn('[VioletChat] Prime failed:', e.message);
+    });
+
+    console.log('[VioletChat] User gesture registered');
   }
 
   // ── Panel Toggle ──
@@ -476,22 +479,16 @@ SPEAKING RULES:
   }
 
   // ── TTS via Netlify Function ──
-  let currentSource = null; // AudioBufferSourceNode for stop control
-
   function speak(text) {
-    if (!hasUserGesture) {
-      console.log('[VioletChat] Skipping TTS — no user gesture yet');
+    if (!hasUserGesture || !playerEl) {
+      console.log('[VioletChat] Skipping TTS — no primed audio element');
+      speakBrowser(text, speakGen);
       return;
     }
     const gen = ++speakGen;
     stopAudio();
     isSpeaking = true;
     setStatus('speaking', 'Speaking...');
-
-    // Ensure AudioContext is alive
-    if (audioCtx && audioCtx.state === 'suspended') {
-      audioCtx.resume();
-    }
 
     fetch('/.netlify/functions/tts', {
       method: 'POST',
@@ -503,44 +500,48 @@ SPEAKING RULES:
     })
     .then(res => {
       if (gen !== speakGen) return;
-      if (!res.ok) throw new Error(`TTS ${res.status}`);
-      return res.arrayBuffer();
+      if (!res.ok) throw new Error(`TTS HTTP ${res.status}`);
+      return res.blob();
     })
-    .then(arrayBuffer => {
-      if (!arrayBuffer || gen !== speakGen) return;
+    .then(blob => {
+      if (!blob || gen !== speakGen) return;
+      console.log('[VioletChat] TTS blob received:', blob.size, 'bytes');
 
-      // Use AudioContext (unlocked) to decode and play — bypasses autoplay block
-      if (audioCtx) {
-        return audioCtx.decodeAudioData(arrayBuffer).then(audioBuffer => {
-          if (gen !== speakGen) return;
-          const source = audioCtx.createBufferSource();
-          source.buffer = audioBuffer;
-          source.connect(audioCtx.destination);
-          currentSource = source;
+      // Use the SAME primed Audio element — Chrome allows replaying it
+      const url = URL.createObjectURL(blob);
 
-          source.onended = () => {
-            currentSource = null;
-            if (gen !== speakGen) return;
-            isSpeaking = false;
-            resumeMicAfterSpeak();
-          };
+      // Clean up previous blob URL
+      if (playerEl._blobUrl) URL.revokeObjectURL(playerEl._blobUrl);
+      playerEl._blobUrl = url;
 
-          source.start(0);
-          console.log('[VioletChat] Playing ElevenLabs voice via AudioContext');
-        });
-      } else {
-        // No AudioContext — try Audio element as fallback
-        const blob = new Blob([arrayBuffer], { type: 'audio/mpeg' });
-        const url = URL.createObjectURL(blob);
-        const audio = new Audio(url);
-        currentAudio = audio;
-        audio.onended = () => { URL.revokeObjectURL(url); currentAudio = null; isSpeaking = false; resumeMicAfterSpeak(); };
-        audio.onerror = () => { URL.revokeObjectURL(url); currentAudio = null; speakBrowser(text, gen); };
-        return audio.play().catch(() => { URL.revokeObjectURL(url); currentAudio = null; speakBrowser(text, gen); });
-      }
+      playerEl.src = url;
+      playerEl.currentTime = 0;
+
+      playerEl.onended = () => {
+        if (gen !== speakGen) return;
+        isSpeaking = false;
+        setStatus('idle', 'Ready');
+        resumeMicAfterSpeak();
+        console.log('[VioletChat] Finished speaking');
+      };
+
+      playerEl.onerror = (e) => {
+        console.warn('[VioletChat] Audio element error:', e);
+        if (gen !== speakGen) return;
+        isSpeaking = false;
+        speakBrowser(text, gen);
+      };
+
+      playerEl.play().then(() => {
+        console.log('[VioletChat] ElevenLabs voice playing!');
+      }).catch(e => {
+        console.warn('[VioletChat] Play failed:', e.message, '— trying browser TTS');
+        isSpeaking = false;
+        speakBrowser(text, gen);
+      });
     })
     .catch(err => {
-      console.warn('[VioletChat] TTS error, using browser fallback:', err);
+      console.warn('[VioletChat] TTS fetch error:', err.message, '— using browser TTS');
       if (gen !== speakGen) return;
       speakBrowser(text, gen);
     });
@@ -572,9 +573,9 @@ SPEAKING RULES:
 
   function stopAudio() {
     speakGen++;
-    if (currentSource) {
-      try { currentSource.stop(); } catch(e) {}
-      currentSource = null;
+    if (playerEl) {
+      playerEl.pause();
+      playerEl.currentTime = 0;
     }
     if (currentAudio) {
       currentAudio.pause();
