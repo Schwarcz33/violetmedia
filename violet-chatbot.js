@@ -262,10 +262,14 @@ SPEAKING RULES:
   }
 
   // ── Audio Unlock (Chrome autoplay policy) ──
-  let audioUnlocked = false;
-  function unlockAudio() {
-    if (audioUnlocked) return;
-    // Play a tiny silent buffer to unlock audio playback
+  // Chrome only allows audio.play() from a REAL user gesture (click/tap).
+  // We track when a real gesture happens and only speak after that.
+  let hasUserGesture = false;
+
+  function markUserGesture() {
+    if (hasUserGesture) return;
+    hasUserGesture = true;
+    // Also unlock AudioContext
     try {
       const ctx = new (window.AudioContext || window.webkitAudioContext)();
       const buf = ctx.createBuffer(1, 1, 22050);
@@ -274,14 +278,13 @@ SPEAKING RULES:
       src.connect(ctx.destination);
       src.start(0);
       ctx.resume();
-      audioUnlocked = true;
-      console.log('[VioletChat] Audio unlocked');
     } catch(e) {}
+    console.log('[VioletChat] Audio unlocked via user gesture');
   }
 
   // ── Panel Toggle ──
   function togglePanel() {
-    unlockAudio(); // Must happen on user click
+    markUserGesture();
     isOpen = !isOpen;
     document.getElementById('vc-panel').classList.toggle('open', isOpen);
     document.getElementById('vc-backdrop').classList.toggle('show', isOpen);
@@ -290,10 +293,7 @@ SPEAKING RULES:
     if (isOpen && history.length === 0) {
       const msg = CFG.welcomeMessage || WELCOME[CFG.personality] || WELCOME.echo;
       addMessage('ai', msg);
-      if (!isMuted) {
-        // Small delay so audio context is fully unlocked
-        setTimeout(() => speak(msg), 300);
-      }
+      // DON'T auto-speak welcome — Chrome blocks it. Voice starts on first real interaction.
     }
   }
 
@@ -381,6 +381,7 @@ SPEAKING RULES:
     }
 
     try {
+      markUserGesture();
       recognition.start();
       isListening = true;
       micActivated = true;
@@ -403,6 +404,7 @@ SPEAKING RULES:
 
   // ── Send Text ──
   function sendText() {
+    markUserGesture();
     const input = document.getElementById('vc-text-input');
     const text = input.value.trim();
     if (!text) return;
@@ -470,6 +472,10 @@ SPEAKING RULES:
 
   // ── TTS via Netlify Function ──
   function speak(text) {
+    if (!hasUserGesture) {
+      console.log('[VioletChat] Skipping TTS — no user gesture yet');
+      return;
+    }
     const gen = ++speakGen;
     stopAudio();
     isSpeaking = true;
