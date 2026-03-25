@@ -274,15 +274,20 @@ SPEAKING RULES:
     if (hasUserGesture) return;
     hasUserGesture = true;
 
-    // Create and prime the audio element during this user gesture
-    playerEl = new Audio();
+    // Create audio element IN THE DOM and prime it during this user gesture
+    playerEl = document.createElement('audio');
+    playerEl.id = 'vc-player';
+    playerEl.style.display = 'none';
     playerEl.volume = 1;
+    playerEl.preload = 'auto';
+    document.body.appendChild(playerEl);
+
     // Play silent WAV to activate — Chrome remembers this element is "user-activated"
     playerEl.src = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=';
     playerEl.play().then(() => {
       playerEl.pause();
       playerEl.currentTime = 0;
-      console.log('[VioletChat] Audio element primed and ready');
+      console.log('[VioletChat] Audio element primed and ready (in DOM)');
     }).catch(e => {
       console.warn('[VioletChat] Prime failed:', e.message);
     });
