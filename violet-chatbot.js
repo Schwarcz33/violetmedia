@@ -261,8 +261,27 @@ SPEAKING RULES:
     });
   }
 
+  // ── Audio Unlock (Chrome autoplay policy) ──
+  let audioUnlocked = false;
+  function unlockAudio() {
+    if (audioUnlocked) return;
+    // Play a tiny silent buffer to unlock audio playback
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const buf = ctx.createBuffer(1, 1, 22050);
+      const src = ctx.createBufferSource();
+      src.buffer = buf;
+      src.connect(ctx.destination);
+      src.start(0);
+      ctx.resume();
+      audioUnlocked = true;
+      console.log('[VioletChat] Audio unlocked');
+    } catch(e) {}
+  }
+
   // ── Panel Toggle ──
   function togglePanel() {
+    unlockAudio(); // Must happen on user click
     isOpen = !isOpen;
     document.getElementById('vc-panel').classList.toggle('open', isOpen);
     document.getElementById('vc-backdrop').classList.toggle('show', isOpen);
@@ -271,7 +290,10 @@ SPEAKING RULES:
     if (isOpen && history.length === 0) {
       const msg = CFG.welcomeMessage || WELCOME[CFG.personality] || WELCOME.echo;
       addMessage('ai', msg);
-      if (!isMuted) speak(msg);
+      if (!isMuted) {
+        // Small delay so audio context is fully unlocked
+        setTimeout(() => speak(msg), 300);
+      }
     }
   }
 
