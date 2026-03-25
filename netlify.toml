@@ -1,6 +1,11 @@
 [functions]
   directory = "netlify/functions"
 
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Permissions-Policy = "camera=(), geolocation=(), microphone=(self)"
+
 [[redirects]]
   from = "/api/chat"
   to = "/.netlify/functions/chat"
