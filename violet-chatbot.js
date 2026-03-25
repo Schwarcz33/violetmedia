@@ -266,19 +266,24 @@ SPEAKING RULES:
   // We track when a real gesture happens and only speak after that.
   let hasUserGesture = false;
 
+  // Persistent AudioContext — once unlocked via user gesture, stays unlocked
+  let audioCtx = null;
+
   function markUserGesture() {
     if (hasUserGesture) return;
     hasUserGesture = true;
-    // Also unlock AudioContext
     try {
-      const ctx = new (window.AudioContext || window.webkitAudioContext)();
-      const buf = ctx.createBuffer(1, 1, 22050);
-      const src = ctx.createBufferSource();
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      audioCtx.resume();
+      // Play tiny silent buffer to fully activate
+      const buf = audioCtx.createBuffer(1, 1, 22050);
+      const src = audioCtx.createBufferSource();
       src.buffer = buf;
-      src.connect(ctx.destination);
+      src.connect(audioCtx.destination);
       src.start(0);
-      ctx.resume();
-    } catch(e) {}
+    } catch(e) {
+      console.warn('[VioletChat] AudioContext init failed:', e);
+    }
     console.log('[VioletChat] Audio unlocked via user gesture');
   }
 
@@ -471,6 +476,8 @@ SPEAKING RULES:
   }
 
   // ── TTS via Netlify Function ──
+  let currentSource = null; // AudioBufferSourceNode for stop control
+
   function speak(text) {
     if (!hasUserGesture) {
       console.log('[VioletChat] Skipping TTS — no user gesture yet');
@@ -480,6 +487,11 @@ SPEAKING RULES:
     stopAudio();
     isSpeaking = true;
     setStatus('speaking', 'Speaking...');
+
+    // Ensure AudioContext is alive
+    if (audioCtx && audioCtx.state === 'suspended') {
+      audioCtx.resume();
+    }
 
     fetch('/.netlify/functions/tts', {
       method: 'POST',
@@ -492,38 +504,40 @@ SPEAKING RULES:
     .then(res => {
       if (gen !== speakGen) return;
       if (!res.ok) throw new Error(`TTS ${res.status}`);
-      return res.blob();
+      return res.arrayBuffer();
     })
-    .then(blob => {
-      if (!blob || gen !== speakGen) return;
-      const url = URL.createObjectURL(blob);
-      const audio = new Audio(url);
-      currentAudio = audio;
+    .then(arrayBuffer => {
+      if (!arrayBuffer || gen !== speakGen) return;
 
-      audio.onended = () => {
-        URL.revokeObjectURL(url);
-        currentAudio = null;
-        if (gen !== speakGen) return;
-        isSpeaking = false;
-        resumeMicAfterSpeak();
-      };
+      // Use AudioContext (unlocked) to decode and play — bypasses autoplay block
+      if (audioCtx) {
+        return audioCtx.decodeAudioData(arrayBuffer).then(audioBuffer => {
+          if (gen !== speakGen) return;
+          const source = audioCtx.createBufferSource();
+          source.buffer = audioBuffer;
+          source.connect(audioCtx.destination);
+          currentSource = source;
 
-      audio.onerror = () => {
-        URL.revokeObjectURL(url);
-        currentAudio = null;
-        if (gen !== speakGen) return;
-        isSpeaking = false;
-        setStatus('idle', 'Ready');
-        // Fallback to browser TTS
-        speakBrowser(text, gen);
-      };
+          source.onended = () => {
+            currentSource = null;
+            if (gen !== speakGen) return;
+            isSpeaking = false;
+            resumeMicAfterSpeak();
+          };
 
-      audio.play().catch((e) => {
-        console.warn('[VioletChat] ElevenLabs play blocked:', e.message, '— falling back to browser TTS');
-        URL.revokeObjectURL(url);
-        currentAudio = null;
-        speakBrowser(text, gen);
-      });
+          source.start(0);
+          console.log('[VioletChat] Playing ElevenLabs voice via AudioContext');
+        });
+      } else {
+        // No AudioContext — try Audio element as fallback
+        const blob = new Blob([arrayBuffer], { type: 'audio/mpeg' });
+        const url = URL.createObjectURL(blob);
+        const audio = new Audio(url);
+        currentAudio = audio;
+        audio.onended = () => { URL.revokeObjectURL(url); currentAudio = null; isSpeaking = false; resumeMicAfterSpeak(); };
+        audio.onerror = () => { URL.revokeObjectURL(url); currentAudio = null; speakBrowser(text, gen); };
+        return audio.play().catch(() => { URL.revokeObjectURL(url); currentAudio = null; speakBrowser(text, gen); });
+      }
     })
     .catch(err => {
       console.warn('[VioletChat] TTS error, using browser fallback:', err);
@@ -558,6 +572,10 @@ SPEAKING RULES:
 
   function stopAudio() {
     speakGen++;
+    if (currentSource) {
+      try { currentSource.stop(); } catch(e) {}
+      currentSource = null;
+    }
     if (currentAudio) {
       currentAudio.pause();
       currentAudio = null;
