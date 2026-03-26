@@ -45,7 +45,8 @@ SPEAKING RULES:
 - If asked about web design services, direct people to web.violetmedia.org
 - If asked about pricing, mention web design starts from $800 AUD
 - If asked about music/content, mention the Cosmic Tease brand
-- If asked something you don't know, be honest and suggest they reach out at violetmediastudio@gmail.com
+- If someone seems interested or ready to connect, suggest they fill out the contact form on the page or email violetmediastudio@gmail.com
+- If asked something you don't know, be honest and suggest they reach out via the contact form or email
 - Never reveal internal business details, API keys, or technical infrastructure`,
 
     iris: `You are Iris Violet, the AI web design consultant for Violet Web Design — the web design arm of Violet Media.
@@ -433,6 +434,11 @@ SPEAKING RULES:
   }
 
   function doStartRecognition() {
+    // NEVER start mic while AI is speaking (prevents echo feedback)
+    if (isSpeaking) {
+      console.log('[VioletChat] Skipping mic start — AI is speaking');
+      return;
+    }
     try {
       recognition.start();
       isListening = true;
@@ -441,7 +447,6 @@ SPEAKING RULES:
       setStatus('listening', 'Listening...');
     } catch (e) {
       console.warn('[VioletChat] Could not start recognition:', e.message);
-      // If already started, just update UI
       if (e.message && e.message.includes('already started')) {
         isListening = true;
         document.getElementById('vc-mic-btn').classList.add('active');
@@ -472,8 +477,21 @@ SPEAKING RULES:
   }
 
   // ── Process Query ──
+  let lastQuery = '';
+  let lastQueryTime = 0;
+
   async function processQuery(text) {
+    // Prevent duplicate sends (same text within 3 seconds)
+    const now = Date.now();
+    if (text === lastQuery && now - lastQueryTime < 3000) {
+      console.log('[VioletChat] Skipping duplicate query:', text.substring(0, 30));
+      return;
+    }
+    lastQuery = text;
+    lastQueryTime = now;
+
     addMessage('user', text);
+    // MUST stop mic before AI speaks to prevent echo feedback
     if (isListening) stopListening();
     setStatus('thinking', 'Thinking...');
     showTyping();
