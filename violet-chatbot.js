@@ -41,10 +41,11 @@ YOUR PERSONALITY:
 SPEAKING RULES:
 - Keep responses to 2-4 sentences maximum. This is voice conversation — be concise.
 - Sound natural and conversational, not robotic or corporate
+- NEVER use markdown formatting (no **, no *, no bullet points, no dashes). Write in plain flowing sentences only. This is displayed as plain text and spoken aloud.
 - If asked about web design services, direct people to web.violetmedia.org
 - If asked about pricing, mention web design starts from $800 AUD
 - If asked about music/content, mention the Cosmic Tease brand
-- If asked something you don't know, be honest and suggest they reach out at hello@violetmedia.org
+- If asked something you don't know, be honest and suggest they reach out at violetmediastudio@gmail.com
 - Never reveal internal business details, API keys, or technical infrastructure`,
 
     iris: `You are Iris Violet, the AI web design consultant for Violet Web Design — the web design arm of Violet Media.
@@ -59,7 +60,7 @@ ABOUT VIOLET WEB DESIGN:
   * Premium ($3,000 AUD): Full custom build, advanced animations, e-commerce ready, priority support, 15-day delivery
 - Based in Perth, Australia but serves clients globally
 - Part of Violet Media (violetmedia.org)
-- Contact: hello@violetmedia.org
+- Contact: violetmediastudio@gmail.com
 
 YOUR PERSONALITY:
 - Professional but warm — like a trusted creative advisor
@@ -70,8 +71,9 @@ YOUR PERSONALITY:
 
 SPEAKING RULES:
 - Keep responses to 2-4 sentences maximum. This is voice conversation — be concise.
+- NEVER use markdown formatting (no **, no *, no bullet points, no dashes). Write in plain flowing sentences only. This is displayed as plain text and spoken aloud.
 - Help potential clients understand which package suits them
-- If someone seems ready to proceed, suggest they fill out the contact form on the page or email hello@violetmedia.org
+- If someone seems ready to proceed, suggest they fill out the contact form on the page or email violetmediastudio@gmail.com
 - Be honest about what's included and what's not
 - Never pressure — educate and guide
 - If asked about non-web-design services, mention the parent brand Violet Media
@@ -257,8 +259,11 @@ SPEAKING RULES:
       document.getElementById('vc-send-btn').disabled = !input.value.trim();
     });
     input.addEventListener('keydown', (e) => {
+      e.stopPropagation(); // Prevent parent site from capturing keys (spacebar, etc.)
       if (e.key === 'Enter' && input.value.trim()) sendText();
     });
+    input.addEventListener('keyup', (e) => e.stopPropagation());
+    input.addEventListener('keypress', (e) => e.stopPropagation());
   }
 
   // ── Audio Unlock (Chrome autoplay policy) ──
@@ -353,12 +358,13 @@ SPEAKING RULES:
     }
 
     recognition = new SR();
-    recognition.continuous = false; // Use single-shot mode — more reliable
+    recognition.continuous = true;
     recognition.interimResults = true;
     recognition.lang = 'en-US';
     recognition.maxAlternatives = 1;
 
     let finalText = '';
+    let silenceTimer = null;
 
     recognition.onresult = (e) => {
       let interim = '';
@@ -371,24 +377,29 @@ SPEAKING RULES:
       input.value = finalText + interim;
       input.dispatchEvent(new Event('input'));
       console.log('[VioletChat] Heard:', finalText || interim);
+
+      // After final text detected, wait for silence then process
+      clearTimeout(silenceTimer);
+      if (finalText.trim()) {
+        silenceTimer = setTimeout(() => {
+          if (finalText.trim().length > 2) {
+            const query = finalText.trim();
+            finalText = '';
+            input.value = '';
+            input.dispatchEvent(new Event('input'));
+            // Stop recognition before processing
+            try { recognition.stop(); } catch(e) {}
+            processQuery(query);
+          }
+        }, 1500);
+      }
     };
 
     recognition.onend = () => {
       isListening = false;
       document.getElementById('vc-mic-btn').classList.remove('active');
 
-      // If we got speech, process it
-      if (finalText.trim().length > 2) {
-        const query = finalText.trim();
-        finalText = '';
-        const input = document.getElementById('vc-text-input');
-        input.value = '';
-        input.dispatchEvent(new Event('input'));
-        processQuery(query);
-        return;
-      }
-
-      // No speech captured — auto-restart if continuous mode
+      // Auto-restart if continuous mode and not processing a query
       if (isOpen && !isSpeaking && CFG.continuousListening && micActivated) {
         setTimeout(() => {
           if (isOpen && !isSpeaking && micActivated) {
@@ -403,8 +414,8 @@ SPEAKING RULES:
 
     recognition.onerror = (e) => {
       console.warn('[VioletChat] Speech error:', e.error);
-      if (e.error === 'no-speech') {
-        // No speech detected — restart if continuous
+      if (e.error === 'no-speech' || e.error === 'aborted') {
+        // Auto-restart
         if (isOpen && !isSpeaking && CFG.continuousListening && micActivated) {
           setTimeout(() => {
             if (isOpen && !isSpeaking && micActivated) doStartRecognition();
@@ -412,9 +423,8 @@ SPEAKING RULES:
         }
         return;
       }
-      if (e.error === 'aborted') return;
       if (e.error === 'not-allowed') {
-        micStream = null; // Clear so it re-requests next time
+        micStream = null;
         addMessage('ai', "Microphone was blocked. Please click the mic icon in your browser's address bar and allow access, then try again.");
       }
     };
