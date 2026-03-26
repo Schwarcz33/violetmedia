@@ -296,12 +296,8 @@ SPEAKING RULES:
     document.getElementById('vc-backdrop').classList.toggle('show', isOpen);
     document.getElementById('vc-fab').classList.toggle('open', isOpen);
 
-    // Auto-start listening when panel opens — must be direct (no setTimeout)
-    // to preserve Chrome's user gesture context for mic permission
-    if (isOpen && !isListening && !isSpeaking) {
-      micActivated = true;
-      startListening();
-    }
+    // Don't auto-start mic on open — let user click mic button.
+    // This avoids permission errors on first visit.
     if (!isOpen && isListening) {
       stopListening();
     }
@@ -326,88 +322,129 @@ SPEAKING RULES:
   }
 
   // ── Speech Recognition ──
-  function startListening() {
+  // Request mic permission first via getUserMedia, then start SpeechRecognition.
+  // This two-step approach works reliably across all sites.
+  let micStream = null;
+
+  async function startListening() {
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SR) {
       addMessage('ai', "Voice input isn't supported in this browser. Please use Chrome or Edge, or type your message instead.");
       return;
     }
 
-    if (!recognition) {
-      recognition = new SR();
-      recognition.continuous = true;
-      recognition.interimResults = true;
-      recognition.lang = 'en-US';
-
-      let finalText = '';
-      let silenceTimer = null;
-
-      recognition.onresult = (e) => {
-        let interim = '';
-        finalText = '';
-        for (let i = 0; i < e.results.length; i++) {
-          if (e.results[i].isFinal) finalText += e.results[i][0].transcript;
-          else interim += e.results[i][0].transcript;
-        }
-        const input = document.getElementById('vc-text-input');
-        input.value = finalText + interim;
-        input.dispatchEvent(new Event('input'));
-
-        clearTimeout(silenceTimer);
-        if (finalText.trim()) {
-          silenceTimer = setTimeout(() => {
-            if (finalText.trim().length > 2) {
-              processQuery(finalText.trim());
-              finalText = '';
-              input.value = '';
-              input.dispatchEvent(new Event('input'));
-            }
-          }, 1500);
-        }
-      };
-
-      recognition.onend = () => {
-        isListening = false;
-        document.getElementById('vc-mic-btn').classList.remove('active');
-        if (isOpen && !isSpeaking && CFG.continuousListening && micActivated) {
-          // Auto-restart mic for continuous conversation
-          setTimeout(() => {
-            if (isOpen && !isSpeaking && micActivated) {
-              try { recognition.start(); isListening = true;
-                document.getElementById('vc-mic-btn').classList.add('active');
-                setStatus('listening', 'Listening...');
-              } catch(e) {}
-            }
-          }, 300);
-          return;
-        }
-        if (!isSpeaking) setStatus('idle', 'Ready');
-      };
-
-      recognition.onerror = (e) => {
-        if (e.error === 'no-speech' || e.error === 'aborted') return;
-        console.warn('[VioletChat] Speech error:', e.error);
-      };
+    // Step 1: Ensure mic permission via getUserMedia (if not already granted)
+    if (!micStream) {
+      try {
+        micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        console.log('[VioletChat] Mic permission granted via getUserMedia');
+      } catch (err) {
+        console.warn('[VioletChat] getUserMedia failed:', err.name, err.message);
+        addMessage('ai', "I need microphone access to listen. Please allow it in your browser and try again, or type your message instead.");
+        setStatus('idle', 'Ready');
+        return;
+      }
     }
 
+    // Step 2: Create or reuse SpeechRecognition instance
+    // Always create a fresh instance to avoid stale state
+    if (recognition) {
+      try { recognition.abort(); } catch(e) {}
+    }
+
+    recognition = new SR();
+    recognition.continuous = false; // Use single-shot mode — more reliable
+    recognition.interimResults = true;
+    recognition.lang = 'en-US';
+    recognition.maxAlternatives = 1;
+
+    let finalText = '';
+
+    recognition.onresult = (e) => {
+      let interim = '';
+      finalText = '';
+      for (let i = 0; i < e.results.length; i++) {
+        if (e.results[i].isFinal) finalText += e.results[i][0].transcript;
+        else interim += e.results[i][0].transcript;
+      }
+      const input = document.getElementById('vc-text-input');
+      input.value = finalText + interim;
+      input.dispatchEvent(new Event('input'));
+      console.log('[VioletChat] Heard:', finalText || interim);
+    };
+
+    recognition.onend = () => {
+      isListening = false;
+      document.getElementById('vc-mic-btn').classList.remove('active');
+
+      // If we got speech, process it
+      if (finalText.trim().length > 2) {
+        const query = finalText.trim();
+        finalText = '';
+        const input = document.getElementById('vc-text-input');
+        input.value = '';
+        input.dispatchEvent(new Event('input'));
+        processQuery(query);
+        return;
+      }
+
+      // No speech captured — auto-restart if continuous mode
+      if (isOpen && !isSpeaking && CFG.continuousListening && micActivated) {
+        setTimeout(() => {
+          if (isOpen && !isSpeaking && micActivated) {
+            doStartRecognition();
+          }
+        }, 300);
+        return;
+      }
+
+      if (!isSpeaking) setStatus('idle', 'Ready');
+    };
+
+    recognition.onerror = (e) => {
+      console.warn('[VioletChat] Speech error:', e.error);
+      if (e.error === 'no-speech') {
+        // No speech detected — restart if continuous
+        if (isOpen && !isSpeaking && CFG.continuousListening && micActivated) {
+          setTimeout(() => {
+            if (isOpen && !isSpeaking && micActivated) doStartRecognition();
+          }, 300);
+        }
+        return;
+      }
+      if (e.error === 'aborted') return;
+      if (e.error === 'not-allowed') {
+        micStream = null; // Clear so it re-requests next time
+        addMessage('ai', "Microphone was blocked. Please click the mic icon in your browser's address bar and allow access, then try again.");
+      }
+    };
+
+    doStartRecognition();
+  }
+
+  function doStartRecognition() {
     try {
-      markUserGesture();
       recognition.start();
       isListening = true;
       micActivated = true;
       document.getElementById('vc-mic-btn').classList.add('active');
       setStatus('listening', 'Listening...');
     } catch (e) {
-      console.warn('[VioletChat] Could not start recognition:', e);
+      console.warn('[VioletChat] Could not start recognition:', e.message);
+      // If already started, just update UI
+      if (e.message && e.message.includes('already started')) {
+        isListening = true;
+        document.getElementById('vc-mic-btn').classList.add('active');
+        setStatus('listening', 'Listening...');
+      }
     }
   }
 
   function stopListening(userToggled) {
     if (recognition) {
-      try { recognition.stop(); } catch (e) {}
+      try { recognition.abort(); } catch (e) {}
     }
     isListening = false;
-    // Only clear micActivated when user explicitly toggles mic off
     if (userToggled) micActivated = false;
     document.getElementById('vc-mic-btn').classList.remove('active');
     setStatus('idle', 'Ready');
@@ -583,11 +620,7 @@ SPEAKING RULES:
       setStatus('listening', 'Listening...');
       setTimeout(() => {
         if (isOpen && !isSpeaking && micActivated) {
-          try {
-            if (recognition) recognition.start();
-            isListening = true;
-            document.getElementById('vc-mic-btn').classList.add('active');
-          } catch(e) {}
+          doStartRecognition();
         }
       }, 400);
     } else {
