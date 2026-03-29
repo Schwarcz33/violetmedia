@@ -76,11 +76,64 @@
   // Keys
   const keys = {};
 
-  // ── AUDIO (Web Audio API synth) ──
+  // ── AUDIO (Web Audio API synth + background music) ──
   let audioCtx = null;
+  let bgMusicBuffer = null, bgMusicSource = null, bgMusicGain = null;
+  let bgMusicPlaying = false, bgMusicWaiting = false, bgMusicLoading = false;
+
   function initAudio() {
-    if (audioCtx) return;
+    if (audioCtx) {
+      // AudioContext exists but music not loaded yet — try loading
+      if (!bgMusicBuffer && !bgMusicLoading) loadBgMusic();
+      return;
+    }
     try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { audioCtx = null; }
+    if (audioCtx) loadBgMusic();
+  }
+
+  function loadBgMusic() {
+    if (bgMusicBuffer || bgMusicLoading || !audioCtx) return;
+    bgMusicLoading = true;
+    const audio = new Audio("galaga-music.mp3");
+    audio.crossOrigin = "anonymous";
+    audio.loop = true;
+    audio.volume = 0;
+    audio.load();
+    // Store as HTML5 Audio element — more reliable than Web Audio decoding
+    audio.addEventListener("canplaythrough", function() {
+      bgMusicBuffer = audio;
+      bgMusicLoading = false;
+      if (bgMusicWaiting) startBgMusic();
+    }, { once: true });
+    audio.addEventListener("error", function() {
+      bgMusicLoading = false;
+    }, { once: true });
+  }
+
+  function startBgMusic() {
+    if (bgMusicPlaying) return;
+    if (!bgMusicBuffer) {
+      bgMusicWaiting = true;
+      return;
+    }
+    bgMusicBuffer.loop = true;
+    bgMusicBuffer.volume = soundEnabled ? 0.2 : 0;
+    bgMusicBuffer.currentTime = 0;
+    bgMusicBuffer.play().catch(() => {});
+    bgMusicPlaying = true;
+    bgMusicWaiting = false;
+  }
+
+  function stopBgMusic() {
+    if (bgMusicBuffer && bgMusicPlaying) {
+      bgMusicBuffer.pause();
+      bgMusicBuffer.currentTime = 0;
+    }
+    bgMusicPlaying = false;
+  }
+
+  function updateBgMusicVolume() {
+    if (bgMusicBuffer) bgMusicBuffer.volume = soundEnabled ? 0.2 : 0;
   }
   function playTone(freq, dur, type, vol) {
     if (!audioCtx || !soundEnabled) return;
@@ -100,31 +153,87 @@
   function sfxGameOver() { playTone(440, 0.2, "square", 0.08); setTimeout(() => playTone(330, 0.2, "square", 0.08), 200); setTimeout(() => playTone(220, 0.4, "square", 0.08), 400); }
   function sfxBomb() { playTone(60, 0.5, "sawtooth", 0.12); playTone(40, 0.6, "square", 0.08); }
 
-  // ── STARS BACKGROUND ──
+  // ── STARS BACKGROUND (3-layer parallax + nebula) ──
+  let nebulaPhase = 0;
   function initStars() {
     stars = [];
-    for (let i = 0; i < 120; i++) {
+    // Layer 1: distant dim stars (slow)
+    for (let i = 0; i < 80; i++) {
       stars.push({
-        x: Math.random() * GW,
-        y: Math.random() * GH,
-        speed: Math.random() * 1.5 + 0.3,
-        size: Math.random() * 1.8 + 0.3,
-        color: [C.white, C.violet, C.blue, C.purple][Math.floor(Math.random() * 4)],
-        alpha: Math.random() * 0.6 + 0.2,
+        x: Math.random() * GW, y: Math.random() * GH,
+        speed: Math.random() * 0.4 + 0.1, size: Math.random() * 1 + 0.3,
+        color: "rgba(200,200,255,0.3)", layer: 0,
+        twinkle: Math.random() * Math.PI * 2
+      });
+    }
+    // Layer 2: mid stars (medium)
+    for (let i = 0; i < 100; i++) {
+      const cols = [C.white, C.violet, C.blue, "rgba(200,180,255,0.9)"];
+      stars.push({
+        x: Math.random() * GW, y: Math.random() * GH,
+        speed: Math.random() * 1 + 0.5, size: Math.random() * 1.5 + 0.5,
+        color: cols[Math.floor(Math.random() * cols.length)], layer: 1,
+        twinkle: Math.random() * Math.PI * 2
+      });
+    }
+    // Layer 3: close bright stars (fast)
+    for (let i = 0; i < 40; i++) {
+      stars.push({
+        x: Math.random() * GW, y: Math.random() * GH,
+        speed: Math.random() * 2 + 1.5, size: Math.random() * 2.5 + 1,
+        color: [C.white, C.violet, C.gold][Math.floor(Math.random() * 3)], layer: 2,
+        twinkle: Math.random() * Math.PI * 2
       });
     }
   }
   function updateStars() {
     for (const s of stars) {
       s.y += s.speed;
-      if (s.y > GH) { s.y = 0; s.x = Math.random() * GW; }
+      s.twinkle += 0.03 + s.layer * 0.01;
+      if (s.y > GH) { s.y = -2; s.x = Math.random() * GW; }
     }
+    nebulaPhase += 0.002;
   }
   function drawStars() {
+    // Nebula clouds — colours shift by wave tier for visual variety
+    const tier = typeof getWaveTier === "function" ? getWaveTier() : 1;
+    const nebulaColors = [
+      ["rgba(138,43,226,0.06)", "rgba(45,107,255,0.04)"],   // Tier 1: violet + blue (calm)
+      ["rgba(100,43,226,0.08)", "rgba(45,80,255,0.06)"],    // Tier 2: deeper violet
+      ["rgba(200,43,180,0.07)", "rgba(138,43,226,0.06)"],   // Tier 3: magenta shift
+      ["rgba(226,43,80,0.06)", "rgba(200,100,43,0.05)"],    // Tier 4: red/amber threat
+      ["rgba(255,43,43,0.08)", "rgba(226,160,43,0.06)"],    // Tier 5: full red/gold danger
+    ];
+    const nc = nebulaColors[Math.min(tier - 1, 4)];
+
+    const grd1 = ctx.createRadialGradient(GW * 0.3, GH * 0.4 + Math.sin(nebulaPhase) * 30, 0, GW * 0.3, GH * 0.4, 250);
+    grd1.addColorStop(0, nc[0]);
+    grd1.addColorStop(1, "transparent");
+    ctx.fillStyle = grd1;
+    ctx.fillRect(0, 0, GW, GH);
+
+    const grd2 = ctx.createRadialGradient(GW * 0.75, GH * 0.7 + Math.cos(nebulaPhase * 0.7) * 40, 0, GW * 0.75, GH * 0.7, 200);
+    grd2.addColorStop(0, nc[1]);
+    grd2.addColorStop(1, "transparent");
+    ctx.fillStyle = grd2;
+    ctx.fillRect(0, 0, GW, GH);
+
+    // Stars with twinkling
     for (const s of stars) {
-      ctx.globalAlpha = s.alpha;
+      const twinkleAlpha = 0.4 + Math.sin(s.twinkle) * 0.3;
+      ctx.globalAlpha = twinkleAlpha;
       ctx.fillStyle = s.color;
-      ctx.fillRect(s.x, s.y, s.size, s.size);
+      if (s.layer === 2 && s.size > 2) {
+        // Bright close stars get a glow
+        ctx.shadowColor = s.color;
+        ctx.shadowBlur = 4;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.size * 0.6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      } else {
+        ctx.fillRect(s.x, s.y, s.size, s.size);
+      }
     }
     ctx.globalAlpha = 1;
   }
@@ -139,7 +248,7 @@
         vx: Math.cos(angle) * v,
         vy: Math.sin(angle) * v,
         life: 1,
-        decay: Math.random() * 0.03 + 0.02,
+        decay: Math.random() * 0.025 + 0.015,
         size: Math.random() * 3 + 1,
         color: color || C.violet,
       });
@@ -158,8 +267,13 @@
     for (const p of particles) {
       ctx.globalAlpha = p.life;
       ctx.fillStyle = p.color;
-      ctx.fillRect(p.x - p.size / 2, p.y - p.size / 2, p.size, p.size);
+      ctx.shadowColor = p.color;
+      ctx.shadowBlur = p.size * 2;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
+      ctx.fill();
     }
+    ctx.shadowBlur = 0;
     ctx.globalAlpha = 1;
   }
 
@@ -278,19 +392,39 @@
     ctx.closePath();
     ctx.fill();
 
-    // Eye/core
+    // Inner detail — energy core
     ctx.fillStyle = C.white;
-    ctx.globalAlpha = 0.8;
-    ctx.fillRect(cx - 2, cy - 2, 4, 4);
+    ctx.shadowColor = C.white;
+    ctx.shadowBlur = 6;
+    ctx.globalAlpha = 0.7 + Math.sin(Date.now() * 0.008 + e.gridCol) * 0.3;
+    ctx.beginPath();
+    ctx.arc(cx, cy, 3, 0, Math.PI * 2);
+    ctx.fill();
     ctx.globalAlpha = 1;
 
-    // Commander hit indicator
-    if (e.type === "commander" && e.hp === 1) {
-      ctx.strokeStyle = C.white;
-      ctx.lineWidth = 1;
-      ctx.globalAlpha = 0.5;
+    // Wing/accent lines for detail
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 1.5;
+    ctx.globalAlpha = 0.4;
+    if (e.type === "striker") {
       ctx.beginPath();
-      ctx.arc(cx, cy, e.w / 2 + 3, 0, Math.PI * 2);
+      ctx.moveTo(e.x + 2, e.y + e.h * 0.5); ctx.lineTo(cx - 3, cy);
+      ctx.moveTo(e.x + e.w - 2, e.y + e.h * 0.5); ctx.lineTo(cx + 3, cy);
+      ctx.stroke();
+    } else if (e.type === "grunt") {
+      ctx.beginPath();
+      ctx.moveTo(cx, e.y + 3); ctx.lineTo(cx, e.y + e.h - 3);
+      ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+
+    // Commander damage ring
+    if (e.type === "commander" && e.hp === 1) {
+      ctx.strokeStyle = C.gold;
+      ctx.lineWidth = 1.5;
+      ctx.globalAlpha = 0.4 + Math.sin(Date.now() * 0.01) * 0.3;
+      ctx.beginPath();
+      ctx.arc(cx, cy, e.w / 2 + 4, 0, Math.PI * 2);
       ctx.stroke();
       ctx.globalAlpha = 1;
     }
@@ -410,29 +544,53 @@
   }
 
   // ── FORMATION ──
+  // Wave tiers change the feel of the game
+  // Tier 1 (1-4): Easy intro, mostly grunts
+  // Tier 2 (5-8): More strikers, faster dives, boss at 5
+  // Tier 3 (9-12): Commanders in force, rapid dives, boss at 10
+  // Tier 4 (13-16): Chaos, triple dives, thick formations, boss at 15
+  // Tier 5 (17-20): Endgame, everything maxed, boss at 20
+  function getWaveTier() {
+    if (wave <= 4) return 1;
+    if (wave <= 8) return 2;
+    if (wave <= 12) return 3;
+    if (wave <= 16) return 4;
+    return 5;
+  }
+
   function spawnWave() {
     enemies = [];
     boss = null;
     formationX = 0;
     formationDir = 1;
-    formationSpeed = 0.4 + wave * 0.06;
-    diveInterval = Math.max(800, 2500 - wave * 150);
+    const tier = getWaveTier();
+
+    // Difficulty scaling per tier
+    formationSpeed = 0.4 + wave * 0.08 + tier * 0.15;
+    diveInterval = Math.max(400, 2500 - wave * 120 - tier * 200);
     diveTimer = 0;
 
     if (wave % 5 === 0) {
-      // Boss wave — fewer grunts + boss
-      for (let r = 0; r < 2; r++) {
+      // Boss wave — more escorts at higher tiers
+      const escortRows = Math.min(2 + Math.floor(tier / 2), 4);
+      for (let r = 0; r < escortRows; r++) {
         for (let c = 0; c < COLS; c++) {
-          enemies.push(createEnemy(c, r, r === 0 ? "striker" : "grunt"));
+          const type = r === 0 ? "commander" : (r <= 1 ? "striker" : "grunt");
+          enemies.push(createEnemy(c, r, type));
         }
       }
       boss = createBoss();
     } else {
-      for (let r = 0; r < ROWS; r++) {
+      // Normal wave — composition changes by tier
+      const rows = Math.min(ROWS, 4 + Math.floor(tier / 2));
+      for (let r = 0; r < rows; r++) {
         for (let c = 0; c < COLS; c++) {
           let type = "grunt";
-          if (r === 0) type = "commander";
-          else if (r <= 1 + Math.floor(wave / 3)) type = "striker";
+          if (tier >= 3 && r <= 1) type = "commander";
+          else if (tier >= 2 && r === 0) type = "commander";
+          else if (r <= Math.min(tier, rows - 2)) type = "striker";
+          // Tier 4+: random commanders mixed into striker rows
+          if (tier >= 4 && type === "striker" && Math.random() < 0.2) type = "commander";
           enemies.push(createEnemy(c, r, type));
         }
       }
@@ -464,10 +622,16 @@
         const pool = strikers.length > 0 && Math.random() < 0.6 ? strikers : available;
         const diver = pool[Math.floor(Math.random() * pool.length)];
         startDive(diver);
-        // At higher waves, send pairs
-        if (wave >= 3 && Math.random() < 0.4 && available.length > 1) {
+        const tier = getWaveTier();
+        // Pair dives from tier 2+
+        if (tier >= 2 && Math.random() < 0.5 && available.length > 1) {
           const second = available.filter(e => e !== diver);
           if (second.length > 0) startDive(second[Math.floor(Math.random() * second.length)]);
+        }
+        // Triple dives from tier 4+
+        if (tier >= 4 && Math.random() < 0.4 && available.length > 2) {
+          const remaining = available.filter(e => e !== diver && !e.diving);
+          if (remaining.length > 0) startDive(remaining[Math.floor(Math.random() * remaining.length)]);
         }
       }
     }
@@ -489,15 +653,26 @@
       e.x = t1 * t1 * t1 * e.diveStart.x + 3 * t1 * t1 * t * e.diveCtrl1.x + 3 * t1 * t * t * e.diveCtrl2.x + t * t * t * e.diveEnd.x;
       e.y = t1 * t1 * t1 * e.diveStart.y + 3 * t1 * t1 * t * e.diveCtrl1.y + 3 * t1 * t * t * e.diveCtrl2.y + t * t * t * e.diveEnd.y;
 
-      // Enemy fires while diving
+      // Enemy fires while diving — more aggressive at higher tiers
       e.fireTimer -= dt;
+      const tier = getWaveTier();
+      const fireDelay = Math.max(300, 800 - tier * 100) + Math.random() * (600 - tier * 80);
       if (e.fireTimer <= 0) {
-        e.fireTimer = 800 + Math.random() * 600;
+        e.fireTimer = fireDelay;
+        const bulletSpeed = ENEMY_BULLET_SPEED + tier * 0.4;
         enemyBullets.push({
           x: e.x + e.w / 2 - 2, y: e.y + e.h,
-          vx: (Math.random() - 0.5) * 1.5, vy: ENEMY_BULLET_SPEED,
+          vx: (Math.random() - 0.5) * (1.5 + tier * 0.3), vy: bulletSpeed,
           w: 4, h: 8, color: e.type === "striker" ? C.blue : C.purple,
         });
+        // Tier 4+: commanders fire double shots
+        if (tier >= 4 && e.type === "commander") {
+          enemyBullets.push({
+            x: e.x + e.w / 2 - 2, y: e.y + e.h,
+            vx: (Math.random() - 0.5) * 2, vy: bulletSpeed * 0.9,
+            w: 4, h: 8, color: C.gold,
+          });
+        }
       }
     }
   }
@@ -557,13 +732,24 @@
     else if (type === "bomb") {
       sfxBomb();
       shakeMag = 12;
-      // Kill all enemies on screen
-      for (const e of enemies) {
-        if (e.alive) {
-          spawnParticles(e.x + e.w / 2, e.y + e.h / 2, C.violet, 8, 4);
-          score += e.type === "commander" ? 200 : e.type === "striker" ? 150 : 100;
-          e.alive = false;
-        }
+      // Damage all enemies but ALWAYS leave survivors
+      // Count alive enemies first, then decide who lives
+      const aliveEnemies = enemies.filter(e => e.alive);
+      const aliveCount = aliveEnemies.length;
+      const minSurvivors = Math.max(3, Math.ceil(aliveCount * 0.3));
+      // Shuffle alive enemies and protect the last minSurvivors
+      const shuffled = [...aliveEnemies].sort(() => Math.random() - 0.5);
+      const toKill = shuffled.slice(0, Math.max(0, aliveCount - minSurvivors));
+      const toSpare = shuffled.slice(Math.max(0, aliveCount - minSurvivors));
+      for (const e of toKill) {
+        spawnParticles(e.x + e.w / 2, e.y + e.h / 2, C.violet, 8, 4);
+        score += e.type === "commander" ? 200 : e.type === "striker" ? 150 : 100;
+        e.alive = false;
+      }
+      for (const e of toSpare) {
+        // Survivors take damage but live
+        e.hp = 1;
+        spawnParticles(e.x + e.w / 2, e.y + e.h / 2, C.violet, 4, 2);
       }
       if (boss && boss.alive) {
         boss.hp -= 10;
@@ -756,6 +942,24 @@
       ctx.fillText("— BOSS INCOMING —", GW / 2, GH * 0.52);
     }
 
+    // Tier label — tells player what zone they're in
+    const tier = getWaveTier();
+    const tierNames = ["", "SECTOR ALPHA", "SECTOR BETA", "SECTOR GAMMA", "SECTOR DELTA", "FINAL SECTOR"];
+    const tierColors = ["", "rgba(138,43,226,0.7)", "rgba(100,43,226,0.8)", "rgba(200,43,180,0.8)", "rgba(226,80,43,0.8)", "rgba(255,43,43,0.9)"];
+    ctx.font = "600 14px 'Space Grotesk', sans-serif";
+    ctx.fillStyle = tierColors[tier] || C.violet;
+    ctx.shadowColor = tierColors[tier] || C.violet;
+    ctx.shadowBlur = 10;
+    ctx.fillText(tierNames[tier] || "", GW / 2, GH * 0.35);
+
+    // Difficulty warning at tier transitions
+    if (wave === 5 || wave === 9 || wave === 13 || wave === 17) {
+      ctx.font = "600 12px 'Inter', sans-serif";
+      ctx.fillStyle = "rgba(255,200,50,0.7)";
+      ctx.shadowColor = "rgba(255,200,50,0.4)";
+      ctx.fillText("⚠ DIFFICULTY INCREASING", GW / 2, GH * 0.58);
+    }
+
     ctx.shadowBlur = 0;
     ctx.restore();
   }
@@ -830,24 +1034,48 @@
   function drawTouchControls() {
     if (!isMobile || gameState !== "playing") return;
     ctx.save();
-    ctx.globalAlpha = 0.12;
-    ctx.strokeStyle = C.white;
-    ctx.lineWidth = 1;
-    // Left zone
-    ctx.strokeRect(0, GH * 0.6, GW * 0.33, GH * 0.4);
-    // Right zone
-    ctx.strokeRect(GW * 0.67, GH * 0.6, GW * 0.33, GH * 0.4);
-    // Fire zone
-    ctx.strokeRect(GW * 0.33, GH * 0.6, GW * 0.34, GH * 0.4);
 
-    ctx.globalAlpha = 0.2;
-    ctx.font = "bold 14px monospace";
+    // Left arrow button — bottom left
+    const btnSize = 60, margin = 20;
+    const leftX = margin, leftY = GH - btnSize - margin;
+    const rightX = margin + btnSize + 15, rightY = leftY;
+    const fireX = GW - btnSize - margin, fireY = GH - btnSize - margin;
+
+    // Left button
+    ctx.globalAlpha = touchLeft ? 0.5 : 0.2;
+    ctx.fillStyle = C.violet;
+    ctx.beginPath();
+    ctx.arc(leftX + btnSize / 2, leftY + btnSize / 2, btnSize / 2, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalAlpha = touchLeft ? 1 : 0.6;
+    ctx.fillStyle = C.white;
+    ctx.font = "bold 28px sans-serif";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
+    ctx.fillText("◀", leftX + btnSize / 2, leftY + btnSize / 2);
+
+    // Right button
+    ctx.globalAlpha = touchRight ? 0.5 : 0.2;
+    ctx.fillStyle = C.violet;
+    ctx.beginPath();
+    ctx.arc(rightX + btnSize / 2, rightY + btnSize / 2, btnSize / 2, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalAlpha = touchRight ? 1 : 0.6;
     ctx.fillStyle = C.white;
-    ctx.fillText("<", GW * 0.165, GH * 0.8);
-    ctx.fillText("FIRE", GW * 0.5, GH * 0.8);
-    ctx.fillText(">", GW * 0.835, GH * 0.8);
+    ctx.fillText("▶", rightX + btnSize / 2, rightY + btnSize / 2);
+
+    // Fire button — larger, bottom right
+    const fireBtnSize = 75;
+    ctx.globalAlpha = touchFire ? 0.6 : 0.25;
+    ctx.fillStyle = C.gold;
+    ctx.beginPath();
+    ctx.arc(fireX + fireBtnSize / 2 - 8, fireY + fireBtnSize / 2 - 8, fireBtnSize / 2, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalAlpha = touchFire ? 1 : 0.7;
+    ctx.fillStyle = "#050214";
+    ctx.font = "bold 16px 'Space Grotesk', sans-serif";
+    ctx.fillText("FIRE", fireX + fireBtnSize / 2 - 8, fireY + fireBtnSize / 2 - 8);
+
     ctx.restore();
   }
 
@@ -871,6 +1099,7 @@
     gameState = "waveIntro";
     waveTimer = 0;
     spawnWave();
+    startBgMusic();
   }
 
   // ── UPDATE ──
@@ -878,6 +1107,9 @@
     updateStars();
     updateParticles();
     applyShake();
+
+    // Retry bg music if it was waiting for load
+    if (bgMusicWaiting && bgMusic && !bgMusicPlaying) startBgMusic();
 
     if (gameState === "waveIntro") {
       waveTimer += dt;
@@ -960,10 +1192,11 @@
             const pts = e.type === "commander" ? 200 : e.type === "striker" ? 150 : 100;
             score += pts;
             const eColor = e.type === "commander" ? C.gold : e.type === "striker" ? C.blue : C.purple;
-            spawnParticles(e.x + e.w / 2, e.y + e.h / 2, eColor, 12, 3);
+            spawnParticles(e.x + e.w / 2, e.y + e.h / 2, eColor, 20, 4);
+            spawnParticles(e.x + e.w / 2, e.y + e.h / 2, C.white, 8, 2);
             spawnPowerup(e.x + e.w / 2 - 8, e.y + e.h / 2 - 8);
           } else {
-            spawnParticles(e.x + e.w / 2, e.y + e.h / 2, C.white, 4, 2);
+            spawnParticles(e.x + e.w / 2, e.y + e.h / 2, C.white, 6, 2);
           }
           hit = true;
           break;
@@ -1057,6 +1290,7 @@
     if (lives <= 0) {
       gameState = "gameover";
       sfxGameOver();
+      stopBgMusic();
       if (score > highScore) {
         highScore = score;
         localStorage.setItem("vm_galaga_hi", highScore.toString());
@@ -1088,23 +1322,36 @@
     drawBoss(boss);
     drawPlayer();
 
-    // Bullets
-    ctx.shadowColor = C.violet;
-    ctx.shadowBlur = 8;
+    // Player bullets — with glowing trail
     for (const b of bullets) {
+      // Trail
+      ctx.globalAlpha = 0.3;
       ctx.fillStyle = C.violet;
+      ctx.fillRect(b.x + 1, b.y + b.h, b.w - 2, 12);
+      ctx.globalAlpha = 0.15;
+      ctx.fillRect(b.x + 1, b.y + b.h + 8, b.w - 2, 8);
+      ctx.globalAlpha = 1;
+      // Bullet body
+      ctx.fillStyle = C.white;
+      ctx.shadowColor = C.violet;
+      ctx.shadowBlur = 12;
       ctx.fillRect(b.x, b.y, b.w, b.h);
+      ctx.shadowBlur = 0;
     }
-    ctx.shadowBlur = 0;
 
-    // Enemy bullets
+    // Enemy bullets — amber glow trails
     for (const b of enemyBullets) {
-      ctx.fillStyle = b.color || C.blue;
-      ctx.shadowColor = b.color || C.blue;
-      ctx.shadowBlur = 6;
+      const ec = b.color || C.blue;
+      ctx.globalAlpha = 0.25;
+      ctx.fillStyle = ec;
+      ctx.fillRect(b.x + 1, b.y - 8, b.w - 2, 8);
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = ec;
+      ctx.shadowColor = ec;
+      ctx.shadowBlur = 8;
       ctx.fillRect(b.x, b.y, b.w, b.h);
+      ctx.shadowBlur = 0;
     }
-    ctx.shadowBlur = 0;
 
     // Powerups
     for (const p of powerups) drawPowerup(p);
@@ -1200,7 +1447,7 @@
         if (gameState === "playing") gameState = "paused";
         else if (gameState === "paused") gameState = "playing";
       }
-      if (e.code === "KeyM") soundEnabled = !soundEnabled;
+      if (e.code === "KeyM") { soundEnabled = !soundEnabled; updateBgMusicVolume(); }
       if (e.code === "KeyF") toggleFullscreen();
       if (e.code === "Space") e.preventDefault();
     });
@@ -1210,24 +1457,55 @@
     document.addEventListener("fullscreenchange", handleFullscreenChange);
     document.addEventListener("webkitfullscreenchange", handleFullscreenChange);
 
-    // Touch
+    // Touch — button-based controls
+    const btnSize = 60, margin = 20, fireBtnSize = 75;
+    function getTouchAction(tx, ty) {
+      const leftX = margin, leftY = GH - btnSize - margin;
+      const rightX = margin + btnSize + 15, rightY = leftY;
+      const fireX = GW - fireBtnSize - margin + 8, fireY = GH - fireBtnSize - margin + 8;
+      // Check fire button (circle hit test)
+      const fdx = tx - (fireX + fireBtnSize / 2 - 8), fdy = ty - (fireY + fireBtnSize / 2 - 8);
+      if (Math.sqrt(fdx * fdx + fdy * fdy) < fireBtnSize / 2 + 10) return "fire";
+      // Check left button
+      const ldx = tx - (leftX + btnSize / 2), ldy = ty - (leftY + btnSize / 2);
+      if (Math.sqrt(ldx * ldx + ldy * ldy) < btnSize / 2 + 10) return "left";
+      // Check right button
+      const rdx = tx - (rightX + btnSize / 2), rdy = ty - (rightY + btnSize / 2);
+      if (Math.sqrt(rdx * rdx + rdy * rdy) < btnSize / 2 + 10) return "right";
+      // Tap anywhere else on screen = fire (convenient)
+      return "fire";
+    }
     canvas.addEventListener("touchstart", (e) => {
       e.preventDefault();
       initAudio();
       if (gameState === "menu" || gameState === "gameover") { resetGame(); return; }
-      for (const t of e.changedTouches) {
+      for (const t of e.changedTouches || e.touches) {
         const rect = canvas.getBoundingClientRect();
         const tx = (t.clientX - rect.left) / rect.width * GW;
-        if (tx < GW * 0.33) touchLeft = true;
-        else if (tx > GW * 0.67) touchRight = true;
-        else touchFire = true;
+        const ty = (t.clientY - rect.top) / rect.height * GH;
+        const action = getTouchAction(tx, ty);
+        if (action === "left") touchLeft = true;
+        else if (action === "right") touchRight = true;
+        else if (action === "fire") touchFire = true;
       }
     }, { passive: false });
     canvas.addEventListener("touchend", (e) => {
       e.preventDefault();
       touchLeft = false; touchRight = false; touchFire = false;
     }, { passive: false });
-    canvas.addEventListener("touchmove", (e) => { e.preventDefault(); }, { passive: false });
+    canvas.addEventListener("touchmove", (e) => {
+      e.preventDefault();
+      touchLeft = false; touchRight = false; touchFire = false;
+      for (const t of e.changedTouches || e.touches) {
+        const rect = canvas.getBoundingClientRect();
+        const tx = (t.clientX - rect.left) / rect.width * GW;
+        const ty = (t.clientY - rect.top) / rect.height * GH;
+        const action = getTouchAction(tx, ty);
+        if (action === "left") touchLeft = true;
+        else if (action === "right") touchRight = true;
+        else if (action === "fire") touchFire = true;
+      }
+    }, { passive: false });
 
     // Click (for desktop menu)
     canvas.addEventListener("click", () => {

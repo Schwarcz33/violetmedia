@@ -2,8 +2,8 @@
 <html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <meta name="description" content="Violet Media Games — Arcade-grade entertainment, Violet-grade quality. Play Galaga and more." />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+  <meta name="description" content="Violet Media Games — Sentinel Defence tower defence, Cosmic Galaga arcade shooter, and more. Play free in your browser." />
   <meta name="theme-color" content="#050214" />
   <title>Games — Violet Media</title>
   <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
@@ -51,13 +51,14 @@
       background: var(--glass-bg); border: 1px solid var(--glass-border);
       box-shadow: 0 18px 60px rgba(0,0,0,0.45), 0 0 44px rgba(138, 43, 226, 0.22);
     }
-    #galaga-canvas {
+    .game-canvas {
       display: block; max-width: 800px; width: 100%; height: auto;
       border-radius: 16px; border: 1px solid rgba(138,43,226,0.30);
       box-shadow: 0 0 60px rgba(138,43,226,0.18), 0 8px 32px rgba(0,0,0,0.5);
-      image-rendering: pixelated; cursor: crosshair;
+      cursor: crosshair; touch-action: none;
     }
-    #galaga-canvas:fullscreen, #galaga-canvas:-webkit-full-screen {
+    #galaga-canvas { image-rendering: pixelated; }
+    .game-canvas:fullscreen, .game-canvas:-webkit-full-screen {
       border-radius: 0; border: none; box-shadow: none; background: #050214;
     }
     *:fullscreen, *:-webkit-full-screen { background: #050214; }
@@ -79,25 +80,27 @@
 
   <main class="pt-28 pb-20">
     <!-- HEADER -->
-    <div class="container mx-auto px-6 text-center mb-16">
+    <div class="container mx-auto px-6 text-center mb-12">
       <div class="inline-flex items-center gap-2 glass-card rounded-full px-4 py-2 text-xs font-semibold text-white/80 mb-6">
         <span class="w-2 h-2 rounded-full" style="background: var(--violet); box-shadow:0 0 18px rgba(138,43,226,0.6);"></span>
         Interactive Entertainment
       </div>
       <h1 class="text-5xl md:text-7xl font-display font-black mb-4 cosmic-text">VIOLET MEDIA GAMES</h1>
-      <p class="text-lg text-white/60 mb-2">Arcade-grade entertainment, Violet-grade quality</p>
-      <p class="text-sm text-white/40">More games coming soon. This is just the beginning.</p>
+      <p class="text-lg text-white/60">Arcade-grade entertainment, Violet-grade quality</p>
     </div>
 
-    <!-- GALAGA -->
-    <div class="container mx-auto px-6 mb-12">
-      <div class="text-center mb-8">
-        <h2 class="text-2xl md:text-3xl font-display font-black text-white mb-2">Cosmic Galaga</h2>
-        <p class="text-sm text-white/40">Arrow keys / WASD to move &bull; SPACE to fire &bull; F fullscreen &bull; ESC pause &bull; M sound</p>
+    <!-- ═══════════════════════════════════════ -->
+    <!-- COSMIC GALAGA -->
+    <!-- ═══════════════════════════════════════ -->
+    <div class="container mx-auto px-6 mb-16">
+      <div class="text-center mb-6">
+        <h2 class="text-3xl md:text-4xl font-display font-black text-white mb-2">Cosmic Galaga</h2>
+        <p class="text-sm text-white/50 max-w-lg mx-auto">Classic arcade space shooter in the Violet Media universe. Destroy waves of alien invaders, collect power-ups, defeat bosses.</p>
+        <p class="text-xs text-white/30 mt-2">Arrow keys / WASD to move &bull; SPACE to fire &bull; F fullscreen &bull; M sound &bull; Touch controls on mobile</p>
       </div>
       <div class="flex justify-center">
         <div class="relative">
-          <canvas id="galaga-canvas" width="800" height="600"></canvas>
+          <canvas id="galaga-canvas" class="game-canvas" width="800" height="600"></canvas>
           <div class="absolute top-3 right-3 z-10 flex gap-2">
             <button id="game-fullscreen-toggle" class="w-10 h-10 rounded-full flex items-center justify-center text-white/50 hover:text-white transition-colors" style="background: rgba(17,8,38,0.6); border: 1px solid rgba(255,255,255,0.1);" aria-label="Toggle fullscreen">
               <i class="fas fa-expand text-sm"></i>
@@ -110,36 +113,22 @@
       </div>
     </div>
 
-    <!-- GAME INFO -->
+    <!-- ═══════════════════════════════════════ -->
+    <!-- COMING SOON -->
+    <!-- ═══════════════════════════════════════ -->
     <div class="container mx-auto px-6">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-3xl mx-auto">
-        <div class="glass-card rounded-2xl p-5 text-center">
-          <div class="text-xs tracking-[0.18em] uppercase text-white/50 mb-2">Enemies</div>
-          <div class="text-sm text-white/70"><span class="text-purple-300 font-bold">Purple</span> Grunts &bull; <span class="text-blue-300 font-bold">Blue</span> Strikers &bull; <span class="text-yellow-300 font-bold">Gold</span> Commanders</div>
-        </div>
-        <div class="glass-card rounded-2xl p-5 text-center">
-          <div class="text-xs tracking-[0.18em] uppercase text-white/50 mb-2">Power-ups</div>
-          <div class="text-sm text-white/70"><span class="text-purple-300 font-bold">R</span>apid &bull; <span class="text-blue-300 font-bold">S</span>pread &bull; <span class="text-yellow-300 font-bold">G</span>old Shield &bull; <span class="text-violet-300 font-bold">B</span>omb</div>
-        </div>
-        <div class="glass-card rounded-2xl p-5 text-center">
-          <div class="text-xs tracking-[0.18em] uppercase text-white/50 mb-2">Boss Waves</div>
-          <div class="text-sm text-white/70">Every 5th wave &bull; Multi-phase attacks &bull; Massive rewards</div>
-        </div>
-      </div>
-
-      <!-- COMING SOON -->
-      <div class="max-w-3xl mx-auto mt-12">
-        <h3 class="text-xl font-display font-black text-white/50 text-center mb-6">More Games Coming</h3>
+      <div class="max-w-3xl mx-auto">
+        <h3 class="text-xl font-display font-black text-white/50 text-center mb-6">Coming Next</h3>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div class="glass-card rounded-2xl p-6 text-center opacity-50">
-            <div class="text-3xl mb-3"><i class="fas fa-puzzle-piece text-purple-400/50"></i></div>
-            <div class="font-display font-bold text-white/40">Puzzle Game</div>
-            <div class="text-xs text-white/25 mt-1">Coming soon</div>
+            <div class="text-3xl mb-3">🏰</div>
+            <div class="font-display font-bold text-white/40">Violet Fury TD</div>
+            <div class="text-xs text-white/25 mt-1">3D tower defence in the Violet Fury universe</div>
           </div>
           <div class="glass-card rounded-2xl p-6 text-center opacity-50">
-            <div class="text-3xl mb-3"><i class="fas fa-chess text-purple-400/50"></i></div>
-            <div class="font-display font-bold text-white/40">Strategy Game</div>
-            <div class="text-xs text-white/25 mt-1">Coming soon</div>
+            <div class="text-3xl mb-3">🧱</div>
+            <div class="font-display font-bold text-white/40">Cosmic Tetris</div>
+            <div class="text-xs text-white/25 mt-1">Classic block puzzle, violet style</div>
           </div>
         </div>
       </div>
@@ -158,6 +147,73 @@
     </div>
   </footer>
 
+  <!-- Background music element -->
+  <audio id="galaga-bgm" src="galaga-music.mp3" loop preload="auto"></audio>
+
   <script src="galaga.js"></script>
+  <script>
+    // Connect HTML buttons + background music
+    document.addEventListener("DOMContentLoaded", function() {
+      const canvas = document.getElementById("galaga-canvas");
+      const fsBtn = document.getElementById("game-fullscreen-toggle");
+      const sndBtn = document.getElementById("game-sound-toggle");
+      const bgm = document.getElementById("galaga-bgm");
+      let musicStarted = false, musicMuted = false;
+
+      // Start music on first user interaction
+      function tryStartMusic() {
+        if (musicStarted || !bgm) return;
+        bgm.volume = 0.2;
+        bgm.play().then(() => { musicStarted = true; }).catch(() => {});
+      }
+
+      // Any click/touch on canvas starts music
+      if (canvas) {
+        canvas.addEventListener("click", tryStartMusic);
+        canvas.addEventListener("touchstart", tryStartMusic);
+      }
+
+      // Fullscreen button
+      if (fsBtn && canvas) {
+        fsBtn.addEventListener("click", function() {
+          tryStartMusic();
+          if (document.fullscreenElement) {
+            document.exitFullscreen();
+          } else {
+            canvas.requestFullscreen().catch(() => {
+              canvas.webkitRequestFullscreen && canvas.webkitRequestFullscreen();
+            });
+          }
+        });
+      }
+
+      // Sound button — toggles both SFX and music
+      if (sndBtn) {
+        sndBtn.addEventListener("click", function() {
+          tryStartMusic();
+          musicMuted = !musicMuted;
+          if (bgm) bgm.volume = musicMuted ? 0 : 0.2;
+          // Toggle game SFX via M key
+          const event = new KeyboardEvent("keydown", { code: "KeyM", key: "m", bubbles: true });
+          window.dispatchEvent(event);
+          // Update icon
+          const icon = sndBtn.querySelector("i");
+          if (icon) {
+            icon.className = musicMuted
+              ? "fas fa-volume-mute text-sm"
+              : "fas fa-volume-up text-sm";
+          }
+        });
+      }
+
+      // Also toggle music when M key is pressed
+      document.addEventListener("keydown", function(e) {
+        if (e.code === "KeyM") {
+          musicMuted = !musicMuted;
+          if (bgm) bgm.volume = musicMuted ? 0 : 0.2;
+        }
+      });
+    });
+  </script>
 </body>
 </html>
