@@ -48,6 +48,9 @@
 </head>
 <body class="font-sans antialiased">
 
+<!-- STARS -->
+<div id="particles" style="position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden"></div>
+
 <!-- NAV -->
 <nav class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[96%] max-w-5xl rounded-full px-6 h-14 flex items-center justify-between" style="background:rgba(17,8,38,0.85);border:1px solid rgba(255,255,255,0.08);backdrop-filter:blur(12px);transform:translateX(-50%)">
   <a href="index.html" class="flex items-center gap-3">
@@ -334,6 +337,15 @@
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
   }, { threshold: 0.1 });
   document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  // Stars
+  var c=document.getElementById('particles'),n=window.innerWidth<768?100:200;
+  var cols=['rgba(138,43,226,','rgba(167,139,250,','rgba(255,255,255,','rgba(45,107,255,'];
+  for(var i=0;i<n;i++){var p=document.createElement('div');p.className='particle';var s=Math.random()*2.5+0.5,co=cols[Math.floor(Math.random()*cols.length)],o=Math.random()*0.5+0.2,d=Math.random()*40+25,dl=Math.random()*d,l=Math.random()*100,t=Math.random()*100;p.style.cssText='position:absolute;border-radius:50%;width:'+s+'px;height:'+s+'px;background:'+co+o+');left:'+l+'%;top:'+t+'%;animation:drift '+d+'s linear infinite;animation-delay:-'+dl+'s;box-shadow:0 0 '+s*3+'px '+co+o*0.5+');';c.appendChild(p);}
 </script>
+<style>
+  @keyframes drift{0%{transform:translateY(0) translateX(0);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateY(110vh) translateX(40px);opacity:0}}
+  .particle{position:absolute;border-radius:50%}
+</style>
 </body>
 </html>
