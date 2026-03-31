@@ -31,7 +31,7 @@ ABOUT VIOLET MEDIA:
 - AI-human co-creation model — "we don't just use AI, we co-create with it"
 - Proprietary AI toolkit including WaveSpeed AI, ElevenLabs, Nano Banana Pro, and 600+ AI models
 - Official WaveSpeed AI Partner Creator and ElevenLabs partner
-- Proven reach: 14M+ views, 718K likes, 10K shares, 98.5% For You Page traffic
+- 45.9K+ TikTok followers, cinematic AI content attracting international industry professionals
 - Contact: violetmediastudio@gmail.com
 - Social media: TikTok, YouTube, LinkedIn
 - Based in Perth, Australia, serving clients globally
@@ -41,14 +41,14 @@ SERVICES:
 2. Music Video Production — Full cinematic videos using AI-generated imagery, hyper-realistic visual storytelling, and 8K image generation via Nano Banana Pro.
 3. AI Voice and Lipsync Services — Ultra-realistic voice characters (Nova Violet, Violet Echo, Stella, Violet Myst) using ElevenLabs Pro and InfiniteTalk for podcasts, ads, explainers, documentaries, and avatar generation.
 4. Strategic AI Content Consulting — Guidance on AI stack selection, workflow design, and brand identity for creators building AI-powered content systems.
-5. Sponsored Content and Co-Creation Partnerships — Joint campaigns, product integrations, and sponsorships leveraging the 14M+ view audience.
+5. Sponsored Content and Co-Creation Partnerships — Joint campaigns, product integrations, and sponsorships with an engaged international audience.
 6. Interactive Entertainment Development — Arcade-grade interactive experiences with cinematic motion using WaveSpeed AI.
 7. Web Design — Cinematic websites via Violet Web Design at web.violetmedia.org. Packages start from $800 AUD (Starter), $1,500 AUD (Standard), and $3,000 AUD (Premium).
 
 KEY DIFFERENTIATORS:
 - Production-grade music and video engineered for attention and loyalty
 - "Emotion-first" sound and narrative-led visuals
-- Proven algorithmic success with 98.5% For You Page traffic
+- Work regularly attracts engagement from Emmy-winning producers, creative directors, and industry professionals
 - AI-driven, human-touched creative process
 - "Legendary-grade output" — quality for the ages
 
