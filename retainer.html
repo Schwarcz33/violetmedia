@@ -69,7 +69,14 @@
 
 <!-- HERO -->
 <section class="min-h-[90vh] flex items-center justify-center text-center pt-24 pb-16 px-6 relative overflow-hidden">
-  <div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(ellipse at 50% 40%,rgba(138,43,226,0.18),transparent 60%)"></div>
+  <!-- Video background -->
+  <div class="absolute inset-0 overflow-hidden z-0">
+    <video autoplay muted loop playsinline class="absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto -translate-x-1/2 -translate-y-1/2 object-cover">
+      <source src="retainer-hero.mp4" type="video/mp4">
+    </video>
+    <div class="absolute inset-0" style="background:linear-gradient(180deg,rgba(5,2,20,0.65) 0%,rgba(5,2,20,0.40) 40%,rgba(5,2,20,0.40) 60%,rgba(5,2,20,0.80) 100%)"></div>
+  </div>
+  <div class="absolute inset-0 pointer-events-none z-1" style="background:radial-gradient(ellipse at 50% 40%,rgba(138,43,226,0.15),transparent 60%)"></div>
   <div class="relative z-10 max-w-3xl mx-auto reveal">
     <p class="text-sm font-bold tracking-[0.3em] uppercase text-purple-400/80 mb-6">Violet Media Presents</p>
     <h1 class="text-5xl md:text-7xl font-display font-black mb-4 cosmic-text leading-tight">The Growth Engine</h1>
