@@ -138,8 +138,15 @@
 <!-- HERO -->
 <!-- ═══════════════════════════════════════════ -->
 <section id="hero" class="min-h-[90vh] flex items-center justify-center text-center pt-24 pb-20 px-6 relative overflow-hidden">
-  <!-- Subtle violet radial glow -->
-  <div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(ellipse at 50% 30%,rgba(138,43,226,0.15),transparent 60%)"></div>
+  <!-- Video background -->
+  <div class="absolute inset-0 overflow-hidden z-0">
+    <video autoplay muted loop playsinline class="absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto -translate-x-1/2 -translate-y-1/2 object-cover">
+      <source src="retainer-hero.mp4" type="video/mp4">
+    </video>
+    <div class="absolute inset-0" style="background:linear-gradient(180deg,rgba(22,22,34,0.60) 0%,rgba(22,22,34,0.35) 40%,rgba(22,22,34,0.35) 60%,rgba(22,22,34,0.80) 100%)"></div>
+  </div>
+  <!-- Violet radial glow -->
+  <div class="absolute inset-0 pointer-events-none z-1" style="background:radial-gradient(ellipse at 50% 40%,rgba(138,43,226,0.15),transparent 60%)"></div>
   <div class="relative z-10 max-w-3xl mx-auto">
     <p class="reveal font-bold tracking-[0.3em] uppercase text-sm mb-6" style="color:var(--violet)">Violet Media Presents</p>
     <h1 class="reveal text-5xl md:text-7xl font-display font-black mb-6 leading-tight" style="color:#fff">
