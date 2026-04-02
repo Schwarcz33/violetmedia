@@ -6,7 +6,7 @@
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-GLS4TXV26K');</script>
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <meta name="description" content="The Violet Media Growth Engine — Cinematic AI video production on retainer. 4 videos per month, one predictable cost. Starting at $2,000 AUD/month." />
-  <meta name="theme-color" content="#050214" />
+  <meta name="theme-color" content="#FAFAF8" />
   <title>Growth Engine — Violet Media Retainer</title>
   <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
   <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32" />
@@ -17,7 +17,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://violetmedia.org/retainer" />
   <meta property="og:image" content="https://violetmedia.org/og-image.png" />
-  <link rel="canonical" href="https://violetmedia.org/retainer.html" />
+  <link rel="canonical" href="https://violetmedia.org/retainer" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;500;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet" />
@@ -26,171 +26,402 @@
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    tailwind.config={theme:{extend:{colors:{cosmic:{950:"#03010A",900:"#050214",850:"#0B0520",800:"#110826",violet:"#8A2BE2",blue:"#2D6BFF",gold:"#D7B15A",silver:"#C7CCD6"}},fontFamily:{sans:["Inter","sans-serif"],display:["Space Grotesk","sans-serif"],drama:["Playfair Display","Georgia","serif"]}}}};
+    tailwind.config={theme:{extend:{colors:{warm:{50:"#FAFAF8",100:"#F5F3EF",200:"#E8E6E2",300:"#D4D0CA"},ink:{900:"#1A1A2E",700:"#4A4A5A",500:"#7A7A8A",300:"#A0A0B0"},violet:{DEFAULT:"#8A2BE2",dark:"#6B1FA5",light:"#A855F7",50:"#F5F0FF",100:"#EDE5FF"},gold:{DEFAULT:"#D7B15A",light:"#E8CC7A"}},fontFamily:{sans:["Inter","sans-serif"],display:["Space Grotesk","sans-serif"],drama:["Playfair Display","Georgia","serif"]}}}};
   </script>
   <style>
-    :root{--violet:#8A2BE2;--blue:#2D6BFF;--gold:#D7B15A;--ink:#050214;}
+    :root{--violet:#8A2BE2;--violet-dark:#6B1FA5;--gold:#D7B15A;--ink:#1A1A2E;--warm-bg:#FAFAF8;--cream:#F5F3EF}
     *{box-sizing:border-box}
-    body{background:radial-gradient(1200px 900px at 18% 12%,rgba(138,43,226,0.16),transparent 55%),radial-gradient(1000px 800px at 82% 18%,rgba(45,107,255,0.10),transparent 55%),linear-gradient(180deg,#050214 0%,#03010A 100%);color:#fff;overflow-x:hidden}
-    .cosmic-text{background:linear-gradient(135deg,#fff 0%,rgba(167,139,250,0.95) 35%,rgba(138,43,226,0.95) 80%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-    .glass-card{background:rgba(17,8,38,0.68);border:1px solid rgba(255,255,255,0.10);border-radius:16px;backdrop-filter:blur(16px);box-shadow:0 8px 32px rgba(0,0,0,0.35);transition:transform .35s,box-shadow .35s,border-color .35s}
-    .glass-card:hover{transform:translateY(-4px);border-color:rgba(138,43,226,0.30);box-shadow:0 18px 60px rgba(0,0,0,0.45),0 0 44px rgba(138,43,226,0.15)}
-    .btn-violet{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;background:linear-gradient(135deg,#8A2BE2,#6B1FA5);color:#fff;padding:14px 32px;border-radius:999px;font-size:15px;font-weight:700;text-decoration:none;border:none;cursor:pointer;box-shadow:0 0 22px rgba(138,43,226,0.28);transition:all .22s ease}
-    .btn-violet:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 0 50px rgba(138,43,226,0.45)}
-    .btn-outline{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;background:transparent;color:#fff;padding:14px 32px;border-radius:999px;font-size:15px;font-weight:600;text-decoration:none;border:1px solid rgba(255,255,255,0.18);cursor:pointer;transition:all .3s}
-    .btn-outline:hover{border-color:var(--violet);background:rgba(138,43,226,0.12);color:#fff}
-    .reveal{opacity:0;transform:translateY(30px);transition:opacity .8s ease,transform .8s ease}
-    .reveal.visible{opacity:1;transform:translateY(0)}
-    .featured-card{border-color:rgba(138,43,226,0.40)!important;box-shadow:0 0 50px rgba(138,43,226,0.15),0 8px 32px rgba(0,0,0,0.35)!important;position:relative}
-    .featured-card::before{content:"BEST VALUE";position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--violet);color:#fff;padding:4px 20px;border-radius:100px;font-size:12px;font-weight:800;letter-spacing:1px;box-shadow:0 0 20px rgba(138,43,226,0.4);font-family:"Space Grotesk",sans-serif}
+    body{background:var(--warm-bg);color:var(--ink);overflow-x:hidden}
+
+    /* Noise overlay — light theme: multiply blend, low opacity */
+    .noise-overlay{position:fixed;inset:0;pointer-events:none;z-index:40;opacity:0.03;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      mix-blend-mode:multiply}
+
+    /* Typography accents */
+    .cosmic-text{background:linear-gradient(135deg,var(--violet) 0%,var(--violet-dark) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .section-subtitle{font-family:'Playfair Display',Georgia,serif;font-style:italic;color:var(--ink);opacity:0.25;font-size:clamp(18px,2.5vw,26px);margin-top:-4px}
+
+    /* Nav */
+    nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);width:94%;max-width:1100px;z-index:100;
+      background:transparent;border:1px solid transparent;border-radius:999px;height:56px;
+      display:flex;align-items:center;justify-content:space-between;padding:0 24px;
+      transition:all 0.5s cubic-bezier(0.25,0.46,0.45,0.94)}
+    nav.scrolled{background:rgba(255,255,255,0.88);backdrop-filter:blur(20px);
+      border-color:rgba(138,43,226,0.12);box-shadow:0 4px 24px rgba(0,0,0,0.06),0 0 40px rgba(138,43,226,0.04)}
+
+    /* Buttons */
+    .btn-violet{display:inline-flex;align-items:center;justify-content:center;gap:0.5rem;
+      background:linear-gradient(135deg,#8A2BE2,#6B1FA5);color:#fff;padding:14px 32px;
+      border-radius:999px;font-size:15px;font-weight:700;text-decoration:none;border:none;cursor:pointer;
+      box-shadow:0 4px 20px rgba(138,43,226,0.25);transition:all 0.3s cubic-bezier(0.4,0,0.2,1)}
+    .btn-violet:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 8px 40px rgba(138,43,226,0.35);filter:saturate(1.08)}
+    .btn-outline{display:inline-flex;align-items:center;justify-content:center;gap:0.5rem;
+      background:transparent;color:var(--ink);padding:14px 32px;border-radius:999px;font-size:15px;
+      font-weight:600;text-decoration:none;border:1px solid rgba(26,26,46,0.15);cursor:pointer;
+      transition:all 0.3s cubic-bezier(0.4,0,0.2,1)}
+    .btn-outline:hover{transform:translateY(-1px) scale(1.03);border-color:var(--violet);color:var(--violet);background:rgba(138,43,226,0.04)}
+
+    /* Cards */
+    .light-card{background:#fff;border:1px solid #E8E6E2;border-radius:16px;
+      box-shadow:0 2px 12px rgba(0,0,0,0.04);transition:transform 0.35s,box-shadow 0.35s,border-color 0.35s}
+    .light-card:hover{transform:translateY(-4px);border-color:rgba(138,43,226,0.20);
+      box-shadow:0 12px 40px rgba(0,0,0,0.08),0 0 30px rgba(138,43,226,0.06)}
+
+    /* Featured pricing card */
+    .featured-card{border-color:rgba(138,43,226,0.30)!important;box-shadow:0 4px 30px rgba(138,43,226,0.10),0 2px 12px rgba(0,0,0,0.04)!important;position:relative}
+    .featured-card::before{content:"BEST VALUE";position:absolute;top:-14px;left:50%;transform:translateX(-50%);
+      background:var(--violet);color:#fff;padding:4px 20px;border-radius:100px;font-size:12px;
+      font-weight:800;letter-spacing:1px;box-shadow:0 4px 16px rgba(138,43,226,0.3);font-family:"Space Grotesk",sans-serif}
+
+    /* Manifesto */
+    .manifesto-small{font-size:clamp(15px,2vw,19px);color:rgba(26,26,46,0.35);line-height:1.6}
+    .manifesto-big{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(28px,4.5vw,56px);line-height:1.15;color:var(--ink)}
+
+    /* FAQ */
+    .faq-item{border-bottom:1px solid #E8E6E2}
+    .faq-question{display:flex;justify-content:space-between;align-items:center;padding:20px 0;cursor:pointer;font-weight:600;color:var(--ink);transition:color 0.2s}
+    .faq-question:hover{color:var(--violet)}
+    .faq-icon{color:var(--violet);font-size:18px}
+    .faq-icon{transition:transform 0.3s ease;color:var(--violet);font-size:18px}
+    /* Reveals */
+    .reveal{opacity:0;transform:translateY(40px);will-change:opacity,transform}
+
+    /* Utility */
     .check{color:#22c55e;margin-right:8px}.cross{color:#ef4444;margin-right:8px}
+
+    /* Mobile menu */
+    .mobile-menu{position:fixed;inset:0;z-index:200;background:rgba(255,255,255,0.97);backdrop-filter:blur(20px);
+      display:flex;flex-direction:column;align-items:center;justify-content:center;gap:32px;
+      transform:translateX(100%);transition:transform 0.4s cubic-bezier(0.4,0,0.2,1)}
+    .mobile-menu.open{transform:translateX(0)}
   </style>
 </head>
 <body class="font-sans antialiased">
 
-<!-- STARS -->
-<div id="particles" style="position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden"></div>
+<!-- NOISE OVERLAY -->
+<div class="noise-overlay" aria-hidden="true"></div>
 
 <!-- NAV -->
-<nav class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[96%] max-w-5xl rounded-full px-6 h-14 flex items-center justify-between" style="background:rgba(17,8,38,0.85);border:1px solid rgba(255,255,255,0.08);backdrop-filter:blur(12px);transform:translateX(-50%)">
+<nav id="main-nav">
   <a href="index.html" class="flex items-center gap-3">
-    <img src="vm-orb.png" alt="VM" class="w-9 h-9 rounded-full" style="filter:drop-shadow(0 0 8px rgba(138,43,226,0.4))" />
+    <img src="vm-orb.png" alt="VM" class="w-9 h-9 rounded-full" style="filter:drop-shadow(0 0 6px rgba(138,43,226,0.3))" />
     <div class="text-lg font-display font-black cosmic-text">Violet Media</div>
   </a>
-  <div class="hidden md:flex items-center gap-5 text-sm font-semibold text-white/70">
-    <a href="index.html" class="hover:text-purple-300 transition-colors">Home</a>
-    <a href="index.html#services" class="hover:text-purple-300 transition-colors">Services</a>
-    <a href="#pricing" class="hover:text-purple-300 transition-colors text-purple-300">Retainer</a>
-    <a href="index.html#contact" class="hover:text-purple-300 transition-colors">Contact</a>
+  <div class="hidden lg:flex items-center gap-6 text-sm font-semibold" style="color:var(--ink)">
+    <a href="index.html" class="opacity-60 hover:opacity-100 hover:text-purple-600 transition-all">Home</a>
+    <a href="#demos" class="opacity-60 hover:opacity-100 hover:text-purple-600 transition-all">Demos</a>
+    <a href="#pricing" class="text-purple-600 transition-all">Pricing</a>
+    <a href="#faq" class="opacity-60 hover:opacity-100 hover:text-purple-600 transition-all">FAQ</a>
+    <a href="#pricing" class="btn-violet text-sm py-2 px-5">Get Started</a>
   </div>
+  <button id="nav-burger" class="lg:hidden w-10 h-10 flex items-center justify-center" aria-label="Menu">
+    <i class="fas fa-bars text-lg" style="color:var(--ink)"></i>
+  </button>
 </nav>
+
+<!-- MOBILE MENU -->
+<div id="mobile-menu" class="mobile-menu">
+  <button id="nav-close" class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center" aria-label="Close menu">
+    <i class="fas fa-times text-xl" style="color:var(--ink)"></i>
+  </button>
+  <a href="index.html" class="text-xl font-display font-bold" style="color:var(--ink)">Home</a>
+  <a href="#demos" class="text-xl font-display font-bold" style="color:var(--ink)" onclick="closeMobile()">Demos</a>
+  <a href="#pricing" class="text-xl font-display font-bold" style="color:var(--ink)" onclick="closeMobile()">Pricing</a>
+  <a href="#faq" class="text-xl font-display font-bold" style="color:var(--ink)" onclick="closeMobile()">FAQ</a>
+  <a href="#pricing" class="btn-violet mt-4" onclick="closeMobile()">Get Started</a>
+</div>
 
 <main>
 
+<!-- ═══════════════════════════════════════════ -->
 <!-- HERO -->
-<section class="min-h-[90vh] flex items-center justify-center text-center pt-24 pb-16 px-6 relative overflow-hidden">
-  <!-- Video background -->
-  <div class="absolute inset-0 overflow-hidden z-0">
-    <video autoplay muted loop playsinline class="absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto -translate-x-1/2 -translate-y-1/2 object-cover">
-      <source src="retainer-hero.mp4" type="video/mp4">
-    </video>
-    <div class="absolute inset-0" style="background:linear-gradient(180deg,rgba(5,2,20,0.65) 0%,rgba(5,2,20,0.40) 40%,rgba(5,2,20,0.40) 60%,rgba(5,2,20,0.80) 100%)"></div>
-  </div>
-  <div class="absolute inset-0 pointer-events-none z-1" style="background:radial-gradient(ellipse at 50% 40%,rgba(138,43,226,0.15),transparent 60%)"></div>
-  <div class="relative z-10 max-w-3xl mx-auto reveal">
-    <p class="font-bold tracking-[0.35em] uppercase text-purple-400/90 mb-12" style="margin-top:-80px;font-size:clamp(16px,2.5vw,22px);text-shadow:0 2px 20px rgba(0,0,0,0.6)">Violet Media Presents</p>
-    <h1 class="text-5xl md:text-7xl font-display font-black mb-6 cosmic-text leading-tight" style="text-shadow:0 2px 30px rgba(0,0,0,0.7)">The Growth Engine</h1>
-    <p class="font-drama italic text-white/50 mb-8" style="font-size:clamp(22px,3vw,30px);text-shadow:0 2px 20px rgba(0,0,0,0.6)">Cinematic AI Video Production on Retainer</p>
-    <p class="text-white/65 max-w-xl mx-auto mb-12 leading-relaxed" style="font-size:clamp(16px,2vw,20px);text-shadow:0 1px 15px rgba(0,0,0,0.5)">4 videos per month. One predictable cost. Studio quality without the studio.</p>
-    <a href="#pricing" class="btn-violet text-base">Get Started <i class="fas fa-arrow-down ml-2"></i></a>
-  </div>
-</section>
-
-<!-- THE PROBLEM -->
-<section class="py-20 px-6">
-  <div class="max-w-3xl mx-auto reveal">
-    <h2 class="text-3xl md:text-4xl font-display font-black mb-6 cosmic-text">The Problem</h2>
-    <p class="text-lg text-white/60 leading-relaxed">Every business needs video content. Every month. But traditional video production costs $5,000&ndash;$15,000 per video. Freelancers are inconsistent. In-house teams are expensive. Most businesses post nothing because the barrier is too high.</p>
+<!-- ═══════════════════════════════════════════ -->
+<section id="hero" class="min-h-[90vh] flex items-center justify-center text-center pt-24 pb-20 px-6 relative overflow-hidden">
+  <!-- Subtle violet radial glow -->
+  <div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(ellipse at 50% 30%,rgba(138,43,226,0.06),transparent 60%)"></div>
+  <div class="relative z-10 max-w-3xl mx-auto">
+    <p class="reveal font-bold tracking-[0.3em] uppercase text-sm mb-6" style="color:var(--violet)">Violet Media Presents</p>
+    <h1 class="reveal text-5xl md:text-7xl font-display font-black mb-6 leading-tight" style="color:var(--ink)">
+      Your Brand Deserves<br/><span class="font-drama italic cosmic-text">Cinematic</span> Video
+    </h1>
+    <p class="reveal text-lg md:text-xl mb-4 leading-relaxed" style="color:rgba(26,26,46,0.55)">4 videos per month. One predictable cost. Studio quality without the studio.</p>
+    <p class="reveal font-drama italic text-sm mb-10" style="color:rgba(26,26,46,0.30)">the growth engine for brands that move</p>
+    <div class="reveal flex flex-col sm:flex-row gap-4 justify-center mb-8">
+      <a href="#pricing" class="btn-violet text-base">See Pricing <i class="fas fa-arrow-down ml-2 text-xs"></i></a>
+      <a href="#demos" class="btn-outline text-base">Watch Demos <i class="fas fa-play ml-2 text-xs"></i></a>
+    </div>
+    <p class="reveal text-xs tracking-wide uppercase font-semibold" style="color:rgba(26,26,46,0.25)">Trusted by businesses across Australia</p>
   </div>
 </section>
 
-<!-- THE SOLUTION -->
-<section class="py-16 px-6">
-  <div class="max-w-3xl mx-auto reveal">
-    <h2 class="text-3xl md:text-4xl font-display font-black mb-6 cosmic-text">The Solution</h2>
-    <p class="text-lg text-white/60 leading-relaxed">A dedicated AI-powered production studio on retainer. Cinematic quality. Every month. Predictable cost. No crews, no studios, no surprises.</p>
-  </div>
-</section>
-
-<!-- WHAT YOU GET -->
-<section class="py-20 px-6">
+<!-- ═══════════════════════════════════════════ -->
+<!-- PROBLEM → AGITATION → SOLUTION -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="py-20 px-6" style="background:var(--cream)">
   <div class="max-w-5xl mx-auto">
     <div class="text-center mb-14 reveal">
-      <h2 class="text-3xl md:text-4xl font-display font-black mb-3 cosmic-text">What You Get</h2>
-      <div class="w-16 h-0.5 bg-gradient-to-r from-transparent via-purple-500 to-transparent mx-auto mt-4"></div>
+      <h2 class="text-3xl md:text-4xl font-display font-black mb-2" style="color:var(--ink)">The Problem</h2>
+      <p class="section-subtitle">why most brands go silent</p>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-      <div class="glass-card p-7 reveal">
-        <div class="text-3xl mb-4"><i class="fas fa-video text-purple-400"></i></div>
-        <h3 class="text-lg font-display font-black text-white mb-3">4 Cinematic Videos / Month</h3>
-        <ul class="text-sm text-white/55 space-y-2 leading-relaxed">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+      <div class="light-card p-7 text-center reveal">
+        <div class="text-3xl mb-4"><i class="fas fa-dollar-sign" style="color:var(--violet)"></i></div>
+        <h3 class="text-lg font-display font-bold mb-2" style="color:var(--ink)">Too Expensive</h3>
+        <p class="text-sm" style="color:rgba(26,26,46,0.50)">Traditional video production costs $5,000&ndash;$15,000 per video. Most businesses can&rsquo;t justify that monthly.</p>
+      </div>
+      <div class="light-card p-7 text-center reveal" style="transition-delay:80ms">
+        <div class="text-3xl mb-4"><i class="fas fa-dice" style="color:var(--violet)"></i></div>
+        <h3 class="text-lg font-display font-bold mb-2" style="color:var(--ink)">Freelancer Roulette</h3>
+        <p class="text-sm" style="color:rgba(26,26,46,0.50)">Different freelancer every time. Different quality. Different style. No continuity for your brand.</p>
+      </div>
+      <div class="light-card p-7 text-center reveal" style="transition-delay:160ms">
+        <div class="text-3xl mb-4"><i class="fas fa-hourglass-half" style="color:var(--violet)"></i></div>
+        <h3 class="text-lg font-display font-bold mb-2" style="color:var(--ink)">Weeks of Waiting</h3>
+        <p class="text-sm" style="color:rgba(26,26,46,0.50)">Briefs, revisions, re-shoots. By the time you get the video, the moment has passed.</p>
+      </div>
+    </div>
+
+    <div class="text-center reveal">
+      <p class="font-drama italic text-xl md:text-2xl mb-6" style="color:rgba(26,26,46,0.35)">Meanwhile, your competitors are posting every week.</p>
+      <div class="w-16 h-px mx-auto mb-6" style="background:linear-gradient(90deg,transparent,var(--violet),transparent)"></div>
+      <h3 class="text-2xl md:text-3xl font-display font-black mb-3" style="color:var(--ink)">The Solution</h3>
+      <p class="text-lg max-w-2xl mx-auto" style="color:rgba(26,26,46,0.55)">A dedicated AI-powered production studio on retainer. Cinematic quality. Every month. Predictable cost. For less than one traditional video.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- MANIFESTO -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="py-24 md:py-32 px-6 relative">
+  <div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(ellipse at 50% 50%,rgba(138,43,226,0.03),transparent 50%)"></div>
+  <div class="max-w-3xl mx-auto text-center relative z-10">
+    <p class="manifesto-small reveal">Most agencies deliver: templates with your logo.</p>
+    <p class="manifesto-big reveal mt-3 mb-10">We deliver: <span class="cosmic-text">cinematic originals.</span></p>
+
+    <p class="manifesto-small reveal">Most freelancers take: weeks per video.</p>
+    <p class="manifesto-big reveal mt-3 mb-10">We deliver: <span class="cosmic-text">four per month.</span></p>
+
+    <p class="manifesto-small reveal">Most AI content looks: robotic and cheap.</p>
+    <p class="manifesto-big reveal mt-3 mb-10">Ours looks: <span class="cosmic-text">like it cost ten times more.</span></p>
+
+    <div class="reveal">
+      <div class="w-16 h-px mx-auto my-10" style="background:linear-gradient(90deg,transparent,var(--violet),transparent)"></div>
+      <p class="font-drama italic text-xl md:text-2xl" style="color:var(--gold)">Quality for the ages.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- WHAT YOU GET -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="py-20 px-6" style="background:var(--cream)">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-14 reveal">
+      <h2 class="text-3xl md:text-4xl font-display font-black mb-2" style="color:var(--ink)">What You Get</h2>
+      <p class="section-subtitle">everything you need, nothing you don&rsquo;t</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="light-card p-7 reveal">
+        <div class="text-3xl mb-4"><i class="fas fa-video" style="color:var(--violet)"></i></div>
+        <h3 class="text-lg font-display font-bold mb-3" style="color:var(--ink)">4 Cinematic Videos / Month</h3>
+        <ul class="text-sm space-y-2" style="color:rgba(26,26,46,0.50)">
           <li>30&ndash;60 seconds each</li>
-          <li>Brand videos, showcases, social content, testimonials</li>
+          <li>Brand videos, showcases, social content</li>
           <li>Delivered in 16:9 + 9:16 formats</li>
           <li>Original soundtrack &amp; sound design</li>
           <li>2 revision rounds per video</li>
         </ul>
       </div>
 
-      <div class="glass-card p-7 reveal" style="transition-delay:80ms">
-        <div class="text-3xl mb-4"><i class="fas fa-crown text-purple-400"></i></div>
-        <h3 class="text-lg font-display font-black text-white mb-3">1 Quarterly Brand Video</h3>
-        <ul class="text-sm text-white/55 space-y-2 leading-relaxed">
+      <div class="light-card p-7 reveal" style="transition-delay:80ms">
+        <div class="text-3xl mb-4"><i class="fas fa-crown" style="color:var(--violet)"></i></div>
+        <h3 class="text-lg font-display font-bold mb-3" style="color:var(--ink)">1 Quarterly Brand Video</h3>
+        <ul class="text-sm space-y-2" style="color:rgba(26,26,46,0.50)">
           <li>60&ndash;90 second flagship piece</li>
           <li>Company story, campaign launch, seasonal showcase</li>
           <li>Higher production value &amp; strategic positioning</li>
         </ul>
       </div>
 
-      <div class="glass-card p-7 reveal" style="transition-delay:160ms">
-        <div class="text-3xl mb-4"><i class="fas fa-pen-fancy text-purple-400"></i></div>
-        <h3 class="text-lg font-display font-black text-white mb-3">Social Media Copy</h3>
-        <ul class="text-sm text-white/55 space-y-2 leading-relaxed">
+      <div class="light-card p-7 reveal" style="transition-delay:160ms">
+        <div class="text-3xl mb-4"><i class="fas fa-pen-fancy" style="color:var(--violet)"></i></div>
+        <h3 class="text-lg font-display font-bold mb-3" style="color:var(--ink)">Social Media Copy</h3>
+        <ul class="text-sm space-y-2" style="color:rgba(26,26,46,0.50)">
           <li>LinkedIn post copy for every video</li>
           <li>Hashtag strategy &amp; recommendations</li>
           <li>Caption variations for each platform</li>
         </ul>
       </div>
 
-      <div class="glass-card p-7 reveal">
-        <div class="text-3xl mb-4"><i class="fas fa-phone-volume text-purple-400"></i></div>
-        <h3 class="text-lg font-display font-black text-white mb-3">Monthly Strategy Call</h3>
-        <ul class="text-sm text-white/55 space-y-2 leading-relaxed">
+      <div class="light-card p-7 reveal">
+        <div class="text-3xl mb-4"><i class="fas fa-phone-volume" style="color:var(--violet)"></i></div>
+        <h3 class="text-lg font-display font-bold mb-3" style="color:var(--ink)">Monthly Strategy Call</h3>
+        <ul class="text-sm space-y-2" style="color:rgba(26,26,46,0.50)">
           <li>30-minute video call to plan next month</li>
           <li>Review previous month&rsquo;s performance</li>
           <li>Align content with your business goals</li>
         </ul>
       </div>
 
-      <div class="glass-card p-7 reveal" style="transition-delay:80ms">
-        <div class="text-3xl mb-4"><i class="fas fa-handshake text-purple-400"></i></div>
-        <h3 class="text-lg font-display font-black text-white mb-3">Dedicated Production Partner</h3>
-        <ul class="text-sm text-white/55 space-y-2 leading-relaxed">
+      <div class="light-card p-7 reveal" style="transition-delay:80ms">
+        <div class="text-3xl mb-4"><i class="fas fa-handshake" style="color:var(--violet)"></i></div>
+        <h3 class="text-lg font-display font-bold mb-3" style="color:var(--ink)">Dedicated Production Partner</h3>
+        <ul class="text-sm space-y-2" style="color:rgba(26,26,46,0.50)">
           <li>Direct access to Peter Sarosi, Founder &amp; Creative Director</li>
           <li>Priority turnaround on all deliverables</li>
           <li>Treated as a studio client, not a ticket number</li>
         </ul>
       </div>
 
-      <div class="glass-card p-7 flex items-center justify-center reveal" style="transition-delay:160ms;border-color:rgba(215,177,90,0.25)">
+      <div class="light-card p-7 flex items-center justify-center reveal" style="transition-delay:160ms;border-color:rgba(215,177,90,0.30)">
         <div class="text-center">
           <div class="text-4xl mb-3" style="color:var(--gold)"><i class="fas fa-gem"></i></div>
-          <p class="text-sm text-white/50 italic font-drama">Every frame purpose-built.<br/>No templates. No stock footage.<br/>Quality for the ages.</p>
+          <p class="text-sm font-drama italic" style="color:rgba(26,26,46,0.35)">Every frame purpose-built.<br/>No templates. No stock footage.<br/>Quality for the ages.</p>
         </div>
       </div>
-
     </div>
   </div>
 </section>
 
-<!-- PRICING -->
-<section id="pricing" class="py-20 px-6 relative">
-  <div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(ellipse at 50% 50%,rgba(138,43,226,0.10),transparent 60%)"></div>
-  <div class="max-w-4xl mx-auto relative z-10">
+<!-- ═══════════════════════════════════════════ -->
+<!-- SEE WHAT YOU GET — DEMO VIDEOS -->
+<!-- ═══════════════════════════════════════════ -->
+<section id="demos" class="py-20 px-6">
+  <div class="max-w-5xl mx-auto">
     <div class="text-center mb-14 reveal">
-      <h2 class="text-3xl md:text-4xl font-display font-black mb-3 cosmic-text">Pricing</h2>
-      <p class="text-white/50">Simple. Transparent. No hidden fees.</p>
+      <h2 class="text-3xl md:text-4xl font-display font-black mb-2" style="color:var(--ink)">See What You Get</h2>
+      <p class="section-subtitle">real work, not promises</p>
+      <p class="text-sm mt-4" style="color:rgba(26,26,46,0.45)">Sample videos produced for <strong style="color:var(--ink)">Archer &amp; Cole</strong> &mdash; a fictional professional services firm</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Demo 1: Brand Introduction -->
+      <div class="light-card overflow-hidden reveal">
+        <div class="aspect-video bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center relative">
+          <div class="text-center">
+            <i class="fas fa-play-circle text-5xl mb-3" style="color:rgba(138,43,226,0.25)"></i>
+            <p class="text-sm font-semibold" style="color:rgba(26,26,46,0.30)">Coming Soon</p>
+          </div>
+        </div>
+        <div class="p-5">
+          <span class="text-xs font-bold uppercase tracking-wider" style="color:var(--violet)">45s Brand Introduction</span>
+          <h3 class="text-base font-display font-bold mt-1" style="color:var(--ink)">Who We Are</h3>
+          <p class="text-sm mt-1" style="color:rgba(26,26,46,0.45)">Company story, values, and team culture in 45 cinematic seconds.</p>
+        </div>
+      </div>
+
+      <!-- Demo 2: Service Showcase -->
+      <div class="light-card overflow-hidden reveal" style="transition-delay:80ms">
+        <div class="aspect-video bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center relative">
+          <div class="text-center">
+            <i class="fas fa-play-circle text-5xl mb-3" style="color:rgba(138,43,226,0.25)"></i>
+            <p class="text-sm font-semibold" style="color:rgba(26,26,46,0.30)">Coming Soon</p>
+          </div>
+        </div>
+        <div class="p-5">
+          <span class="text-xs font-bold uppercase tracking-wider" style="color:var(--violet)">30s Service Showcase</span>
+          <h3 class="text-base font-display font-bold mt-1" style="color:var(--ink)">What We Do</h3>
+          <p class="text-sm mt-1" style="color:rgba(26,26,46,0.45)">Core services explained with cinematic motion and clear messaging.</p>
+        </div>
+      </div>
+
+      <!-- Demo 3: Team Culture -->
+      <div class="light-card overflow-hidden reveal">
+        <div class="aspect-video bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center relative">
+          <div class="text-center">
+            <i class="fas fa-play-circle text-5xl mb-3" style="color:rgba(138,43,226,0.25)"></i>
+            <p class="text-sm font-semibold" style="color:rgba(26,26,46,0.30)">Coming Soon</p>
+          </div>
+        </div>
+        <div class="p-5">
+          <span class="text-xs font-bold uppercase tracking-wider" style="color:var(--violet)">30s Team Culture</span>
+          <h3 class="text-base font-display font-bold mt-1" style="color:var(--ink)">Meet the Team</h3>
+          <p class="text-sm mt-1" style="color:rgba(26,26,46,0.45)">Behind-the-scenes team energy that builds trust and connection.</p>
+        </div>
+      </div>
+
+      <!-- Demo 4: Campaign Video -->
+      <div class="light-card overflow-hidden reveal" style="transition-delay:80ms">
+        <div class="aspect-video bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center relative">
+          <div class="text-center">
+            <i class="fas fa-play-circle text-5xl mb-3" style="color:rgba(138,43,226,0.25)"></i>
+            <p class="text-sm font-semibold" style="color:rgba(26,26,46,0.30)">Coming Soon</p>
+          </div>
+        </div>
+        <div class="p-5">
+          <span class="text-xs font-bold uppercase tracking-wider" style="color:var(--violet)">60s Quarterly Brand Film</span>
+          <h3 class="text-base font-display font-bold mt-1" style="color:var(--ink)">EOFY Campaign</h3>
+          <p class="text-sm mt-1" style="color:rgba(26,26,46,0.45)">Seasonal campaign piece with cinematic production value.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SOCIAL PROOF -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="py-20 px-6" style="background:var(--cream)">
+  <div class="max-w-4xl mx-auto">
+    <div class="text-center mb-14 reveal">
+      <h2 class="text-3xl md:text-4xl font-display font-black mb-2" style="color:var(--ink)">What People Say</h2>
+      <p class="section-subtitle">what they say when we&rsquo;re not looking</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="light-card p-7 reveal">
+        <div class="text-2xl mb-4" style="color:var(--violet)"><i class="fas fa-quote-left"></i></div>
+        <p class="text-sm leading-relaxed mb-4" style="color:rgba(26,26,46,0.60)">&ldquo;That&rsquo;s not a brand. That&rsquo;s a legacy in the making.&rdquo;</p>
+        <div class="pt-4" style="border-top:1px solid #E8E6E2">
+          <p class="text-sm font-bold" style="color:var(--ink)">Ibrahim Badi</p>
+          <p class="text-xs" style="color:rgba(26,26,46,0.40)">Creative Technologist, UK</p>
+        </div>
+      </div>
+
+      <div class="light-card p-7 reveal" style="transition-delay:80ms">
+        <div class="text-2xl mb-4" style="color:var(--violet)"><i class="fas fa-quote-left"></i></div>
+        <p class="text-sm leading-relaxed mb-4" style="color:rgba(26,26,46,0.60)">Industry professionals regularly engage with our work through multi-paragraph responses and detailed creative discussions.</p>
+        <div class="pt-4" style="border-top:1px solid #E8E6E2">
+          <p class="text-sm font-bold" style="color:var(--ink)">Creative Directors &amp; CCOs</p>
+          <p class="text-xs" style="color:rgba(26,26,46,0.40)">LinkedIn engagement from 35K+ follower accounts</p>
+        </div>
+      </div>
+
+      <div class="light-card p-7 reveal" style="transition-delay:160ms">
+        <div class="text-2xl mb-4" style="color:var(--violet)"><i class="fas fa-quote-left"></i></div>
+        <p class="text-sm leading-relaxed mb-4" style="color:rgba(26,26,46,0.60)">Our content attracts engagement from Emmy-winning producers, creative directors, and industry professionals internationally.</p>
+        <div class="pt-4" style="border-top:1px solid #E8E6E2">
+          <p class="text-sm font-bold" style="color:var(--ink)">Industry Recognition</p>
+          <p class="text-xs" style="color:rgba(26,26,46,0.40)">45.9K+ TikTok followers &bull; Perth, Australia</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- PRICING -->
+<!-- ═══════════════════════════════════════════ -->
+<section id="pricing" class="py-20 px-6">
+  <div class="max-w-4xl mx-auto">
+    <div class="text-center mb-14 reveal">
+      <h2 class="text-3xl md:text-4xl font-display font-black mb-2" style="color:var(--ink)">Pricing</h2>
+      <p class="section-subtitle">you see what you pay for</p>
+      <p class="text-sm mt-4" style="color:rgba(26,26,46,0.45)">Simple. Transparent. No hidden fees.</p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
 
       <!-- Monthly -->
-      <div class="glass-card p-8 text-center reveal">
-        <div class="text-xs tracking-widest uppercase text-purple-400/70 font-bold mb-2">Monthly</div>
-        <div class="text-5xl font-display font-black text-white mb-1">$2,000</div>
-        <div class="text-sm text-white/40 mb-6">AUD / month</div>
-        <ul class="text-sm text-white/55 space-y-3 text-left mb-8">
+      <div class="light-card p-8 text-center reveal">
+        <div class="text-xs tracking-widest uppercase font-bold mb-2" style="color:var(--violet)">Monthly</div>
+        <div class="text-5xl font-display font-black mb-1" style="color:var(--ink)">$2,000</div>
+        <div class="text-sm mb-6" style="color:rgba(26,26,46,0.40)">AUD / month</div>
+        <ul class="text-sm space-y-3 text-left mb-8" style="color:rgba(26,26,46,0.55)">
           <li><span class="check"><i class="fas fa-check"></i></span>4 cinematic videos per month</li>
           <li><span class="check"><i class="fas fa-check"></i></span>1 quarterly brand video</li>
           <li><span class="check"><i class="fas fa-check"></i></span>Social media copy for every video</li>
@@ -201,12 +432,12 @@
       </div>
 
       <!-- Quarterly (Featured) -->
-      <div class="glass-card featured-card p-8 text-center reveal" style="transition-delay:100ms">
+      <div class="light-card featured-card p-8 text-center reveal" style="transition-delay:100ms">
         <div class="text-xs tracking-widest uppercase font-bold mb-2" style="color:var(--gold)">Quarterly</div>
-        <div class="text-5xl font-display font-black text-white mb-1">$1,800</div>
-        <div class="text-sm text-white/40 mb-1">AUD / month</div>
+        <div class="text-5xl font-display font-black mb-1" style="color:var(--ink)">$1,800</div>
+        <div class="text-sm mb-1" style="color:rgba(26,26,46,0.40)">AUD / month</div>
         <div class="text-xs font-bold mb-6" style="color:var(--gold)">Save $600 over 3 months</div>
-        <ul class="text-sm text-white/55 space-y-3 text-left mb-8">
+        <ul class="text-sm space-y-3 text-left mb-8" style="color:rgba(26,26,46,0.55)">
           <li><span class="check"><i class="fas fa-check"></i></span>Everything in Monthly</li>
           <li><span class="check"><i class="fas fa-check"></i></span>3-month commitment</li>
           <li><span class="check"><i class="fas fa-check"></i></span>Priority scheduling</li>
@@ -218,142 +449,372 @@
 
     </div>
 
-    <p class="text-center text-sm text-white/35 mt-8 reveal">Payment via Stripe (cards, Apple Pay, Google Pay), PayPal, or bank transfer.<br/>First month&rsquo;s payment due before production begins.</p>
-    <p class="text-center text-xs text-white/45 mt-3 reveal">Prefer PayPal or bank transfer? Email <a href="mailto:violetmediastudio@gmail.com" class="underline text-violet-400 hover:text-violet-300 transition-colors">violetmediastudio@gmail.com</a> and we&rsquo;ll send you a direct invoice.</p>
+    <p class="text-center text-sm mt-8 reveal" style="color:rgba(26,26,46,0.35)">Payment via Stripe (cards, Apple Pay, Google Pay), PayPal, or bank transfer.<br/>First month&rsquo;s payment due before production begins.</p>
+    <p class="text-center text-xs mt-3 reveal" style="color:rgba(26,26,46,0.40)">Prefer PayPal or bank transfer? Email <a href="mailto:violetmediastudio@gmail.com" class="underline hover:opacity-70 transition-opacity" style="color:var(--violet)">violetmediastudio@gmail.com</a> and we&rsquo;ll send you a direct invoice.</p>
   </div>
 </section>
 
+<!-- ═══════════════════════════════════════════ -->
 <!-- THE MATH -->
-<section class="py-20 px-6">
+<!-- ═══════════════════════════════════════════ -->
+<section class="py-20 px-6" style="background:var(--cream)">
   <div class="max-w-4xl mx-auto">
     <div class="text-center mb-12 reveal">
-      <h2 class="text-3xl md:text-4xl font-display font-black mb-3 cosmic-text">The Math</h2>
-      <p class="text-white/50">Why this makes financial sense.</p>
+      <h2 class="text-3xl md:text-4xl font-display font-black mb-2" style="color:var(--ink)">The Math</h2>
+      <p class="section-subtitle">why this makes financial sense</p>
     </div>
 
-    <div class="glass-card p-8 md:p-10 reveal">
+    <div class="light-card p-8 md:p-10 reveal">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center mb-10">
         <div>
-          <div class="text-3xl font-display font-black text-red-400/80">$5K&ndash;$15K</div>
-          <div class="text-xs text-white/40 mt-1">Traditional single video cost</div>
+          <div class="text-3xl font-display font-black text-red-500/70">$5K&ndash;$15K</div>
+          <div class="text-xs mt-1" style="color:rgba(26,26,46,0.40)">Traditional single video cost</div>
         </div>
         <div>
-          <div class="text-lg text-white/30 mt-2">vs</div>
+          <div class="text-lg mt-2" style="color:rgba(26,26,46,0.20)">vs</div>
         </div>
         <div>
           <div class="text-3xl font-display font-black" style="color:var(--gold)">$2,000</div>
-          <div class="text-xs text-white/40 mt-1">Growth Engine per month (4 videos)</div>
+          <div class="text-xs mt-1" style="color:rgba(26,26,46,0.40)">Growth Engine per month (4 videos)</div>
         </div>
       </div>
 
-      <div class="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent mb-8"></div>
+      <div class="w-full h-px mb-8" style="background:linear-gradient(90deg,transparent,#E8E6E2,transparent)"></div>
 
       <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
         <div>
-          <div class="text-2xl font-display font-black text-purple-300">52</div>
-          <div class="text-xs text-white/40 mt-1">Videos per year<br/>(48 + 4 flagship)</div>
+          <div class="text-2xl font-display font-black" style="color:var(--violet)">52</div>
+          <div class="text-xs mt-1" style="color:rgba(26,26,46,0.40)">Videos per year<br/>(48 + 4 flagship)</div>
         </div>
         <div>
-          <div class="text-2xl font-display font-black text-purple-300">52</div>
-          <div class="text-xs text-white/40 mt-1">Social copy<br/>pieces per year</div>
+          <div class="text-2xl font-display font-black" style="color:var(--violet)">52</div>
+          <div class="text-xs mt-1" style="color:rgba(26,26,46,0.40)">Social copy<br/>pieces per year</div>
         </div>
         <div>
-          <div class="text-2xl font-display font-black text-purple-300">12</div>
-          <div class="text-xs text-white/40 mt-1">Strategy calls<br/>per year</div>
+          <div class="text-2xl font-display font-black" style="color:var(--violet)">12</div>
+          <div class="text-xs mt-1" style="color:rgba(26,26,46,0.40)">Strategy calls<br/>per year</div>
         </div>
         <div>
           <div class="text-2xl font-display font-black" style="color:var(--gold)">$24K</div>
-          <div class="text-xs text-white/40 mt-1">Your annual<br/>investment (AUD)</div>
+          <div class="text-xs mt-1" style="color:rgba(26,26,46,0.40)">Your annual<br/>investment (AUD)</div>
         </div>
       </div>
 
-      <p class="text-center text-sm text-white/30 mt-8 italic">Traditional equivalent: $60,000&ndash;$180,000 AUD per year</p>
+      <p class="text-center text-sm mt-8 font-drama italic" style="color:rgba(26,26,46,0.25)">Traditional equivalent: $60,000&ndash;$180,000 AUD per year</p>
     </div>
   </div>
 </section>
 
+<!-- ═══════════════════════════════════════════ -->
+<!-- FAQ -->
+<!-- ═══════════════════════════════════════════ -->
+<section id="faq" class="py-20 px-6">
+  <div class="max-w-3xl mx-auto">
+    <div class="text-center mb-14 reveal">
+      <h2 class="text-3xl md:text-4xl font-display font-black mb-2" style="color:var(--ink)">FAQ</h2>
+      <p class="section-subtitle">the details that matter</p>
+    </div>
+
+    <div class="reveal">
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>What kind of videos do you produce?</span>
+          <span class="faq-icon"><i class="fas fa-plus"></i></span>
+        </div>
+        <div class="faq-answer">
+          <p class="text-sm leading-relaxed" style="color:rgba(26,26,46,0.55)">Brand introductions, service showcases, team culture videos, campaign pieces, product reveals, testimonial-style content, and social-first short-form. Every video is built from scratch &mdash; no templates, no stock footage. Original soundtrack and sound design included.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>How fast is turnaround?</span>
+          <span class="faq-icon"><i class="fas fa-plus"></i></span>
+        </div>
+        <div class="faq-answer">
+          <p class="text-sm leading-relaxed" style="color:rgba(26,26,46,0.55)">Typically 5&ndash;7 business days per video from brief to delivery. Retainer clients get priority scheduling, so your work never sits in a queue. Two revision rounds are included with every video.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>What do I need to provide?</span>
+          <span class="faq-icon"><i class="fas fa-plus"></i></span>
+        </div>
+        <div class="faq-answer">
+          <p class="text-sm leading-relaxed" style="color:rgba(26,26,46,0.55)">Your brand guidelines (logo, colours, fonts) and a brief idea of what you want each video to achieve. We handle everything else &mdash; scripting, visual production, music, sound design, and multi-format export. Your monthly strategy call is where we plan together.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>What if I don&rsquo;t like a video?</span>
+          <span class="faq-icon"><i class="fas fa-plus"></i></span>
+        </div>
+        <div class="faq-answer">
+          <p class="text-sm leading-relaxed" style="color:rgba(26,26,46,0.55)">Every video includes 2 revision rounds. If you&rsquo;re not happy after revisions, we&rsquo;ll produce a replacement at no extra cost. We&rsquo;d rather spend the time than deliver something you don&rsquo;t love.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>Can I cancel anytime?</span>
+          <span class="faq-icon"><i class="fas fa-plus"></i></span>
+        </div>
+        <div class="faq-answer">
+          <p class="text-sm leading-relaxed" style="color:rgba(26,26,46,0.55)">Monthly plans can be cancelled with 14 days notice. Quarterly plans run for the committed 3-month period, then you can cancel or continue. No lock-in contracts beyond what you choose.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>You use AI &mdash; is that a problem?</span>
+          <span class="faq-icon"><i class="fas fa-plus"></i></span>
+        </div>
+        <div class="faq-answer">
+          <p class="text-sm leading-relaxed" style="color:rgba(26,26,46,0.55)">AI is our production instrument, not a shortcut. Every frame is directed, reviewed, and refined by a human creative director. The result is cinematic quality at a fraction of traditional costs &mdash; which is why you get 4 videos a month instead of 1 every quarter. The work speaks for itself.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
 <!-- WHO THIS IS FOR -->
-<section class="py-20 px-6">
+<!-- ═══════════════════════════════════════════ -->
+<section class="py-20 px-6" style="background:var(--cream)">
   <div class="max-w-3xl mx-auto">
     <div class="reveal">
-      <h2 class="text-3xl md:text-4xl font-display font-black mb-8 cosmic-text">Who This Is For</h2>
+      <h2 class="text-3xl md:text-4xl font-display font-black mb-2" style="color:var(--ink)">Who This Is For</h2>
+      <p class="section-subtitle mb-8">and who it&rsquo;s not</p>
       <div class="space-y-3 mb-10">
-        <p class="text-white/60"><span class="check"><i class="fas fa-check-circle"></i></span> Businesses posting inconsistently because video is too expensive or too hard</p>
-        <p class="text-white/60"><span class="check"><i class="fas fa-check-circle"></i></span> Brands that need video content but don&rsquo;t have an in-house team</p>
-        <p class="text-white/60"><span class="check"><i class="fas fa-check-circle"></i></span> Companies ready to dominate social media with cinematic quality every week</p>
-        <p class="text-white/60"><span class="check"><i class="fas fa-check-circle"></i></span> Founders who understand that consistent video content drives revenue</p>
+        <p style="color:rgba(26,26,46,0.60)"><span class="check"><i class="fas fa-check-circle"></i></span> Businesses posting inconsistently because video is too expensive or too hard</p>
+        <p style="color:rgba(26,26,46,0.60)"><span class="check"><i class="fas fa-check-circle"></i></span> Brands that need video content but don&rsquo;t have an in-house team</p>
+        <p style="color:rgba(26,26,46,0.60)"><span class="check"><i class="fas fa-check-circle"></i></span> Companies ready to dominate social media with cinematic quality every week</p>
+        <p style="color:rgba(26,26,46,0.60)"><span class="check"><i class="fas fa-check-circle"></i></span> Founders who understand that consistent video content drives revenue</p>
       </div>
     </div>
 
     <div class="reveal">
-      <h3 class="text-xl font-display font-black text-white/50 mb-4">Who This Is Not For</h3>
+      <h3 class="text-xl font-display font-bold mb-4" style="color:rgba(26,26,46,0.45)">Who This Is Not For</h3>
       <div class="space-y-3">
-        <p class="text-white/40"><span class="cross"><i class="fas fa-times-circle"></i></span> Businesses looking for the cheapest option (we&rsquo;re not stock footage)</p>
-        <p class="text-white/40"><span class="cross"><i class="fas fa-times-circle"></i></span> Companies that need traditional camera crews on location</p>
-        <p class="text-white/40"><span class="cross"><i class="fas fa-times-circle"></i></span> Anyone who doesn&rsquo;t value quality</p>
+        <p style="color:rgba(26,26,46,0.35)"><span class="cross"><i class="fas fa-times-circle"></i></span> Businesses looking for the cheapest option (we&rsquo;re not stock footage)</p>
+        <p style="color:rgba(26,26,46,0.35)"><span class="cross"><i class="fas fa-times-circle"></i></span> Companies that need traditional camera crews on location</p>
+        <p style="color:rgba(26,26,46,0.35)"><span class="cross"><i class="fas fa-times-circle"></i></span> Anyone who doesn&rsquo;t value quality</p>
       </div>
     </div>
   </div>
 </section>
 
+<!-- ═══════════════════════════════════════════ -->
 <!-- ABOUT -->
+<!-- ═══════════════════════════════════════════ -->
 <section class="py-20 px-6">
-  <div class="max-w-3xl mx-auto reveal">
-    <h2 class="text-3xl md:text-4xl font-display font-black mb-8 cosmic-text">About Violet Media</h2>
-    <div class="glass-card p-8 md:p-10">
-      <p class="text-white/60 leading-relaxed mb-4">Violet Media is an AI-powered cinematic production studio based in Perth, Australia. 45.9K+ TikTok followers. Our work regularly attracts engagement from Emmy-winning producers, creative directors, and industry professionals internationally.</p>
-      <p class="text-white/60 leading-relaxed mb-4">We don&rsquo;t use templates. We don&rsquo;t use stock footage. Every frame is purpose-built for your brand through our proprietary AI production pipeline.</p>
-      <p class="text-white/60 leading-relaxed">Founded by <strong class="text-white">Peter Sarosi</strong> &mdash; a creative director building cinematic content at a level that traditional production houses charge ten times more for. Currently pursuing an MBA at the Australian Institute of Business. WaveSpeed AI Partner Creator.</p>
+  <div class="max-w-3xl mx-auto">
+    <div class="text-center mb-10 reveal">
+      <h2 class="text-3xl md:text-4xl font-display font-black mb-2" style="color:var(--ink)">About Violet Media</h2>
+      <p class="section-subtitle">Perth, Australia &bull; est. 2024</p>
+    </div>
+    <div class="light-card p-8 md:p-10 reveal">
+      <p class="text-sm leading-relaxed mb-4" style="color:rgba(26,26,46,0.55)">Violet Media is an AI-powered cinematic production studio based in Perth, Australia. 45.9K+ TikTok followers. Our work regularly attracts engagement from Emmy-winning producers, creative directors, and industry professionals internationally.</p>
+      <p class="text-sm leading-relaxed mb-4" style="color:rgba(26,26,46,0.55)">We don&rsquo;t use templates. We don&rsquo;t use stock footage. Every frame is purpose-built for your brand through our proprietary AI production pipeline.</p>
+      <p class="text-sm leading-relaxed" style="color:rgba(26,26,46,0.55)">Founded by <strong style="color:var(--ink)">Peter Sarosi</strong> &mdash; a creative director building cinematic content at a level that traditional production houses charge ten times more for. Currently pursuing an MBA at the Australian Institute of Business. WaveSpeed AI Partner Creator.</p>
     </div>
   </div>
 </section>
 
+<!-- ═══════════════════════════════════════════ -->
 <!-- FINAL CTA -->
-<section class="py-20 px-6 text-center relative">
-  <div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(ellipse at 50% 50%,rgba(138,43,226,0.12),transparent 50%)"></div>
+<!-- ═══════════════════════════════════════════ -->
+<section class="py-20 px-6 text-center relative" style="background:var(--cream)">
+  <div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(ellipse at 50% 50%,rgba(138,43,226,0.04),transparent 50%)"></div>
   <div class="relative z-10 max-w-2xl mx-auto reveal">
-    <h2 class="text-3xl md:text-4xl font-display font-black mb-6 cosmic-text">Ready to Start?</h2>
-    <p class="text-white/50 mb-10">Choose your plan and let&rsquo;s build something extraordinary.</p>
+    <h2 class="text-3xl md:text-4xl font-display font-black mb-3" style="color:var(--ink)">Ready to Start?</h2>
+    <p class="section-subtitle mb-8">let&rsquo;s build something extraordinary</p>
     <div class="flex flex-col sm:flex-row gap-4 justify-center mb-8">
       <a href="https://buy.stripe.com/7sY00j1fp63l32i2Q65Ne02" target="_blank" rel="noopener" class="btn-outline">Monthly &mdash; $2,000/mo</a>
       <a href="https://buy.stripe.com/3cIbJ11fp8bt46mduK5Ne03" target="_blank" rel="noopener" class="btn-violet">Quarterly &mdash; $1,800/mo <i class="fas fa-star ml-2 text-xs"></i></a>
     </div>
-    <p class="text-sm text-white/35 mb-6">Questions? Email <a href="mailto:violetmediastudio@gmail.com" class="text-purple-400 hover:text-purple-300 transition-colors">violetmediastudio@gmail.com</a></p>
-    <div class="w-16 h-0.5 bg-gradient-to-r from-transparent via-purple-500/50 to-transparent mx-auto mb-6"></div>
+    <p class="text-sm mb-6" style="color:rgba(26,26,46,0.35)">Questions? Email <a href="mailto:violetmediastudio@gmail.com" class="hover:opacity-70 transition-opacity" style="color:var(--violet)">violetmediastudio@gmail.com</a></p>
+    <div class="w-16 h-px mx-auto mb-6" style="background:linear-gradient(90deg,transparent,var(--violet),transparent)"></div>
     <p class="text-lg font-drama italic" style="color:var(--gold)">Quality for the ages.</p>
   </div>
 </section>
 
 </main>
 
-<!-- FOOTER -->
-<footer class="pt-12 pb-8 text-center" style="background:rgba(3,1,10,0.8)">
-  <div class="container mx-auto px-6">
-    <a href="index.html" class="inline-flex items-center gap-3 mb-4">
-      <img src="vm-orb.png" alt="VM" class="w-8 h-8 rounded-full" />
-      <span class="font-display font-black cosmic-text">Violet Media</span>
+<!-- ═══════════════════════════════════════════ -->
+<!-- PREMIUM FOOTER (Dark — brand anchor) -->
+<!-- ═══════════════════════════════════════════ -->
+<footer class="pt-16 pb-10 text-center" style="background:#050214;border-radius:48px 48px 0 0">
+  <div class="max-w-5xl mx-auto px-6">
+
+    <!-- Logo -->
+    <a href="index.html" class="inline-flex items-center gap-3 mb-6">
+      <img src="vm-orb.png" alt="VM" class="w-10 h-10 rounded-full" style="filter:drop-shadow(0 0 8px rgba(138,43,226,0.4))" />
+      <span class="text-xl font-display font-black" style="background:linear-gradient(135deg,#fff,rgba(167,139,250,0.95),rgba(138,43,226,0.95));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Violet Media</span>
     </a>
-    <p class="text-white/35 text-sm mb-2">&copy; 2026 Violet Media. All rights reserved. Perth, Australia.</p>
-    <p class="text-white/25 text-xs mb-3">ABN: 20 188 436 344 &bull; <a href="mailto:violetmediastudio@gmail.com" class="hover:text-purple-300 transition-colors">violetmediastudio@gmail.com</a></p>
-    <p class="text-lg font-drama italic cosmic-text">Quality for the ages.</p>
+
+    <!-- System Status -->
+    <div class="mb-8">
+      <div style="display:inline-flex;align-items:center;gap:8px;padding:8px 20px;border-radius:999px;border:1px solid rgba(255,255,255,0.05);background:rgba(17,8,38,0.4)">
+        <span style="width:8px;height:8px;border-radius:50%;background:#4ade80;box-shadow:0 0 8px rgba(74,222,128,0.5);animation:pulse 2s ease infinite"></span>
+        <span style="font-family:monospace;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.3)">All Systems Operational</span>
+      </div>
+    </div>
+
+    <!-- 3-Column Grid -->
+    <div class="grid grid-cols-3 gap-8 max-w-md mx-auto mb-10 text-sm">
+      <div>
+        <p class="font-bold text-white/50 mb-3 uppercase text-xs tracking-wider">Services</p>
+        <div class="space-y-2">
+          <a href="index.html#services" class="block text-white/35 hover:text-purple-300 transition-colors">Production</a>
+          <a href="#pricing" class="block text-white/35 hover:text-purple-300 transition-colors">Retainer</a>
+          <a href="index.html#contact" class="block text-white/35 hover:text-purple-300 transition-colors">Contact</a>
+        </div>
+      </div>
+      <div>
+        <p class="font-bold text-white/50 mb-3 uppercase text-xs tracking-wider">Company</p>
+        <div class="space-y-2">
+          <a href="index.html" class="block text-white/35 hover:text-purple-300 transition-colors">Home</a>
+          <a href="index.html#philosophy" class="block text-white/35 hover:text-purple-300 transition-colors">Philosophy</a>
+          <a href="index.html#ai-tech" class="block text-white/35 hover:text-purple-300 transition-colors">AI Stack</a>
+        </div>
+      </div>
+      <div>
+        <p class="font-bold text-white/50 mb-3 uppercase text-xs tracking-wider">Follow</p>
+        <div class="space-y-2">
+          <a href="https://www.tiktok.com/@cosmictease" target="_blank" rel="noopener" class="block text-white/35 hover:text-pink-400 transition-colors">TikTok</a>
+          <a href="https://www.linkedin.com/in/peter-z-sarosi/" target="_blank" rel="noopener" class="block text-white/35 hover:text-blue-400 transition-colors">LinkedIn</a>
+          <a href="https://www.youtube.com/@cosmictease" target="_blank" rel="noopener" class="block text-white/35 hover:text-red-400 transition-colors">YouTube</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <div class="w-full h-px mb-6" style="background:linear-gradient(90deg,transparent,rgba(138,43,226,0.25),transparent)"></div>
+
+    <!-- Copyright -->
+    <p class="text-white/30 text-sm mb-2">&copy; 2026 Violet Media. All rights reserved. Perth, Australia.</p>
+    <p class="text-white/20 text-xs mb-4">ABN: 20 188 436 344 &bull; <a href="mailto:violetmediastudio@gmail.com" class="hover:text-purple-300 transition-colors">violetmediastudio@gmail.com</a></p>
+    <p class="text-lg font-drama italic" style="background:linear-gradient(135deg,#fff,rgba(167,139,250,0.95),rgba(138,43,226,0.95));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Quality for the ages.</p>
   </div>
 </footer>
 
+<!-- ═══════════════════════════════════════════ -->
+<!-- JAVASCRIPT -->
+<!-- ═══════════════════════════════════════════ -->
 <script>
-  // Scroll reveal
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  // ── Nav morphing ──
+  var navEl = document.getElementById('main-nav');
+  var heroEl = document.getElementById('hero');
+  var navObs = new IntersectionObserver(function(entries) {
+    navEl.classList.toggle('scrolled', !entries[0].isIntersecting);
+  }, { threshold: 0.15 });
+  navObs.observe(heroEl);
 
-  // Stars
-  var c=document.getElementById('particles'),n=window.innerWidth<768?100:200;
-  var cols=['rgba(138,43,226,','rgba(167,139,250,','rgba(255,255,255,','rgba(45,107,255,'];
-  for(var i=0;i<n;i++){var p=document.createElement('div');p.className='particle';var s=Math.random()*2.5+0.5,co=cols[Math.floor(Math.random()*cols.length)],o=Math.random()*0.5+0.2,d=Math.random()*40+25,dl=Math.random()*d,l=Math.random()*100,t=Math.random()*100;p.style.cssText='position:absolute;border-radius:50%;width:'+s+'px;height:'+s+'px;background:'+co+o+');left:'+l+'%;top:'+t+'%;animation:drift '+d+'s linear infinite;animation-delay:-'+dl+'s;box-shadow:0 0 '+s*3+'px '+co+o*0.5+');';c.appendChild(p);}
+  // ── Mobile menu ──
+  var mobileMenu = document.getElementById('mobile-menu');
+  document.getElementById('nav-burger').addEventListener('click', function() {
+    mobileMenu.classList.add('open');
+  });
+  document.getElementById('nav-close').addEventListener('click', closeMobile);
+  function closeMobile() { mobileMenu.classList.remove('open'); }
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeMobile(); });
+
+  // ── GSAP ScrollTrigger reveals ──
+  if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Check reduced motion preference
+    var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!prefersReducedMotion) {
+      // Standard reveals
+      document.querySelectorAll('.reveal').forEach(function(el) {
+        gsap.fromTo(el,
+          { opacity: 0, y: 40 },
+          { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out',
+            scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' }
+          }
+        );
+      });
+
+      // Manifesto lines — slower, more dramatic
+      document.querySelectorAll('.manifesto-big, .manifesto-small').forEach(function(el) {
+        gsap.fromTo(el,
+          { opacity: 0, y: 50 },
+          { opacity: 1, y: 0, duration: 1.1, ease: 'power3.out',
+            scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' }
+          }
+        );
+      });
+    } else {
+      // Reduced motion — show everything immediately
+      document.querySelectorAll('.reveal, .manifesto-big, .manifesto-small').forEach(function(el) {
+        el.style.opacity = '1';
+        el.style.transform = 'none';
+      });
+    }
+  } else {
+    // GSAP fallback — IntersectionObserver
+    var obs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) {
+          e.target.style.opacity = '1';
+          e.target.style.transform = 'none';
+          e.target.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal, .manifesto-big, .manifesto-small').forEach(function(el) { obs.observe(el); });
+  }
+
+  // ── FAQ Accordion ──
+  function toggleFaq(questionEl) {
+    var item = questionEl.parentElement;
+    var answer = item.querySelector('.faq-answer');
+    var icon = item.querySelector('.faq-icon');
+    var isOpen = answer.style.maxHeight && answer.style.maxHeight !== '0px';
+
+    // Close all other items
+    document.querySelectorAll('.faq-item').forEach(function(otherItem) {
+      if (otherItem !== item) {
+        var otherAnswer = otherItem.querySelector('.faq-answer');
+        var otherIcon = otherItem.querySelector('.faq-icon');
+        otherAnswer.style.maxHeight = '0px';
+        otherAnswer.style.paddingBottom = '0px';
+        if (otherIcon) otherIcon.style.transform = 'rotate(0deg)';
+      }
+    });
+
+    // Toggle clicked item
+    if (isOpen) {
+      answer.style.maxHeight = '0px';
+      answer.style.paddingBottom = '0px';
+      if (icon) icon.style.transform = 'rotate(0deg)';
+    } else {
+      answer.style.maxHeight = answer.scrollHeight + 20 + 'px';
+      answer.style.paddingBottom = '20px';
+      if (icon) icon.style.transform = 'rotate(45deg)';
+    }
+  }
+
+  // Init FAQ answers as closed with transition
+  document.querySelectorAll('.faq-answer').forEach(function(el) {
+    el.style.maxHeight = '0px';
+    el.style.overflow = 'hidden';
+    el.style.transition = 'max-height 0.4s ease, padding-bottom 0.4s ease';
+    el.style.paddingBottom = '0px';
+  });
+  document.querySelectorAll('.faq-icon').forEach(function(el) {
+    el.style.transition = 'transform 0.3s ease';
+    el.style.color = 'var(--violet)';
+  });
 </script>
 <style>
-  @keyframes drift{0%{transform:translateY(0) translateX(0);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateY(110vh) translateX(40px);opacity:0}}
-  .particle{position:absolute;border-radius:50%}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
 </style>
 </body>
 </html>
