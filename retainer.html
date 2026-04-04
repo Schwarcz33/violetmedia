@@ -110,6 +110,7 @@
   </a>
   <div class="hidden lg:flex items-center gap-6 text-sm font-semibold" style="color:#fff">
     <a href="index.html" class="opacity-60 hover:opacity-100 hover:text-purple-300 transition-all">Home</a>
+    <a href="/music" class="opacity-60 hover:opacity-100 hover:text-purple-300 transition-all">Music</a>
     <a href="#demos" class="opacity-60 hover:opacity-100 hover:text-purple-300 transition-all">Demos</a>
     <a href="#pricing" class="text-purple-300 transition-all">Pricing</a>
     <a href="#faq" class="opacity-60 hover:opacity-100 hover:text-purple-300 transition-all">FAQ</a>
@@ -126,6 +127,7 @@
     <i class="fas fa-times text-xl" style="color:#fff"></i>
   </button>
   <a href="index.html" class="text-xl font-display font-bold" style="color:#fff">Home</a>
+  <a href="/music" class="text-xl font-display font-bold" style="color:#fff" onclick="closeMobile()">Music</a>
   <a href="#demos" class="text-xl font-display font-bold" style="color:#fff" onclick="closeMobile()">Demos</a>
   <a href="#pricing" class="text-xl font-display font-bold" style="color:#fff" onclick="closeMobile()">Pricing</a>
   <a href="#faq" class="text-xl font-display font-bold" style="color:#fff" onclick="closeMobile()">FAQ</a>
@@ -411,16 +413,140 @@
 </section>
 
 <!-- ═══════════════════════════════════════════ -->
-<!-- PRICING -->
+<!-- PRODUCTS & PRICING -->
 <!-- ═══════════════════════════════════════════ -->
 <section id="pricing" class="py-20 px-6">
-  <div class="max-w-4xl mx-auto">
+  <div class="max-w-5xl mx-auto">
     <div class="text-center mb-14 reveal">
-      <h2 class="text-3xl md:text-4xl font-display font-black mb-2" style="color:#fff">Pricing</h2>
-      <p class="section-subtitle">you see what you pay for</p>
-      <p class="text-sm mt-4" style="color:rgba(232,232,240,0.40)">Simple. Transparent. No hidden fees.</p>
+      <h2 class="text-3xl md:text-4xl font-display font-black mb-2 cosmic-text">Products &amp; Pricing</h2>
+      <p class="section-subtitle">from $0.99 downloads to full production retainers</p>
+      <p class="text-sm mt-4" style="color:rgba(232,232,240,0.40)">Simple. Transparent. No hidden fees. All prices AUD.</p>
     </div>
 
+    <!-- ── TIER 1: Track Downloads ── -->
+    <div class="text-center mb-6 reveal">
+      <p class="text-xs font-bold tracking-widest uppercase" style="color:var(--violet)">Music Downloads</p>
+      <div class="w-16 h-px mx-auto mt-2" style="background:linear-gradient(90deg,transparent,var(--violet),transparent)"></div>
+    </div>
+    <div class="max-w-2xl mx-auto mb-14 reveal">
+      <div class="light-card p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-4">
+          <div class="text-2xl" style="color:var(--violet)"><i class="fas fa-music"></i></div>
+          <div>
+            <h4 class="text-base font-display font-bold" style="color:#fff">Track Downloads</h4>
+            <p class="text-xs" style="color:rgba(232,232,240,0.50)">Original music from our production catalog. MP3 + WAV.</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-4">
+          <div class="text-2xl font-display font-black" style="color:#fff">$0.99</div>
+          <a href="/music" class="btn-outline text-sm py-2 px-5">Browse Music</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TIER 2: Video Prompt Packs ── -->
+    <div class="text-center mb-6 reveal">
+      <p class="text-xs font-bold tracking-widest uppercase" style="color:var(--violet)">Video Prompt Packs</p>
+      <div class="w-16 h-px mx-auto mt-2" style="background:linear-gradient(90deg,transparent,var(--violet),transparent)"></div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto mb-14">
+      <div class="light-card p-7 reveal">
+        <div class="text-xs tracking-widest uppercase font-bold mb-2" style="color:var(--violet)">Starter</div>
+        <div class="text-3xl font-display font-black mb-1" style="color:#fff">$5.99</div>
+        <div class="text-xs mb-5" style="color:rgba(232,232,240,0.35)">AUD &bull; one-time</div>
+        <ul class="text-sm space-y-2 mb-6" style="color:rgba(232,232,240,0.50)">
+          <li><span class="check"><i class="fas fa-check"></i></span>20&ndash;30 generic scene prompts across genres</li>
+          <li><span class="check"><i class="fas fa-check"></i></span>Corporate, real estate, fitness, food, travel</li>
+          <li><span class="check"><i class="fas fa-check"></i></span>Plug-and-play &mdash; copy, paste, generate</li>
+        </ul>
+        <a href="#" class="btn-outline w-full justify-center text-sm">Get Starter Pack</a>
+      </div>
+      <div class="light-card p-7 reveal" style="transition-delay:90ms">
+        <div class="text-xs tracking-widest uppercase font-bold mb-2" style="color:var(--gold)">Premium</div>
+        <div class="text-3xl font-display font-black mb-1" style="color:#fff">$19.99</div>
+        <div class="text-xs mb-5" style="color:rgba(232,232,240,0.35)">AUD &bull; one-time</div>
+        <ul class="text-sm space-y-2 mb-6" style="color:rgba(232,232,240,0.50)">
+          <li><span class="check"><i class="fas fa-check"></i></span>Full production bible templates</li>
+          <li><span class="check"><i class="fas fa-check"></i></span>Start/end frame pairs with motion prompts</li>
+          <li><span class="check"><i class="fas fa-check"></i></span>Negative prompts, camera specs, soundtrack direction</li>
+          <li><span class="check"><i class="fas fa-check"></i></span>The complete system behind PARALLAX and VIOLET FURY</li>
+        </ul>
+        <a href="#" class="btn-violet w-full justify-center text-sm">Get Premium Pack</a>
+      </div>
+    </div>
+
+    <!-- ── TIER 3: Digital Guides ── -->
+    <div class="text-center mb-6 reveal">
+      <p class="text-xs font-bold tracking-widest uppercase" style="color:var(--violet)">Digital Guides</p>
+      <div class="w-16 h-px mx-auto mt-2" style="background:linear-gradient(90deg,transparent,var(--violet),transparent)"></div>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 max-w-5xl mx-auto mb-14">
+      <div class="light-card p-5 reveal">
+        <div class="text-xl font-display font-black mb-1" style="color:#fff">$19</div>
+        <h4 class="text-sm font-display font-bold mb-2" style="color:rgba(232,232,240,0.80)">Deep House Lyrics Vault</h4>
+        <p class="text-xs mb-4" style="color:rgba(232,232,240,0.40)">20 ready-to-use song structures with production tags. Viral hook formulas and singalong templates.</p>
+        <span style="display:inline-block;padding:6px 18px;border-radius:999px;border:1px dashed rgba(138,43,226,0.30);color:rgba(232,232,240,0.35);font-size:12px;font-weight:700;cursor:default;opacity:0.6">Coming Soon</span>
+      </div>
+      <div class="light-card p-5 reveal" style="transition-delay:60ms">
+        <div class="text-xl font-display font-black mb-1" style="color:#fff">$29</div>
+        <h4 class="text-sm font-display font-bold mb-2" style="color:rgba(232,232,240,0.80)">Suno Hit Factory</h4>
+        <p class="text-xs mb-4" style="color:rgba(232,232,240,0.40)">Complete Suno V5.5 production guide. GMIV framework, genre templates, exclude lists.</p>
+        <span style="display:inline-block;padding:6px 18px;border-radius:999px;border:1px dashed rgba(138,43,226,0.30);color:rgba(232,232,240,0.35);font-size:12px;font-weight:700;cursor:default;opacity:0.6">Coming Soon</span>
+      </div>
+      <div class="light-card p-5 reveal" style="transition-delay:120ms">
+        <div class="text-xl font-display font-black mb-1" style="color:#fff">$49</div>
+        <h4 class="text-sm font-display font-bold mb-2" style="color:rgba(232,232,240,0.80)">AI Cinematic Prompt Bible</h4>
+        <p class="text-xs mb-4" style="color:rgba(232,232,240,0.40)">Master prompt templates for image generation. Camera specs, lighting setups, anti-morph language library.</p>
+        <span style="display:inline-block;padding:6px 18px;border-radius:999px;border:1px dashed rgba(138,43,226,0.30);color:rgba(232,232,240,0.35);font-size:12px;font-weight:700;cursor:default;opacity:0.6">Coming Soon</span>
+      </div>
+      <div class="light-card p-5 reveal" style="transition-delay:180ms">
+        <div class="text-xl font-display font-black mb-1" style="color:#fff">$79</div>
+        <h4 class="text-sm font-display font-bold mb-2" style="color:rgba(232,232,240,0.80)">AI Video Pipeline</h4>
+        <p class="text-xs mb-4" style="color:rgba(232,232,240,0.40)">Full production workflow from image to finished video. Start/end frame methodology, motion prompts, assembly guide.</p>
+        <span style="display:inline-block;padding:6px 18px;border-radius:999px;border:1px dashed rgba(138,43,226,0.30);color:rgba(232,232,240,0.35);font-size:12px;font-weight:700;cursor:default;opacity:0.6">Coming Soon</span>
+      </div>
+    </div>
+
+    <!-- ── TIER 4: Custom Music Production ── -->
+    <div class="text-center mb-6 reveal">
+      <p class="text-xs font-bold tracking-widest uppercase" style="color:var(--violet)">Custom Music Production</p>
+      <div class="w-16 h-px mx-auto mt-2" style="background:linear-gradient(90deg,transparent,var(--violet),transparent)"></div>
+    </div>
+    <div class="max-w-3xl mx-auto mb-14 reveal">
+      <div class="light-card p-8 md:p-10">
+        <div class="flex flex-col md:flex-row gap-8">
+          <div class="flex-1">
+            <div class="text-3xl mb-3" style="color:var(--violet)"><i class="fas fa-headphones"></i></div>
+            <h4 class="text-xl font-display font-black mb-1" style="color:#fff">One Original Track</h4>
+            <div class="text-3xl font-display font-black mb-1" style="color:#fff">$399 <span class="text-sm font-normal" style="color:rgba(232,232,240,0.35)">AUD</span></div>
+            <p class="text-xs mb-4" style="color:rgba(232,232,240,0.40)">Produced to your brief. Made for you, not from a library.</p>
+          </div>
+          <div class="flex-1">
+            <ul class="text-sm space-y-2 mb-6" style="color:rgba(232,232,240,0.50)">
+              <li><span class="check"><i class="fas fa-check"></i></span>Original 2&ndash;4 minute track</li>
+              <li><span class="check"><i class="fas fa-check"></i></span>Any genre &mdash; Deep House, Pop, Cinematic, Corporate, and more</li>
+              <li><span class="check"><i class="fas fa-check"></i></span>Full commercial usage rights</li>
+              <li><span class="check"><i class="fas fa-check"></i></span>WAV + MP3 delivery</li>
+              <li><span class="check"><i class="fas fa-check"></i></span>2 revision rounds included</li>
+              <li><span class="check"><i class="fas fa-check"></i></span>5&ndash;7 business day turnaround</li>
+            </ul>
+          </div>
+        </div>
+        <p class="text-xs mt-2 font-drama italic" style="color:rgba(232,232,240,0.25)">Traditional custom music: $1,500&ndash;$5,000. Stock music: generic. Violet Media: $399, made for you.</p>
+        <div class="mt-6">
+          <a href="#" class="btn-violet">Commission Your Track &mdash; $399</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TIER 5: Growth Engine Retainer (FLAGSHIP) ── -->
+    <div class="text-center mb-6 reveal">
+      <div style="display:inline-block;padding:6px 24px;border-radius:100px;background:linear-gradient(135deg,var(--gold),#E8CC7A);color:#1A1A2E;font-size:12px;font-weight:800;letter-spacing:1px;font-family:'Space Grotesk',sans-serif;box-shadow:0 4px 20px rgba(215,177,90,0.3)">FLAGSHIP OFFERING</div>
+      <div class="mt-4">
+        <p class="text-xs font-bold tracking-widest uppercase" style="color:var(--gold)">Growth Engine Retainer</p>
+        <div class="w-16 h-px mx-auto mt-2" style="background:linear-gradient(90deg,transparent,var(--gold),transparent)"></div>
+      </div>
+    </div>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
 
       <!-- Monthly -->
@@ -580,6 +706,16 @@
         </div>
         <div class="faq-answer">
           <p class="text-sm leading-relaxed" style="color:rgba(232,232,240,0.55)">AI is our production instrument, not a shortcut. Every frame is directed, reviewed, and refined by a human creative director. The result is cinematic quality at a fraction of traditional costs &mdash; which is why you get 4 videos a month instead of 1 every quarter. The work speaks for itself.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>Do you sell individual products too?</span>
+          <span class="faq-icon"><i class="fas fa-plus"></i></span>
+        </div>
+        <div class="faq-answer">
+          <p class="text-sm leading-relaxed" style="color:rgba(232,232,240,0.55)">Yes. From $0.99 music downloads to $399 custom tracks, we offer products at every level. The Growth Engine retainer is our flagship offering for businesses that need consistent monthly content, but you can start with any product to experience our quality first.</p>
         </div>
       </div>
     </div>
