@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GLS4TXV26K"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-GLS4TXV26K');</script>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <meta name="description" content="Violet Media Music — Original AI-produced tracks available for download. Deep House, Cinematic, Pop, and more." />
+  <meta name="theme-color" content="#161622" />
+  <title>Music — Violet Media</title>
+  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;500;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config={theme:{extend:{colors:{charcoal:{950:"#0E0E18",900:"#161622",800:"#1E1E2E",700:"#262638",600:"#2E2E42"},violet:{DEFAULT:"#8A2BE2",dark:"#6B1FA5",light:"#A855F7"},gold:{DEFAULT:"#D7B15A",light:"#E8CC7A"}},fontFamily:{sans:["Inter","sans-serif"],display:["Space Grotesk","sans-serif"],drama:["Playfair Display","Georgia","serif"]}}}};
+  </script>
+  <style>
+    :root{--violet:#8A2BE2;--violet-dark:#6B1FA5;--gold:#D7B15A;--bg:#161622}
+    body{background:var(--bg);color:#E8E8F0;overflow-x:hidden}
+    .cosmic-text{background:linear-gradient(135deg,#fff 0%,rgba(167,139,250,0.95) 35%,rgba(138,43,226,0.95) 80%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .noise-overlay{position:fixed;inset:0;pointer-events:none;z-index:40;opacity:0.045;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      mix-blend-mode:overlay}
+    nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);width:94%;max-width:1100px;z-index:100;
+      background:rgba(22,22,34,0.75);backdrop-filter:blur(20px);border:1px solid rgba(138,43,226,0.18);border-radius:999px;height:56px;
+      display:flex;align-items:center;justify-content:space-between;padding:0 24px;
+      box-shadow:0 8px 32px rgba(0,0,0,0.3),0 0 40px rgba(138,43,226,0.08)}
+  </style>
+</head>
+<body class="font-sans antialiased">
+
+<div class="noise-overlay" aria-hidden="true"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="flex items-center gap-3">
+    <img src="vm-orb.png" alt="VM" class="w-9 h-9 rounded-full" style="filter:drop-shadow(0 0 6px rgba(138,43,226,0.3))" />
+    <div class="text-lg font-display font-black cosmic-text">Violet Media</div>
+  </a>
+  <div class="hidden md:flex items-center gap-6 text-sm font-semibold text-white/70">
+    <a href="index.html" class="hover:text-purple-300 transition-colors">Home</a>
+    <a href="music.html" class="text-purple-300 transition-colors">Music</a>
+    <a href="retainer.html" class="hover:text-purple-300 transition-colors">Retainer</a>
+    <a href="index.html#contact" class="hover:text-purple-300 transition-colors">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<main class="min-h-screen flex items-center justify-center text-center px-6 relative">
+  <div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(ellipse at 50% 40%,rgba(138,43,226,0.12),transparent 60%)"></div>
+  <div class="relative z-10 max-w-2xl mx-auto">
+    <div class="text-6xl mb-6" style="color:var(--violet)"><i class="fas fa-compact-disc fa-spin" style="animation-duration:8s"></i></div>
+    <h1 class="text-4xl md:text-6xl font-display font-black mb-4 cosmic-text">Music</h1>
+    <p class="font-drama italic text-xl md:text-2xl mb-6" style="color:rgba(255,255,255,0.25)">coming soon</p>
+    <p class="text-base mb-8" style="color:rgba(232,232,240,0.50)">Original AI-produced tracks from the Violet Media catalog.<br/>Deep House, Cinematic, Pop, Corporate, and more.<br/>Downloads from $0.99 AUD per track.</p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+      <a href="https://open.spotify.com/artist/5Lv9ukPbJsQFdSaMcOrgab" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-bold border border-white/15 text-white/60 hover:text-green-400 hover:border-green-400/30 transition-all">
+        <i class="fab fa-spotify"></i> Listen on Spotify
+      </a>
+      <a href="https://youtube.com/@cosmic_tease" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-bold border border-white/15 text-white/60 hover:text-red-400 hover:border-red-400/30 transition-all">
+        <i class="fab fa-youtube"></i> Watch on YouTube
+      </a>
+    </div>
+    <p class="text-xs" style="color:rgba(232,232,240,0.25)">Want to be notified when the store launches? Email <a href="mailto:info@violetmedia.org" style="color:var(--violet)" class="hover:opacity-70 transition-opacity">info@violetmedia.org</a></p>
+  </div>
+</main>
+
+</body>
+</html>
