@@ -1,0 +1,13 @@
+# Large 3D source files — web uses compressed vm-logo-3d.glb only
+3D Assets/
+
+# Unrelated project references
+harmon-agent-ref/
+harmon-logistics-agent.zip
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.vscode/
+.idea/

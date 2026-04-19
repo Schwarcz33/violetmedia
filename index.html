@@ -65,6 +65,8 @@
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" />
+  <!-- Google model-viewer for 3D VM logo -->
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
   <!-- Three.js via importmap for post-processing addons -->
   <script type="importmap">
   {
@@ -301,6 +303,62 @@
   <div id="three-host" aria-hidden="true"></div>
   <div class="aether-overlay" aria-hidden="true"></div>
   <div class="noise-overlay" aria-hidden="true"></div>
+  <!-- VM 3D Logo — Fixed Left, Always Visible -->
+  <div id="vm-logo-3d-wrap" aria-hidden="true">
+    <model-viewer
+      src="/vm-logo-3d.glb"
+      alt="Violet Media 3D logo"
+      auto-rotate
+      auto-rotate-delay="0"
+      rotation-per-second="18deg"
+      interaction-prompt="none"
+      disable-zoom
+      disable-pan
+      disable-tap
+      camera-controls="false"
+      shadow-intensity="0"
+      exposure="1.1"
+      environment-image="neutral"
+      loading="eager"
+      reveal="auto"
+      style="width: 100%; height: 100%; background: transparent; --poster-color: transparent;">
+    </model-viewer>
+  </div>
+  <style>
+    #vm-logo-3d-wrap {
+      position: fixed;
+      left: clamp(12px, 2vw, 28px);
+      top: 50%;
+      transform: translateY(-50%);
+      width: clamp(140px, 14vw, 220px);
+      height: clamp(140px, 14vw, 220px);
+      z-index: 40;
+      pointer-events: none;
+      filter: drop-shadow(0 0 24px rgba(138, 43, 226, 0.35))
+              drop-shadow(0 0 48px rgba(138, 43, 226, 0.18));
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      opacity: 0;
+      animation: vm-logo-fade-in 1.2s ease 0.4s forwards;
+    }
+    #vm-logo-3d-wrap model-viewer {
+      pointer-events: none;
+      --progress-bar-color: transparent;
+      --progress-bar-height: 0;
+    }
+    @keyframes vm-logo-fade-in {
+      to { opacity: 1; }
+    }
+    /* Hide below large screens to avoid overlapping hero content */
+    @media (max-width: 1279px) {
+      #vm-logo-3d-wrap { display: none; }
+    }
+    /* Respect reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      #vm-logo-3d-wrap model-viewer {
+        --poster-color: transparent;
+      }
+    }
+  </style>
   <!-- NAV — Morphing Floating Island -->
   <nav id="main-nav" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[96%] max-w-6xl rounded-full px-6 h-16 flex items-center justify-between transition-all duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]" role="banner" style="background: transparent; border: 1px solid transparent;">
     <div class="flex items-center justify-between w-full">
