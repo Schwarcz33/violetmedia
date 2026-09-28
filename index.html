@@ -1208,7 +1208,7 @@ document.documentElement.classList.toggle("effects-reduced", window.vmReducedMot
     const menu = document.getElementById("mobile-menu");
     const close = document.getElementById("close-menu");
     const mobileLinks = document.querySelectorAll(".mobile-link");
-    function openMenu(){ menu.scrollTop = 0; menu.classList.add("open"); document.body.classList.add("no-scroll"); btn.setAttribute("aria-expanded","true"); close.focus(); }
+    function openMenu(){ menu.scrollTop = 0; menu.classList.add("open"); document.body.classList.add("no-scroll"); btn.setAttribute("aria-expanded","true"); setTimeout(() => { if (menu.classList.contains("open")) close.focus(); }, 300); }
     function closeMenu(){ menu.classList.remove("open"); document.body.classList.remove("no-scroll"); btn.setAttribute("aria-expanded","false"); btn.focus(); }
     function toggleMenu(){ if (menu.classList.contains("open")) closeMenu(); else openMenu(); }
     btn.addEventListener("click", toggleMenu);
@@ -1220,6 +1220,7 @@ document.documentElement.classList.toggle("effects-reduced", window.vmReducedMot
       if (event.key !== "Tab") return;
       const items = [...menu.querySelectorAll("a[href], button")];
       const first = items[0], last = items[items.length - 1];
+      if (!menu.contains(document.activeElement)) { event.preventDefault(); first.focus(); return; }
       if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
       else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
     });
