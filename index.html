@@ -318,66 +318,30 @@ window.vmReducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 try { const saved = localStorage.getItem("vm-reduced-motion"); if (saved !== null) window.vmReducedMotion = saved === "true"; } catch (_) {}
 document.documentElement.classList.toggle("effects-reduced", window.vmReducedMotion);
 </script>
+<style id="readability-refinement">
+/* Decorative logo stays in normal footer flow, never above the reading area. */
+#vm-logo-3d-wrap { position:relative; width:120px; height:120px; margin:0 auto 28px; pointer-events:none; filter:drop-shadow(0 0 16px #8a2be233); }
+#vm-logo-3d-wrap model-viewer { width:100%; height:100%; --progress-bar-height:0; }
+#top { isolation:isolate; padding-bottom:64px; }
+#hero-video-bg::after { background:linear-gradient(180deg,rgba(5,2,20,.82),rgba(5,2,20,.78) 55%,rgba(5,2,20,.92)); }
+#top .hero-article { display:block; font-family:'Playfair Display',Georgia,serif; font-style:italic; font-weight:400; font-size:clamp(1.8rem,3vw,3rem); line-height:1.1; letter-spacing:.015em; color:#d7bee9; margin-bottom:18px; }
+#top h1 .cosmic-text { background:linear-gradient(120deg,#e5d4f2,#c29ae7); background-clip:text; -webkit-background-clip:text; -webkit-text-fill-color:transparent; padding-bottom:.12em; }
+#top .cosmic-subtext { color:#e1d9eb; font-weight:400; text-shadow:0 2px 12px #050214; }
+#top p { text-shadow:0 2px 12px #050214; }
+main [class~="text-white/60"], main [class~="text-white/70"] { color:#c9bfd6; }
+main .font-drama[class~="text-white/30"] { color:#bba7cd; }
+#top .glass-card, .service-card { background:rgba(17,8,38,.95); }
+@media(max-width:640px) { #vm-logo-3d-wrap { width:96px; height:96px; } #top .hero-article { margin-bottom:14px; } }
+@media(prefers-reduced-motion:reduce) { #vm-logo-3d-wrap { display:none; } }
+html.effects-reduced #vm-logo-3d-wrap { display:none; }
+</style>
 </head>
 <body class="antialiased">
   <a class="skip-link" href="#main">Skip to content</a>
   <div id="three-host" aria-hidden="true"></div>
   <div class="aether-overlay" aria-hidden="true"></div>
   <div class="noise-overlay" aria-hidden="true"></div>
-  <!-- VM 3D Logo — Fixed Left, Always Visible -->
-  <div id="vm-logo-3d-wrap" aria-hidden="true">
-    <model-viewer
-      src="/vm-logo-3d.glb"
-      alt="Violet Media 3D logo"
-      auto-rotate
-      auto-rotate-delay="0"
-      rotation-per-second="18deg"
-      interaction-prompt="none"
-      disable-zoom
-      disable-pan
-      disable-tap
-      camera-controls="false"
-      shadow-intensity="0"
-      exposure="1.1"
-      environment-image="neutral"
-      loading="eager"
-      reveal="auto"
-      style="width: 100%; height: 100%; background: transparent; --poster-color: transparent;">
-    </model-viewer>
-  </div>
-  <style>
-    #vm-logo-3d-wrap {
-      position: fixed;
-      left: clamp(32px, 4vw, 64px);
-      top: 50%;
-      transform: translateY(-50%);
-      width: clamp(140px, 14vw, 220px);
-      height: clamp(140px, 14vw, 220px);
-      z-index: 40;
-      pointer-events: none;
-      filter: drop-shadow(0 0 24px rgba(138, 43, 226, 0.35))
-              drop-shadow(0 0 48px rgba(138, 43, 226, 0.18));
-      opacity: 1 !important;
-      transition: opacity 0.6s ease;
-    }
-    #vm-logo-3d-wrap model-viewer {
-      pointer-events: none;
-      width: 100%;
-      height: 100%;
-      --progress-bar-color: transparent;
-      --progress-bar-height: 0;
-    }
-    /* Hide below large screens to avoid overlapping hero content */
-    @media (max-width: 1279px) {
-      #vm-logo-3d-wrap { display: none; }
-    }
-    /* Respect reduced motion */
-    @media (prefers-reduced-motion: reduce) {
-      #vm-logo-3d-wrap model-viewer {
-        --poster-color: transparent;
-      }
-    }
-  </style>
+
   <!-- NAV — Morphing Floating Island -->
   <nav id="main-nav" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[96%] max-w-6xl rounded-full px-6 h-16 flex items-center justify-between transition-all duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]" role="banner" style="background: transparent; border: 1px solid transparent;">
     <div class="flex items-center justify-between w-full">
@@ -478,7 +442,7 @@ document.documentElement.classList.toggle("effects-reduced", window.vmReducedMot
           Independent creative studio • Perth, Australia
         </div>
         <h1 class="mb-6 reveal">
-          <span class="block text-2xl md:text-3xl lg:text-4xl font-display font-black tracking-tight text-white/90 mb-2">The</span>
+          <span class="hero-article">The</span>
           <span class="block text-6xl md:text-7xl lg:text-[10rem] font-drama italic cosmic-text leading-[0.9] tracking-tight">Cosmic Empire</span>
         </h1>
         <p class="text-lg md:text-2xl cosmic-subtext mb-5 max-w-3xl mx-auto font-light reveal" style="transition-delay: 110ms;">
@@ -1012,6 +976,26 @@ document.documentElement.classList.toggle("effects-reduced", window.vmReducedMot
     </section>
     <!-- FOOTER — rounded top, deep dark -->
     <footer class="pt-16 pb-10 text-center bg-cosmic-950 rounded-t-[4rem] relative mt-8">
+  <div id="vm-logo-3d-wrap" aria-hidden="true">
+    <model-viewer
+      src="/vm-logo-3d.glb"
+      alt="Violet Media 3D logo"
+      auto-rotate
+      auto-rotate-delay="0"
+      rotation-per-second="18deg"
+      interaction-prompt="none"
+      disable-zoom
+      disable-pan
+      disable-tap
+
+      shadow-intensity="0"
+      exposure="1.1"
+      environment-image="neutral"
+      loading="lazy"
+      reveal="auto"
+      style="width: 100%; height: 100%; background: transparent; --poster-color: transparent;">
+    </model-viewer>
+  </div>
       <div class="container mx-auto px-6">
         <div class="flex justify-center mb-8">
           <img src="vm-logo-horizontal-footer.jpg" alt="Violet Media - AI-Powered Cosmic Visuals" class="w-full max-w-3xl rounded-2xl" style="max-width: 768px; width: 100%; height: auto;" />
