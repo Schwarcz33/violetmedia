@@ -15,3 +15,14 @@
   from = "/api/tts"
   to = "/.netlify/functions/tts"
   status = 200
+
+# Retired retainer page: send existing links to the homepage.
+[[redirects]]
+  from = "/retainer"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/retainer.html"
+  to = "/"
+  status = 301
